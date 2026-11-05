@@ -1,6 +1,6 @@
 # Orbit design brief
 
-Status: revised after the owner rejected the initial plain analytical interface. This replaces the earlier direction. The existing React shell is a technical baseline, not the intended finished design.
+Status: the HSR equipment direction is implemented as a clearly labeled synthetic inventory demo in O-03a, ready for owner review. This brief replaces the rejected plain analytical interface. Import, calculation, comparison, optimization, and timeline workflows below remain planned unless their implementation task is complete. See docs/VERIFICATION.md for the current UI's actual checks.
 
 ## Decisions from the owner
 

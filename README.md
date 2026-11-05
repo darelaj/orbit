@@ -4,9 +4,11 @@ A local Honkai: Star Rail relic workspace for PC players. Orbit is being built t
 
 ## Current status
 
-The React/TypeScript/Vite foundation is implemented, including a working light/dark theme toggle with local preference persistence. The application currently shows an initial inventory screen and scanner instructions.
+The React/TypeScript/Vite application now uses the HSR equipment direction: Acheron artwork, six equipment-slot shortcuts, a visual relic grid, and a selected-item panel. Both light and dark themes work and retain the local preference. On smaller screens, item detail opens in a native dialog.
 
-Full inventory import, build comparison, optimization, and the speed timeline are planned and are not usable yet. The approved HSR-inspired visual direction is documented in [DESIGN.md](DESIGN.md); the current shell has not been redesigned to match it.
+The app opens with eight clearly labeled synthetic demo relics. Try search by name/set/main stat, slot and locked-item filters, selection, and the scanner guide. Keluar demo shows the equipment-oriented empty workspace; Jelajahi demo restores the example. Demo selection and filters reset on reload; demo items are not saved as a personal inventory.
+
+Full inventory import, build comparison, optimization, and the speed timeline are planned and are not usable yet. The design direction is documented in [DESIGN.md](DESIGN.md); the implementation is ready for the owner's visual review. See [browser verification](docs/VERIFICATION.md) and [asset sources/notices](docs/ASSETS.md).
 
 See the [implementation plan](docs/IMPLEMENTATION_PLAN.md) for feature acceptance criteria and the [resume checkpoint](docs/SESSION_STATE.md) for the latest verified work.
 
@@ -90,7 +92,7 @@ Use npm.cmd in Windows PowerShell when script execution policy blocks npm.ps1. A
 
 ### Implemented foundation
 
-Orbit is currently a client-side React application served by Vite. There is no application backend, account system, or inventory database yet.
+Orbit is a client-side React application served by Vite. React holds transient demo filters and selected-item identity; the filtered list is derived during rendering. Native dialogs provide scanner guidance and item details on smaller screens. There is no application backend, account system, or inventory database yet.
 
 ```mermaid
 flowchart LR
@@ -98,6 +100,7 @@ flowchart LR
     React --> Theme["Theme selection"]
     Theme --> Storage["Browser localStorage"]
     React --> Styles["Shared light/dark CSS tokens"]
+    React --> Demo["Synthetic equipment fixtures + local artwork"]
 ```
 
 The current source layout is:
@@ -107,10 +110,13 @@ orbit/
 ├── src/
 │   ├── main.tsx              React entry point
 │   └── app/
-│       ├── App.tsx           Application shell and theme interaction
+│       ├── App.tsx           Shell, demo filters/selection, native dialogs
+│       ├── Equipment.tsx     Relic cards, detail, image fallback
+│       ├── demo.ts           Explicitly synthetic item fixtures and slot types
 │       ├── theme.ts          Theme selection and preference persistence
 │       ├── styles.css        Shared styles and light/dark theme tokens
-│       └── App.test.tsx      Theme-persistence component test
+│       └── App.test.tsx      Theme, filtering, selection, empty and image-error flows
+├── public/assets/hsr/        Pinned game artwork/icons and upstream license
 ├── docs/                     Product contracts, architecture, planning, checkpoints
 ├── .agents/skills/           Pinned project skills and HSR integrity guidance
 ├── AGENTS.md                 Repository operating instructions
@@ -123,6 +129,8 @@ orbit/
 ```
 
 The theme is stored under the versioned localStorage key orbit:theme:v1. If no saved choice exists, Orbit follows the browser's system preference. Changing hostname, port, or browser profile changes the storage origin; clearing browser data removes the saved preference.
+
+Artwork is bundled locally, with attribution and the upstream license recorded in [ASSETS.md](docs/ASSETS.md). No external font or image CDN is required at runtime.
 
 ### Planned feature architecture
 

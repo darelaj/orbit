@@ -1,3 +1,4 @@
+import InventoryWorkspace from '../features/inventory/InventoryWorkspace';
 import { useLayoutEffect, useRef, useState } from 'react';
 import { initialTheme, persistTheme } from './theme';
 import { demoRelics, slots, type DemoRelic, type Slot } from './demo';
@@ -8,6 +9,7 @@ export default function App() {
   const [theme, setTheme] = useState(initialTheme);
   const [themeStored, setThemeStored] = useState(true);
   const [demo, setDemo] = useState(true);
+  const [hasInventory, setHasInventory] = useState(false);
   const [slot, setSlot] = useState<Slot | 'all'>('all');
   const [query, setQuery] = useState('');
   const [lockFilter, setLockFilter] = useState<LockFilter>('all');
@@ -50,7 +52,8 @@ export default function App() {
     </header>
     <main id="main" tabIndex={-1}>
       {!themeStored ? <p className="notice" role="status">Theme changed for this session. Your browser could not save the preference.</p> : null}
-      <div className="page-heading" id="inventory"><div><p className="eyebrow">Honkai: Star Rail / Relic workspace</p><h1>{demo ? 'Relic workspace' : 'Your inventory is empty'}</h1></div><div className="page-actions">{demo ? <span className="demo-label">Demo · 8 synthetic relics</span> : null}<button className={demo ? 'quiet-button' : 'primary'} onClick={toggleDemo}>{demo ? 'Exit demo' : 'Open demo'}</button></div></div>
+      <div className="page-heading" id="inventory"><div><p className="eyebrow">Honkai: Star Rail / Relic workspace</p><h1>{demo || hasInventory ? 'Relic workspace' : 'Your inventory is empty'}</h1></div><div className="page-actions">{demo ? <span className="demo-label">Demo · 8 synthetic relics</span> : null}<button className={demo ? 'quiet-button' : 'primary'} onClick={toggleDemo}>{demo ? 'Exit demo' : 'Open demo'}</button></div></div>
+      <InventoryWorkspace visible={!demo} onInventory={() => { setHasInventory(true); setDemo(false); }} />
       {demo ? <div className="equipment-workspace">
         <div className="collection-workspace">
           <CharacterEquipment selectedId={selectedId} onSelect={selectRelic} />
@@ -62,10 +65,10 @@ export default function App() {
           </section>
         </div>
         <aside className="detail-panel" aria-label="Selected relic"><RelicDetails relic={selected} position={selectedPosition} /></aside>
-      </div> : <div className="empty-workspace">
-        <section className="empty-demo" aria-labelledby="empty-heading"><div className="empty-art" aria-hidden="true">{['117_0.png','117_2.png','117_3.png'].map(file => <GameImage key={file} file={file} alt="" />)}</div><h2 id="empty-heading">Start with the demo</h2><p>Explore Acheron's equipment with eight synthetic relics. The demo is not connected to a game account.</p><button className="primary" onClick={toggleDemo}>Explore demo</button><p className="fineprint">JSON import is not available yet.</p></section>
+      </div> : !hasInventory ? <div className="empty-workspace">
+        <section className="empty-demo" aria-labelledby="empty-heading"><div className="empty-art" aria-hidden="true">{['117_0.png','117_2.png','117_3.png'].map(file => <GameImage key={file} file={file} alt="" />)}</div><h2 id="empty-heading">Start with the demo</h2><p>Explore Acheron's equipment with eight synthetic relics. The demo is not connected to a game account.</p><button className="primary" onClick={toggleDemo}>Explore demo</button><p className="fineprint">Import a scanner JSON above to open your own inventory.</p></section>
         <section className="preparation-panel" aria-label="Prepare your inventory"><ScannerGuide /></section>
-      </div>}
+      </div> : null}
     </main>
     <footer className="app-footer"><span>Orbit / Local relic workspace</span><div><a href="https://github.com/darelaj/orbit" target="_blank" rel="noreferrer">Source Orbit</a><a href="https://github.com/darelaj/orbit/blob/main/docs/ASSETS.md" target="_blank" rel="noreferrer">Asset &amp; font credits</a></div></footer>
     <dialog ref={guide} className="guide-dialog" aria-labelledby="guide-heading"><div className="dialog-header"><h2 id="guide-heading">Scanner guide</h2><button onClick={() => guide.current?.close()} aria-label="Close guide">Close</button></div><ScannerGuide /></dialog>

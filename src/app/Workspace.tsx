@@ -43,7 +43,7 @@ export function ScannerGuide() {
     <h2>From scanner to local file</h2>
     <p>For your full inventory, including stored relics, export a JSON file using a PC scanner. An Enka UID only provides public showcase data.</p>
     <div className="scanner-links"><a href="https://github.com/IceDynamix/reliquary-archiver" target="_blank" rel="noreferrer"><strong>Reliquary Archiver</strong><span>Inventory export instructions</span></a><a href="https://github.com/kel-z/HSR-Scanner" target="_blank" rel="noreferrer"><strong>Kel-Z HSR Scanner</strong><span>PC scanner instructions</span></a></div>
-    <p className="guide-limitation">JSON import is in development. You can currently use the demo to explore the collection, filters, and relic details.</p>
+    <p className="guide-limitation">Import a schema 4 Reliquary Archiver or Kel-Z JSON file using the inventory file picker. Review the count before replacing your inventory. Files stay in this browser; download a backup before clearing browser data.</p>
     <p className="fineprint">OCR exports do not include hidden SPD decimals. Build comparison, optimization, and speed tuning are not available yet.</p>
   </div>;
 }

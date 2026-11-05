@@ -72,6 +72,7 @@ export function calculateBuild(profile: BuildProfile, loadout: Loadout) {
   const totals={...additions};
   for (const key of ['HP','ATK','DEF'] as const) totals[key]=(profile.base[key]+profile.cone[key])*(1+additions[`${key}_`]/100)+additions[key];
   totals.SPD=profile.base.SPD*(1+additions.SPD_/100)+additions.SPD;
+  if(Object.values(totals).some(value=>!Number.isFinite(value)))throw new Error('Calculated stat overflow. Check imported values and profile.');
   if (totals.SPD<=0) throw new Error('Calculated SPD must remain above zero.');
   if (totals.HP<0 || totals.ATK<0 || totals.DEF<0) throw new Error('Calculated HP, ATK and DEF cannot be negative.');
   return {totals,activeSets,warnings};

@@ -1,6 +1,6 @@
 # Implementation plan
 
-Each task has a branch and at least one focused commit. Update status only after its acceptance criteria and checks have actually passed. Implementation runs sequentially; no agent delegation has been requested.
+Each task has a branch and at least one focused commit. Integrate through a PR, verify the successful merge, then delete the source branch remotely and locally. For stacked branches, merge dependencies first. Update status only after its acceptance criteria and checks have actually passed. Implementation runs sequentially; no agent delegation has been requested.
 
 | ID | Branch | Status | Depends on | Deliverable and verification |
 | --- | --- | --- | --- | --- |

@@ -1,6 +1,6 @@
 # Resume checkpoint
 
-Updated: 2026-11-05, Asia/Jakarta.
+Integration checkpoint for PR #3, recorded after PR #1 and PR #2 were successfully merged. On resume, verify PR #3 and current refs before acting on the branch state below.
 
 ## Owner instructions
 
@@ -11,7 +11,8 @@ Updated: 2026-11-05, Asia/Jakarta.
 - Antislop mode for this session: DURING, explicitly selected by the owner.
 - Ship both light and dark modes, explicitly requested by the owner.
 - The owner rejected the plain analytical UI and selected HSR character/relic inspiration, balanced density, prominent real character/splash art, top navigation, a wide work area, side details, and subtle panel/selection motion. The answers are incorporated into DESIGN.md. Palette/type are labeled proposals because those questions were not answered.
-- Create a new branch per feature; commit per task.
+- Create a new branch per feature; commit per task; integrate through PRs. After successful merge and ancestry verification, delete the source branch remotely and locally. This supersedes the earlier branch-retention rule.
+- Update AGENTS.md when working rules or project decisions change; routine progress belongs in this checkpoint.
 - Keep enough documentation to continue correctly after context/token exhaustion.
 
 ## Repository and files
@@ -19,7 +20,8 @@ Updated: 2026-11-05, Asia/Jakarta.
 - Checkout: `D:\Kuliah\Oprekan\Enka smth\orbit`.
 - Remote: `origin = https://github.com/darelaj/orbit.git`.
 - Initial clone was empty. Git author identity is already configured; do not replace it.
-- Current work branch: `docs/agent-operating-guide`, branched from design checkpoint `90ebecc`. It includes framework commit `e2ab362` and design brief `e5c48b6`. Main remains at documentation merge `e7d6e1d`; framework/design work is pushed on separate branches and not integrated into main.
+- Integration source: `docs/agent-operating-guide`, branched from `90ebecc`. It includes the framework, design brief, expanded guide, and the owner's corrected PR/branch-cleanup workflow. [PR #3](https://github.com/darelaj/orbit/pull/3) is its integration record; after it is merged, continue from synchronized `main`, not a deleted source branch.
+- Remote main already includes PR #1 (`3af03bd11b9c1081936055950776da0d66e2a442`) and PR #2 (`5ccdb573690d355f5a9c70885499ea8800640453`). Local main needs synchronization after the integration sequence.
 - Four upstream antislop skills have been installed under `.agents/skills` at commit `9504989f162a92b1996853eccbb3d8a86e73df68`.
 - Karpathy and React skills are installed at pins in SKILLS.md. The local HSR integrity skill is present. All seven passed the official validator.
 - `../relic-lab` contains the unfinished earlier plain JS prototype. Preserve it; do not ship it. It includes an untested engine and a game-data snapshot, but no app.js, no tests, and no completed UI.
@@ -36,15 +38,16 @@ Updated: 2026-11-05, Asia/Jakarta.
 - O-03 checks passed: `npm.cmd run typecheck`, `npm.cmd test` (1 theme persistence test), and `npm.cmd run build`. The app currently contains the framework shell and theme toggle, not inventory features.
 - Browser smoke verified the shell at a 703px-wide viewport: dark theme rendered, clicking the theme toggle rendered light theme. This is functional evidence only; the owner did not approve its visual direction.
 - O-01a documentation verification passed: all 11 referenced project documents, 7 skill entrypoints, and 6 documented npm scripts exist; `git diff --check -- AGENTS.md docs/SESSION_STATE.md docs/IMPLEMENTATION_PLAN.md` passed. No application tests/build were rerun because this task changes documentation only.
+- Before the PR sequence, the combined framework was checked again: `npm.cmd run typecheck`, `npm.cmd test` (1 passing test), and `npm.cmd run build` all succeeded. PR #1's GitHub check/status lists were empty; no CI success was inferred from that absence.
 - Vite dev server is running at `http://127.0.0.1:4173/` in exec session `90637`. Reuse it while valid; check readiness before starting another process on the same port.
 - Earlier research successfully queried Enka HSR: HTTP 200 with 8 showcased characters and 6 equipped relics on the first character. This is not a full inventory method.
 
 ## Next actions
 
-1. The owner's latest task is documentation only: expand AGENTS.md. This branch changes agent instructions and continuation docs, not application behavior.
-2. Before implementing another feature, read the expanded AGENTS.md and revised DESIGN.md. The deep design interview is complete; palette/type remain explicitly proposed choices.
-3. When UI development resumes, create `feat/hsr-visual-direction` from a base containing the latest framework/design/agent work and implement the equipment-oriented layout with both themes and asset provenance. The browser's old shell is not approved visual design.
-4. Continue O-04 and later tasks in plan order when requested. Integrate checked branches without deleting their refs, then push and verify. Existing framework/design/documentation branches form a stack above `e7d6e1d`.
+1. Check PR #3. If open, finish its existing integration; do not create a duplicate PR. If merged, fetch origin and fast-forward local main.
+2. Verify the task branch tips are ancestors of updated main, then delete their remote and local source branches if still present. Never force-delete an unmerged branch or delete main. The older foundation/documentation branches are already integrated and can be cleaned up by the same ancestry check.
+3. Before another feature, read AGENTS.md and DESIGN.md. When UI development resumes, branch `feat/hsr-visual-direction` from synchronized main. The browser's old shell is not approved visual design; both themes and asset provenance remain required.
+4. Continue O-04 and later tasks in plan order when requested. Use focused PRs and remove source branches after verified successful merges.
 
 ## Technical cautions discovered in the prototype
 
@@ -58,13 +61,13 @@ Updated: 2026-11-05, Asia/Jakarta.
 
 | Branch | Commit | Result | Integration |
 | --- | --- | --- | --- |
-| `chore/agent-guidance` | `a1647a8` | Agent routing, 7 validated skills, source pins, notices, ignore rules | Main and feature branch pushed and verified |
-| `docs/project-plan` | `ba87730` | Product/design/architecture/import/math/testing/research docs and resume plan | Merged into main as `e7d6e1d`; pushed and verified |
-| `feat/react-workspace` | `e2ab362` | Framework shell, exact dependency versions, theme persistence, run scripts | Typecheck, 1 test, build, two-theme browser smoke passed; visual direction rejected; pushed, not integrated |
-| `docs/design-direction` | `e5c48b6` | Owner interview recorded; DESIGN.md rewritten for HSR equipment, artwork, top navigation, side details, and motion | Project-owned whitespace check passed; pushed, not integrated |
-| `docs/agent-operating-guide` | Resolve this branch's HEAD | Expanded AGENTS.md: resume protocol, source-of-truth map, Git/dependency workflow, domain invariants, design rules, scoped verification, handoff | Document/skill/script reference and scoped whitespace checks passed; verify remote ref on resume; not integrated |
+| `chore/agent-guidance` | `a1647a8` | Agent routing, 7 validated skills, source pins, notices, ignore rules | Already in main; source ref is eligible for verified cleanup |
+| `docs/project-plan` | `ba87730` | Product/design/architecture/import/math/testing/research docs and resume plan | Merged as `e7d6e1d`; source ref is eligible for verified cleanup |
+| `feat/react-workspace` | `e2ab362` | Framework shell and theme persistence | [PR #1](https://github.com/darelaj/orbit/pull/1) merged as `3af03bd`; technical baseline only, not accepted visual design |
+| `docs/design-direction` | `e5c48b6`, `90ebecc` | HSR equipment design brief and checkpoint | [PR #2](https://github.com/darelaj/orbit/pull/2) merged as `5ccdb57`; redesigned UI remains unimplemented |
+| `docs/agent-operating-guide` | `41b648a` and its workflow/checkpoint follow-up | Expanded guide, current commands, PR and cleanup workflow | [PR #3](https://github.com/darelaj/orbit/pull/3); check its merged state and main ancestry on resume |
 
-Remote heads for main and the first two task branches were confirmed with `git ls-remote --heads origin`. Retain feature branches after integration. Record a push only after confirming the remote refs.
+PR records and commits remain the integration history after source branch deletion. Confirm local/remote refs rather than trying to restore an intentionally removed task branch. Record pushes and merges only after verified success.
 
 ## Current blockers
 

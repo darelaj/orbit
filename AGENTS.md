@@ -4,7 +4,7 @@
 
 Orbit is a local Honkai: Star Rail web application for a PC player. Its intended workflows are complete relic inventory inspection, six-slot build comparison, relic optimization, and action-value speed tuning.
 
-The owner requires React + TypeScript + Vite, working light and dark themes, a new branch per feature, focused commits per task, and documentation that survives context loss. Full inventory comes from scanner exports. Enka UID lookup only supplies public showcase data.
+The owner requires React + TypeScript + Vite, working light and dark themes, a new branch per feature, focused commits per task, pull requests for integration, and documentation that survives context loss. After a PR is successfully merged and verified, delete its source branch remotely and locally. Full inventory comes from scanner exports. Enka UID lookup only supplies public showcase data.
 
 Implement the task requested in the current conversation. Keep unfinished project work in the plan; a documentation request does not authorize unrelated UI or calculation changes. Do not treat a planned feature as implemented.
 
@@ -32,7 +32,7 @@ Use this map instead of duplicating full specifications here:
 
 Current owner instructions take precedence over older project decisions. The source code establishes what exists; the plan establishes what remains. If a document and code disagree, investigate and correct the affected document or implementation within the task's scope. Do not silently choose whichever interpretation is easier.
 
-Keep volatile commit hashes, process/session IDs, test counts, and task status in SESSION_STATE.md, not in this operating guide. Inspect package.json and the lockfile for current dependency versions.
+Keep volatile commit hashes, process/session IDs, test counts, and task status in SESSION_STATE.md, not in this operating guide. Inspect package.json and the lockfile for current dependency versions. Update this guide when working rules, scope, architecture, verification requirements, or accepted owner decisions change; use the checkpoint for routine progress instead of rewriting AGENTS.md every task.
 
 ## Starting or resuming work
 
@@ -78,8 +78,9 @@ Repository remote: https://github.com/darelaj/orbit.git.
 - Make focused commits per completed task. Keep a design change, importer behavior, and a search algorithm in separate reviewable commits.
 - Stage explicit task files and inspect git diff --cached and the staged file list. Never include personal exports, tokens, packet captures, node_modules, dist, local caches, or unrelated changes.
 - Run checks appropriate to the change before committing. A command must succeed; the final command's exit status does not erase an earlier failure.
-- Preserve existing author identity and published history. Do not force-push, amend published commits, delete task branches, or run destructive Git cleanup.
-- Integrate completed branches only after their documented checks pass. Keep the feature branch available. Do not assume a branch was integrated because it was pushed.
+- Preserve existing author identity and published history. Do not force-push, amend published commits, or run destructive Git cleanup. Branch deletion is allowed after the successful-merge checks below.
+- Integrate completed features through a pull request after their documented checks pass. For stacked branches, merge dependencies first so each PR describes its actual remaining diff. Preserve focused task commits with a merge commit unless the owner selects another strategy.
+- Verify the PR is merged and the intended head commit is included in the updated main branch, then delete that PR's source branch both remotely and locally. Switch away before deleting the current branch. Never delete an unmerged branch, main, or unrelated work; do not use forced local deletion to bypass a failed ancestry check.
 - When pushing is in scope, verify the resulting remote ref against the intended local commit. Record failure or authentication/network limitations accurately; a local commit is not a successful push.
 
 Use the user's existing authorization for ordinary reversible task work. Ask for missing information only when it changes the result materially or an applicable instruction explicitly requires it. If a skill requires a pause or confirmation, identify its exact file and instruction; do not create additional approval flows from general caution.

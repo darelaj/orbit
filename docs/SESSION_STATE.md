@@ -10,7 +10,7 @@ Updated: 2026-11-05, Asia/Jakarta.
 - Install antislop and Karpathy skills, use them to rebuild the project, add relevant skills, and create AGENTS.md, docs, and planning.
 - Antislop mode for this session: DURING, explicitly selected by the owner.
 - Ship both light and dark modes, explicitly requested by the owner.
-- The owner rejected the initial plain analytical UI and selected an HSR-inspired direction: game atmosphere, visual relic panels, and more characterful typography. A deeper design interview is pending; do not continue UI styling until those answers are incorporated into DESIGN.md.
+- The owner rejected the plain analytical UI and selected HSR character/relic inspiration, balanced density, prominent real character/splash art, top navigation, a wide work area, side details, and subtle panel/selection motion. The answers are incorporated into DESIGN.md. Palette/type are labeled proposals because those questions were not answered.
 - Create a new branch per feature; commit per task.
 - Keep enough documentation to continue correctly after context/token exhaustion.
 
@@ -19,7 +19,7 @@ Updated: 2026-11-05, Asia/Jakarta.
 - Checkout: `D:\Kuliah\Oprekan\Enka smth\orbit`.
 - Remote: `origin = https://github.com/darelaj/orbit.git`.
 - Initial clone was empty. Git author identity is already configured; do not replace it.
-- Current work branch: `feat/react-workspace`. Main includes documentation merge `e7d6e1d` and foundation commit `a1647a8`.
+- Current work branch: `docs/design-direction`, based on framework commit `e2ab362`. Main includes documentation merge `e7d6e1d` and foundation commit `a1647a8`. Framework/design branches are not yet pushed or integrated.
 - Four upstream antislop skills have been installed under `.agents/skills` at commit `9504989f162a92b1996853eccbb3d8a86e73df68`.
 - Karpathy and React skills are installed at pins in SKILLS.md. The local HSR integrity skill is present. All seven passed the official validator.
 - `../relic-lab` contains the unfinished earlier plain JS prototype. Preserve it; do not ship it. It includes an untested engine and a game-data snapshot, but no app.js, no tests, and no completed UI.
@@ -40,10 +40,10 @@ Updated: 2026-11-05, Asia/Jakarta.
 
 ## Next actions
 
-1. Save the tested framework baseline on `feat/react-workspace`. Do not present its current visual design as approved.
-2. Create `docs/design-direction` and revise DESIGN.md after the owner's design-interview answers arrive. The interview asks about HSR screen inspiration, density, permission for game assets, workspace layout, palette/type, motion, and reference URLs.
-3. Implement the approved design direction on its own feature branch, retaining both themes.
-4. Continue O-04 and subsequent tasks in plan order. Keep domain correctness and feature work separate from design approval.
+1. Review and commit the revised DESIGN.md on `docs/design-direction`, keeping accepted choices separate from palette/type proposals.
+2. Push the framework and design-document branches. The old technical shell is not approved visual design.
+3. Implement the equipment-oriented direction on `feat/hsr-visual-direction`, with two themes and asset provenance.
+4. Continue O-04 and subsequent tasks in plan order. Keep domain correctness and feature work separate from design changes.
 
 ## Technical cautions discovered in the prototype
 
@@ -59,10 +59,11 @@ Updated: 2026-11-05, Asia/Jakarta.
 | --- | --- | --- | --- |
 | `chore/agent-guidance` | `a1647a8` | Agent routing, 7 validated skills, source pins, notices, ignore rules | Main and feature branch pushed and verified |
 | `docs/project-plan` | `ba87730` | Product/design/architecture/import/math/testing/research docs and resume plan | Merged into main as `e7d6e1d`; pushed and verified |
-| `feat/react-workspace` | Pending | Framework shell, exact dependency versions, working theme persistence, run scripts | Typecheck, 1 test, production build, two-theme browser smoke passed; visual direction rejected and being revised |
+| `feat/react-workspace` | `e2ab362` | Framework shell, exact dependency versions, theme persistence, run scripts | Typecheck, 1 test, build, two-theme browser smoke passed; visual direction rejected; not pushed/integrated yet |
+| `docs/design-direction` | Pending | Owner interview recorded; DESIGN.md rewritten for HSR equipment, artwork, top navigation, side details, and motion | Documentation review pending |
 
 Remote heads for main and the first two task branches were confirmed with `git ls-remote --heads origin`. Retain feature branches after integration. Record a push only after confirming the remote refs.
 
 ## Current blockers
 
-UI design is waiting for the deeper design-interview answers. The owner chose HSR inspiration and both themes; do not repeat those questions. No personal export is available for account-specific acceptance testing. This does not block domain parsing/math development with schema-derived synthetic fixtures.
+No required design answer blocks work. Palette/type and reference URLs were not supplied; DESIGN.md labels proposed choices clearly. Do not repeat answered design questions. No personal export is available for account-specific acceptance testing; schema-derived synthetic fixtures remain usable.

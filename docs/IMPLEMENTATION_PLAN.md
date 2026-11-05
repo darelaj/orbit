@@ -6,8 +6,8 @@ Each task has a branch and at least one focused commit. Update status only after
 | --- | --- | --- | --- | --- |
 | O-01 | `chore/agent-guidance` | Complete | none | AGENTS.md, pinned upstream skills, HSR integrity skill, provenance and skill validation |
 | O-02 | `docs/project-plan` | Complete | O-01 | Product scope, design for both themes, architecture, import contract, formula scope, testing plan, resume checkpoint |
-| O-03 | `feat/react-workspace` | In progress | O-02 | React/TypeScript/Vite, typecheck/test/build scripts, local run instructions, theme persistence, working navigation shell |
-| O-03a | `docs/design-direction`, then `feat/hsr-visual-direction` | Design interview pending | O-03 | Replace the rejected plain analytical visual direction with the owner's HSR-inspired reference, asset, density, layout, palette, and motion choices; preserve both themes |
+| O-03 | `feat/react-workspace` | Complete technical baseline | O-02 | React/TypeScript/Vite and working two-theme shell; visual direction rejected, see O-03a |
+| O-03a | `docs/design-direction`, then `feat/hsr-visual-direction` | Brief rewritten; UI pending | O-03 | HSR character/relic inspiration, balanced density, prominent splash art, top navigation, side details, subtle motion, both themes |
 | O-04 | `feat/inventory-import` | Not started | O-03 | Atomic validated scanner JSON import, all relics, local persistence, backup, inventory filters, explicit empty/error/loading/demo states |
 | O-05 | `feat/build-comparison` | Not started | O-04 | Same-character A/B six-slot loadouts, documented stat calculation, manual corrections, set information, saved local builds, measured deltas |
 | O-06 | `feat/relic-optimizer` | Not started | O-05 | Worker search, objective/constraints, cancellation, exact-vs-heuristic disclosure, result comparison, bounded resource use |

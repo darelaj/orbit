@@ -24,7 +24,7 @@ Use the repository copies under `.agents/skills`; provenance belongs in `docs/SK
 - React implementation/performance: read `react-best-practices/SKILL.md`; load applicable rule references, not every rule. Server-rendering rules do not apply to this local client application.
 - Inventory, formulas, optimization, timeline: read `hsr-calculation-integrity/SKILL.md`.
 
-The owner selected antislop DURING for the original build session. A future session follows the skill's mode-resolution rules; this historical choice is not a global preference. Both light and dark themes were explicitly requested. Use the text name Orbit; no custom logo or character art has been approved.
+The owner selected antislop DURING for the original build session. A future session follows the skill's mode-resolution rules; this historical choice is not a global preference. Both themes are required. The owner rejected the plain analytical UI and approved HSR character/relic inspiration, balanced density, prominent real character/splash artwork, top navigation, wide workspace, side details, and subtle panel motion. Use the text name Orbit; no custom logo has been approved. Read the revised DESIGN.md before UI work.
 
 ## Git workflow
 

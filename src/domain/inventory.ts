@@ -9,6 +9,8 @@ export type InventoryRelic = {
 export type Inventory = {
   source: 'reliquary_archiver' | 'HSR-Scanner'; version: 4;
   precision: 'packet' | 'ocr'; relics: InventoryRelic[];
+  importedAt: string; characters: { id: string; name: string }[];
+  lightCones: { id: string; name: string; uid: string; location: string }[];
 };
 export const MAX_BYTES = 20 * 1024 * 1024;
 export const MAX_RELICS = 10000;
@@ -52,9 +54,14 @@ export function parseInventory(text: string): Inventory {
   let raw: unknown;
   try { raw = JSON.parse(text); } catch { return fail('File', 'invalid JSON'); }
   let root = record(raw, 'File');
+  let importedAt = new Date().toISOString();
   if (root.event === 'InitialScan') root = record(root.data, 'data');
   if (root.format === 'orbit-inventory') {
     if (root.schemaVersion !== 1) return fail('Backup', 'unsupported schema version');
+    if (root.importedAt !== undefined) {
+      importedAt = string(root.importedAt, 'importedAt');
+      if (!Number.isFinite(Date.parse(importedAt))) return fail('importedAt', 'invalid date');
+    }
     root = record(root.scanner, 'scanner');
   }
   if (root.source !== 'reliquary_archiver' && root.source !== 'HSR-Scanner') return fail('source', 'unsupported scanner');
@@ -72,16 +79,39 @@ export function parseInventory(text: string): Inventory {
     const rarity = integer(r.rarity, `${p}.rarity`, 2, 5);
     const mainStat = string(r.mainstat, `${p}.mainstat`);
     if (!mainKeys[validSlot].includes(mainStat)) return fail(`${p}.mainstat`, 'incompatible with slot');
+    const active = stats(r.substats, `${p}.substats`);
+    const mainKey = ['HP', 'ATK', 'DEF'].includes(mainStat) ? mainStat + (slot === 'Head' || slot === 'Hands' ? '' : '_') : mainStat === 'SPD' ? 'SPD' : mainStat + '_';
+    if (active.some(s => s.key === mainKey)) return fail(`${p}.substats`, 'active substat duplicates main stat');
     return { id, setId: string(r.set_id, `${p}.set_id`), setName: string(r.name, `${p}.name`), slot: validSlot,
       rarity, level: integer(r.level, `${p}.level`, 0, rarity * 3), mainStat,
-      substats: stats(r.substats, `${p}.substats`), preview: stats(r.preview_substats ?? [], `${p}.preview_substats`),
+      substats: active, preview: stats(r.preview_substats ?? [], `${p}.preview_substats`),
       reroll: stats(r.reroll_substats ?? [], `${p}.reroll_substats`), location: string(r.location, `${p}.location`, true),
       locked: boolean(r.lock, `${p}.lock`), discarded: boolean(r.discard, `${p}.discard`) };
   });
-  return { source: root.source, version: 4, precision: root.source === 'HSR-Scanner' ? 'ocr' : 'packet', relics };
+  function references(key: string) {
+    const values = root[key] ?? [];
+    if (!Array.isArray(values) || values.length > MAX_RELICS) return fail(key, 'expected at most 10,000 records');
+    const seen = new Set<string>();
+    return values.map((raw, i) => {
+      const p = `${key}[${i}]`; const r = record(raw, p);
+      const id = string(r.id, `${p}.id`); const name = string(r.name, `${p}.name`);
+      const uid = key === 'characters' ? id : string(r._uid, `${p}._uid`);
+      if (seen.has(uid)) return fail(p, 'duplicate reference ID');
+      seen.add(uid);
+      return { id, name, uid, location: key === 'characters' ? '' : string(r.location, `${p}.location`, true) };
+    });
+  }
+  return { source: root.source, version: 4, precision: root.source === 'HSR-Scanner' ? 'ocr' : 'packet', relics,
+    importedAt, characters: references('characters').map(({ id, name }) => ({ id, name })), lightCones: references('light_cones') };
+}
+export function referenceWarnings(inventory: Inventory): string[] {
+  const known = new Set(inventory.characters.map(c => c.id));
+  const missing = new Set([...inventory.relics, ...inventory.lightCones].map(r => r.location).filter(id => id && !known.has(id)));
+  return [...missing].map(id => `Character ${id} is missing from this export. Owner ID retained; character stats are unavailable.`);
 }
 export function backupInventory(inventory: Inventory): string {
-  return JSON.stringify({ format: 'orbit-inventory', schemaVersion: 1, scanner: {
+  return JSON.stringify({ format: 'orbit-inventory', schemaVersion: 1, importedAt: inventory.importedAt, scanner: {
+    characters: inventory.characters, light_cones: inventory.lightCones.map(c => ({ id: c.id, name: c.name, _uid: c.uid, location: c.location })),
     source: inventory.source, version: inventory.version, relics: inventory.relics.map(r => ({
       _uid: r.id, set_id: r.setId, name: r.setName, slot: r.slot, rarity: r.rarity, level: r.level,
       mainstat: r.mainStat, substats: r.substats, preview_substats: r.preview, reroll_substats: r.reroll,

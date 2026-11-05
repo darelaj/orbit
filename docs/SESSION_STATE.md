@@ -1,6 +1,6 @@
 # Resume checkpoint
 
-Documentation checkpoint for the README task, 2026-11-06 (Asia/Jakarta). PR #1, #2, and #3 are merged and their source branches have been removed. On resume, verify the README task's integration status before recreating a branch or PR.
+Windows dependency recovery checkpoint, 2026-11-06 (Asia/Jakarta). PR #1 through #4 are merged and their source branches have been removed. On resume, verify this recovery task's integration status before recreating a branch or PR.
 
 ## Owner instructions
 
@@ -21,8 +21,8 @@ Documentation checkpoint for the README task, 2026-11-06 (Asia/Jakarta). PR #1, 
 - Checkout: `D:\Kuliah\Oprekan\Enka smth\orbit`.
 - Remote: `origin = https://github.com/darelaj/orbit.git`.
 - Initial clone was empty. Git author identity is already configured; do not replace it.
-- Current task branch: `docs/readme-architecture`, based on synchronized main at `6964b82cf0473bb7a31ab7a6c24c8796498fada6`. This task changes README.md, its maintenance instruction, architecture status, and continuation docs only.
-- Main includes [PR #1](https://github.com/darelaj/orbit/pull/1), [PR #2](https://github.com/darelaj/orbit/pull/2), and [PR #3](https://github.com/darelaj/orbit/pull/3). All five earlier task branches were verified as ancestors of main and deleted remotely and locally. Do not try to restore them.
+- Current task branch: `docs/windows-dependency-recovery`, based on synchronized main at `acc06c47bb9977dbde909fef36f6c877b98d54c6`. Recovery changes local dependencies only; tracked changes document Windows troubleshooting and this checkpoint.
+- Main includes [PR #1](https://github.com/darelaj/orbit/pull/1), [PR #2](https://github.com/darelaj/orbit/pull/2), [PR #3](https://github.com/darelaj/orbit/pull/3), and [PR #4](https://github.com/darelaj/orbit/pull/4). All six earlier task branches were verified as ancestors of main and deleted remotely and locally. Do not try to restore them.
 - Four upstream antislop skills have been installed under `.agents/skills` at commit `9504989f162a92b1996853eccbb3d8a86e73df68`.
 - Karpathy and React skills are installed at pins in SKILLS.md. The local HSR integrity skill is present. All seven passed the official validator.
 - `../relic-lab` contains the unfinished earlier plain JS prototype. Preserve it; do not ship it. It includes an untested engine and a game-data snapshot, but no app.js, no tests, and no completed UI.
@@ -41,12 +41,14 @@ Documentation checkpoint for the README task, 2026-11-06 (Asia/Jakarta). PR #1, 
 - O-01a documentation verification passed: all 11 referenced project documents, 7 skill entrypoints, and 6 documented npm scripts exist; `git diff --check -- AGENTS.md docs/SESSION_STATE.md docs/IMPLEMENTATION_PLAN.md` passed. No application tests/build were rerun because this task changes documentation only.
 - Before the PR sequence, the combined framework was checked again: `npm.cmd run typecheck`, `npm.cmd test` (1 passing test), and `npm.cmd run build` all succeeded. PR #1's GitHub check/status lists were empty; no CI success was inferred from that absence.
 - README task verification: relative documentation links, every documented npm script, runtime host/port/Node requirements, and the current source-tree entries were checked against local files. Scoped `git diff --check` passed. Application tests/build were not rerun for this documentation-only change.
-- Last recorded Vite dev server: `http://127.0.0.1:4173/`, exec session `90637`. Its current liveness is not part of the documentation-only checks; verify before reuse or starting another process on that port.
+- Windows recovery: the old Orbit Vite process was still listening on 127.0.0.1:4173 while npm ci failed to unlink the Rolldown native binding. The failed install also removed the local Vite launcher. Stopped the original exec session `90637` with Ctrl+C, then npm.cmd ci succeeded (88 packages added, audit reported 0 vulnerabilities). No package manifest or lockfile changes.
+- Recovery checks passed: npm.cmd run build (includes TypeScript checking), npm.cmd test (1 test), and npm.cmd run dev. HTTP requests to /, /src/main.tsx, and /@react-refresh each returned 200. This is a startup/dependency check, not a new visual acceptance review.
+- Verification server exec session `34877` was stopped with Ctrl+C after the requests. No Orbit dev server is intentionally left running; the owner can launch npm.cmd run dev from their terminal. Before a future npm ci, stop Orbit dev/preview/watch processes to release native file locks.
 - Earlier research successfully queried Enka HSR: HTTP 200 with 8 showcased characters and 6 equipped relics on the first character. This is not a full inventory method.
 
 ## Next actions
 
-1. Check whether `docs/readme-architecture` already has an open or merged PR. Finish its existing integration if needed; do not create a duplicate. After a successful merge, synchronize main, verify ancestry, and delete the source branch remotely and locally.
+1. Check whether `docs/windows-dependency-recovery` already has an open or merged PR. Finish its existing integration if needed; do not create a duplicate. After a successful merge, synchronize main, verify ancestry, and delete the source branch remotely and locally.
 2. The README now separates implemented shell/theme behavior from planned inventory/domain/worker/storage features. Preserve that distinction when adding features, and update README in the affected implementation task.
 3. Before another feature, read AGENTS.md and DESIGN.md. When UI work resumes, branch `feat/hsr-visual-direction` from synchronized main. The existing shell is not approved visual design; both themes and asset provenance remain required.
 4. Continue O-04 and later tasks when requested. Use focused PRs and remove source branches only after verified successful merges.
@@ -68,7 +70,8 @@ Documentation checkpoint for the README task, 2026-11-06 (Asia/Jakarta). PR #1, 
 | `feat/react-workspace` | `e2ab362` | Framework shell and theme persistence | [PR #1](https://github.com/darelaj/orbit/pull/1) merged as `3af03bd`; technical baseline only, not accepted visual design |
 | `docs/design-direction` | `e5c48b6`, `90ebecc` | HSR equipment design brief and checkpoint | [PR #2](https://github.com/darelaj/orbit/pull/2) merged as `5ccdb57`; redesigned UI remains unimplemented |
 | `docs/agent-operating-guide` | `41b648a`, `592a8af` | Expanded guide, current commands, PR and cleanup workflow | [PR #3](https://github.com/darelaj/orbit/pull/3) merged as `6964b82`; branch deleted remotely/locally |
-| `docs/readme-architecture` | Resolve this task's integration record | Setup/dev/build/preview instructions, current/planned architecture, README maintenance rule | Documentation-only task; verify its existing PR and branch refs on resume |
+| `docs/readme-architecture` | `fe9d523` | Setup/dev/build/preview instructions, current/planned architecture, README maintenance rule | [PR #4](https://github.com/darelaj/orbit/pull/4) merged as `acc06c4`; branch deleted remotely/locally |
+| `docs/windows-dependency-recovery` | Resolve this task's integration record | Restore local dependencies and document Windows recovery | Verify its existing PR and branch refs on resume |
 
 PR records and commits remain the integration history after source branch deletion. Confirm local/remote refs rather than trying to restore an intentionally removed task branch. Record pushes and merges only after verified success.
 

@@ -10,7 +10,7 @@ The React/TypeScript/Vite application follows the owner's Figma equipment design
 
 Without a saved personal inventory, the app opens with eight clearly labeled synthetic demo relics. Saved inventory restores from IndexedDB on reload. Search by name/set/main stat, filter by slot or locked/unlocked status, and sort by equipped-first or either slot direction. Equipment selection keeps the current filters; Show selected relic clears filters when the selected item is hidden. Reset filters restores the default collection/order. Exit demo opens the empty workspace; Open demo or Explore demo restores the example. Selection, filters, and sorting reset on reload; demo items are not saved as a personal inventory.
 
-Scanner inventory import and catalogue inspection are available (O-04). Manual-profile A/B build comparison is available (O-05). Optimization and the speed timeline are not usable yet. The design is documented in [DESIGN.md](DESIGN.md) and the [Figma handoff](docs/FIGMA_HANDOFF.md). See [browser verification](docs/VERIFICATION.md) and [asset sources/notices](docs/ASSETS.md).
+Scanner inventory import and catalogue inspection are available (O-04). Manual-profile A/B build comparison is available (O-05). Relic optimization is available (O-06); the speed timeline is not usable yet. The design is documented in [DESIGN.md](DESIGN.md) and the [Figma handoff](docs/FIGMA_HANDOFF.md). See [browser verification](docs/VERIFICATION.md) and [asset sources/notices](docs/ASSETS.md).
 
 See the [implementation plan](docs/IMPLEMENTATION_PLAN.md) for feature acceptance criteria and the [resume checkpoint](docs/SESSION_STATE.md) for the latest verified work.
 
@@ -29,6 +29,14 @@ Open **Comparison** in the top navigation. Import inventory first to choose real
 Use **Choose [slot]** and a candidate to edit B. A remains fixed until **Set A from B** or explicit reinitialization. **Reset B to A** restores the reference. The table aligns A, B and signed deltas; empty slots yield clearly marked partial totals. Static set properties are calculated from the pinned catalogue; descriptions also disclose conditional effects that are excluded. No damage/DPS simulation or automatic Trace/Eidolon/Light Cone passive model is provided.
 
 Save up to 20 named comparison snapshots locally. The same name replaces that saved pair. Snapshots retain the shared profile, both relic loadouts and precision across inventory imports; switching views keeps unsaved drafts during the session. Reload requires loading a named snapshot. **Download comparison backup** exports saved pairs, separately from inventory backups. Restore uses a validated preview and explicit replacement. Back up both files before clearing browser data. Comparison backups currently require the same catalogue pin; they fail visibly rather than silently recalculating against a different version.
+
+## Optimize relics
+
+Open **Optimizer**, then load a saved comparison profile or fill the shared manual profile. An imported inventory with at least one eligible relic in every slot is required. Choose ATK/HP/DEF/SPD/Break Effect or the explicitly labeled ATK/CRIT index (not DPS). Set an evaluation budget, optional inclusive SPD bounds, and candidate filters. Locked and equipped relics are included by default; discarded relics are excluded. Advanced controls include scanner-ID exclusions, main stat per slot and up to three minimum set-piece requirements.
+
+**Exact** enumerates the entire filtered pool only when it fits the budget; otherwise it rejects the run with the required count. **Limited sampling** evaluates evenly spaced mixed-radix combinations in scanner order, up to the budget. It can miss feasible/better builds and makes no global optimality claim. Reports show candidate counts, exact total combinations, evaluated/feasible/invalid counts, coverage and the best ten computable results. Invalid calculations have visible example reasons. No-result sampling does not prove infeasibility.
+
+**Cancel search** terminates the Worker. Input changes, inventory replacement, leaving the optimizer or unmounting invalidate its run/results; old messages cannot overwrite a new run. **Compare result N in B** transfers a snapshot to Comparison and keeps A fixed. Save the comparison explicitly to persist a result. Search settings/results themselves are session-only. Retained filters that are unavailable after import are labeled explicitly. Conditional combat effects remain excluded, and OCR SPD uncertainty still applies near thresholds.
 
 ## Requirements
 
@@ -155,15 +163,15 @@ The theme is stored under the versioned localStorage key orbit:theme:v1. If no s
 
 Artwork is bundled locally, with attribution and the upstream license recorded in [ASSETS.md](docs/ASSETS.md). No external font or image CDN is required at runtime.
 
-### Planned feature architecture
+### Feature architecture
 
 Inventory validation, its React view, and IndexedDB inventory storage are implemented. Remaining responsibilities in these layers are planned:
 
 | Layer | Responsibility |
 | --- | --- |
 | React feature views | Inventory filters/details, A/B loadouts, optimizer controls/results, team timeline |
-| Pure TypeScript domain modules | Implemented export validation/normalization; implemented manual-profile build calculations; planned optimizer legality checks and action-value math |
-| Module Web Worker | Bounded optimization with progress, cancellation, and stale-result protection |
+| Pure TypeScript domain modules | Implemented export validation/normalization; implemented manual-profile build calculations; implemented bounded optimizer; planned action-value math |
+| Module Web Worker | Implemented bounded optimization with progress, cancellation, and stale-result protection |
 | Versioned IndexedDB records | Implemented local inventory and comparison/profile snapshots; planned team configuration |
 | Game-data catalogue | Explicitly sourced/versioned constants with visible handling of unknown records |
 

@@ -1,6 +1,6 @@
 # Orbit design brief
 
-Status: O-03b implements the owner's Figma reference with the approved review revisions. The earlier O-03a layout is superseded. The synthetic demo remains separate from O-04a personal inventory import. Imported items use the same panel/grid/theme language with textual set/slot identification until O-04b supplies a sourced catalogue; no unrelated artwork is substituted. Calculation, comparison, optimization and timeline remain planned. See docs/FIGMA_HANDOFF.md for source frames/deviations and docs/VERIFICATION.md for executed checks.
+Status: O-03b implements the owner's Figma reference with the approved review revisions. The earlier O-03a layout is superseded. The synthetic demo remains separate from O-04a personal inventory import. Imported items use the same panel/grid/theme language with catalogue-derived main stats and sourced local set/slot icons; unknown sets keep textual identification; no unrelated artwork is substituted. Calculation, comparison, optimization and timeline remain planned. See docs/FIGMA_HANDOFF.md for source frames/deviations and docs/VERIFICATION.md for executed checks.
 
 ## Decisions from the owner
 

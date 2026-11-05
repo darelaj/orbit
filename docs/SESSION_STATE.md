@@ -1,3 +1,15 @@
+# Current O-04b checkpoint
+
+2026-11-06. Branch `feat/inventory-catalogue`, based on merged main `937dd6e03d7ba56976eb8db5366c6895c09de84c` (PR #9). PR #9 is merged and its source branch was deleted remotely/locally. Current task has incremental commits: `7983d86` pinned catalogue/icons + main-stat calculations; `38eb81b` reference metadata/validation; `9f23123` UI filters/details, large-data test and legacy timestamp compatibility; then this documentation checkpoint.
+
+O-04b delivered: 192 local catalogue icons, English relic names, rarity/slot/level main-stat derivation, character-name lookup from export, validated Light Cone references, missing-owner warnings, persisted import timestamp, set/main/rarity/min-level/owner filters, unlocked/kept filters, unknown-artwork fallback, and active/main stat compatibility validation. Source pin and units are in ASSETS.md/CALCULATIONS.md. No character-build math is implemented. Only ID/name/location reference fields are retained; future profiles need scanner reimport or explicit manual data. Legacy schema-1 backups without a timestamp remain readable with null time, never a fabricated import date.
+
+Checks: 17 tests in five files passed, typecheck and production build passed. A 10,000-item component test composes five filters, verifies count/page reset and at most 48 mounted cards. Browser verified actual local icons (48 loaded), catalogue main amount, rarity no-results/reset, desktop inspector, light mobile native dialog/Escape/focus return, no overflow at 1440x1000 dark and 390x844 light, and no observed error console entries. Timestamp-null follow-up is unit-tested/typechecked/built after browser QA; its legacy label was not separately walked through in the browser. Evidence: `.cache/catalogue-qa/desktop-dark.jpg`, `mobile-light.jpg`. Vite session `62981` stopped; viewport override reset. No personal-account export has been supplied; synthetic tests do not establish OCR accuracy or catalogue completeness for future game releases.
+
+Next: finish this branch's existing PR integration if needed, synchronize main and verify all task commits before deleting the source branch. Do not duplicate an existing PR. O-04 is implemented with synthetic acceptance; real-account acceptance is pending owner data. Next planned feature is O-05 on `feat/build-comparison`: read CALCULATIONS.md and IMPORT_FORMAT.md, define explicit manual/known character profiles, and preserve unsupported mechanics disclosures. Continue incremental commits per owner instruction. Do not infer missing character/Light Cone stats from the minimal reference records.
+
+## Historical checkpoints below
+
 # Resume checkpoint
 
 O-04a local scanner import, 2026-11-06. Current branch `feat/inventory-import`, base `b21b08c994f84606c287b7dd528c1b0637cf7617`. PR #8 (English UI) is merged and its branch deleted remotely/locally.

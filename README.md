@@ -10,7 +10,7 @@ The React/TypeScript/Vite application follows the owner's Figma equipment design
 
 Without a saved personal inventory, the app opens with eight clearly labeled synthetic demo relics. Saved inventory restores from IndexedDB on reload. Search by name/set/main stat, filter by slot or locked/unlocked status, and sort by equipped-first or either slot direction. Equipment selection keeps the current filters; Show selected relic clears filters when the selected item is hidden. Reset filters restores the default collection/order. Exit demo opens the empty workspace; Open demo or Explore demo restores the example. Selection, filters, and sorting reset on reload; demo items are not saved as a personal inventory.
 
-Scanner inventory import is available as the first O-04 milestone. Build comparison, optimization, and the speed timeline are not usable yet. The design is documented in [DESIGN.md](DESIGN.md) and the [Figma handoff](docs/FIGMA_HANDOFF.md). See [browser verification](docs/VERIFICATION.md) and [asset sources/notices](docs/ASSETS.md).
+Scanner inventory import and catalogue inspection are available (O-04). Build comparison, optimization, and the speed timeline are not usable yet. The design is documented in [DESIGN.md](DESIGN.md) and the [Figma handoff](docs/FIGMA_HANDOFF.md). See [browser verification](docs/VERIFICATION.md) and [asset sources/notices](docs/ASSETS.md).
 
 See the [implementation plan](docs/IMPLEMENTATION_PLAN.md) for feature acceptance criteria and the [resume checkpoint](docs/SESSION_STATE.md) for the latest verified work.
 
@@ -18,7 +18,7 @@ See the [implementation plan](docs/IMPLEMENTATION_PLAN.md) for feature acceptanc
 
 Use **Import scanner JSON or Orbit backup** to choose a Reliquary Archiver or Kel-Z HSR Scanner export (source schema 4). Check the relic count, then choose **Replace inventory**. Cancel keeps your existing collection. Validation or storage errors also leave it unchanged. Limit: 20 MiB and 10,000 relics.
 
-Search by set, main stat, owner or scanner ID; filter slot and equipment/lock/discard status. The collection uses 48-item pages. Select an item to see active, preview and reroll substats separately. Source precision is shown: OCR cannot reveal hidden SPD decimals. Imported cards currently show set names and main-stat keys; catalogue artwork, main-stat amounts and character-name lookup remain planned in O-04b.
+Search by set, main stat, owner or scanner ID; filter slot and equipment/lock/discard status. The collection uses 48-item pages. Select an item to see active, preview and reroll substats separately. Source precision is shown: OCR cannot reveal hidden SPD decimals. Known set/slot combinations show local icons and item names. Main-stat amounts are derived from a pinned catalogue and labeled in details. Character names come from the export; missing references retain their IDs with warnings. Additional filters cover set, main stat, rarity, minimum level, and equipped character. Import time is preserved in backups; legacy backups show when that time is unavailable.
 
 Use **Download backup** before clearing browser data. Re-import that file through the same picker. Inventory stays in IndexedDB in this browser profile and origin; it is not synchronized to GitHub or another device. Demo selection never replaces your saved inventory. Only supported relic fields are retained, not the scanner's account/gacha/material data. No real-account export has been tested yet.
 

@@ -1,3 +1,11 @@
+# O-04b catalogue verification (current)
+
+Executed 2026-11-06: 17 tests across 5 files passed, typecheck and production build passed. Added numeric catalogue tests, reference validation/backup round-trip tests, legacy timestamp compatibility, and a 10,000-relic filter/pagination component test. The last metadata compatibility fix was covered by the final automated run; browser QA preceded it.
+
+Browser: restored existing synthetic schema-1 inventory, resolved 48 local images, displayed catalogue ATK 352.80 for a 5-star +15 Hands item, changed rarity to no results and reset, opened desktop inspector, then mobile dialog. Escape closed the dialog and returned focus to its relic card. No document overflow at 1440x1000 dark or 390x844 light. Error console query returned no entries. Screenshots in `.cache/catalogue-qa/desktop-dark.jpg` and `mobile-light.jpg`; temporary viewport reset and owned Vite session 62981 stopped. Missing-reference/unknown-catalogue and composed five-filter cases are automated rather than separately claimed as browser checks.
+
+Scoped antislop gate: established Figma palette/grid/inspector retained; actual sourced relic assets serve identity, no invented imagery; English labels show derived values and unavailable references; tested filter/reset/selection flows work. No broad contrast/accessibility certification, measured throughput benchmark, real-account validation, character build stats or combat simulation is claimed. Main catalogue numbers are intentionally displayed with their own decimal formatting, not game panel truncation. O-04 synthetic acceptance is complete; real scanner export acceptance remains pending.
+
 # O-04a import verification (current)
 
 Executed 2026-11-06. `npm.cmd run typecheck`, `npm.cmd test` (12 tests in 4 files), `npm.cmd run build` passed. Existing six demo tests remain passing. Added domain tests cover both scanner sources, separate preview/reroll values, precision-preserving backup round trips, invalid field paths, unsupported source/version/events, duplicate IDs, malformed JSON and limits. Storage test uses pinned dev-only fake-indexeddb and aborts a replacement transaction before asserting the prior inventory is still readable. UI tests cover preview/confirm/cancel, storage-failure retry, invalid-file retention, restoration and 48-item pagination.

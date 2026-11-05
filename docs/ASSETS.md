@@ -48,3 +48,7 @@ The Figma font families are bundled as original Latin-subset WOFF2 files. They w
 | ibm-plex-mono-latin-500.woff2 | https://fonts.gstatic.com/s/ibmplexmono/v20/-F6qfjptAgt5VM-kVkqdyU8n3twJwlBFgg.woff2 |
 
 All three families use SIL Open Font License 1.1. Copyright/license files are preserved beside the fonts as rajdhani-OFL.txt, inter-OFL.txt, and ibmplexmono-OFL.txt, from [google/fonts](https://github.com/google/fonts/tree/24ddc1f324cac5d9f5aedca126d298f56e3f1640/ofl) commit 24ddc1f324cac5d9f5aedca126d298f56e3f1640. The notices identify Indian Type Foundry, The Inter Project Authors, and IBM Corp. respectively. System fallbacks cover unsupported glyphs; this is not a claim of bundled multilingual font coverage.
+
+## O-04b inventory catalogue
+
+`scripts/fetch-catalogue.mjs` reproducibly retrieves data at the same pinned StarRailRes commit above. `src/data/relic-main-affixes.json` retains its main-affix groups; `src/data/relic-catalogue.json` projects English item names and icon filenames keyed by set ID and slot. The 192 distinct icons from `icon/relic/` are bundled under `public/assets/hsr/relic/`. The existing upstream license and HoYoverse attribution apply. No runtime remote asset requests are introduced. Unknown set/slot records remain importable with an explicit artwork fallback.

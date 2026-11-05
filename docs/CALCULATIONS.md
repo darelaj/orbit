@@ -63,3 +63,7 @@ required SPD = 10000 * N / (150 + 100 * (C - 1))
 ```
 
 For example, two actions by 150 AV require 133.333... SPD. Preserve the decimal instead of replacing the exact threshold with a rounded 134. OCR uncertainty matters near this boundary.
+
+## Implemented relic main-stat boundary (O-04b)
+
+`src/domain/catalogue.ts` uses StarRailRes commit `dbe8cdfcfb0bf657b9fe1cf92d5537f118ccb487`, `index_new/en/relic_main_affixes.json` (bundled locally). Affix group is rarity plus slot index. Value = base + level × step. Fractional percentage properties convert to percentage points once; Head HP, Hands ATK and Feet SPD stay flat. Unknown properties/groups return unavailable, never zero. Internal values remain unrounded; UI shows percentages to one decimal and flat catalogue values to two decimals, not the game's integer panel rounding. This is item data only, not an implemented character build calculation. Preview/reroll values do not enter this calculation. Independent numerical tests cover HP base/max, CRIT percentage, SPD, missing groups and unknown properties.

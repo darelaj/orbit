@@ -1,0 +1,770 @@
+{
+  "101:Head": {
+    "name": "Passerby's Rejuvenated Wooden Hairstick",
+    "icon": "101_0.png"
+  },
+  "101:Hands": {
+    "name": "Passerby's Roaming Dragon Bracer",
+    "icon": "101_1.png"
+  },
+  "101:Body": {
+    "name": "Passerby's Ragged Embroidered Coat",
+    "icon": "101_2.png"
+  },
+  "101:Feet": {
+    "name": "Passerby's Stygian Hiking Boots",
+    "icon": "101_3.png"
+  },
+  "102:Head": {
+    "name": "Musketeer's Wild Wheat Felt Hat",
+    "icon": "102_0.png"
+  },
+  "102:Hands": {
+    "name": "Musketeer's Coarse Leather Gloves",
+    "icon": "102_1.png"
+  },
+  "102:Body": {
+    "name": "Musketeer's Wind-Hunting Shawl",
+    "icon": "102_2.png"
+  },
+  "102:Feet": {
+    "name": "Musketeer's Rivets Riding Boots",
+    "icon": "102_3.png"
+  },
+  "103:Head": {
+    "name": "Knight's Forgiving Casque",
+    "icon": "103_0.png"
+  },
+  "103:Hands": {
+    "name": "Knight's Silent Oath Ring",
+    "icon": "103_1.png"
+  },
+  "103:Body": {
+    "name": "Knight's Solemn Breastplate",
+    "icon": "103_2.png"
+  },
+  "103:Feet": {
+    "name": "Knight's Iron Boots of Order",
+    "icon": "103_3.png"
+  },
+  "104:Head": {
+    "name": "Hunter's Artaius Hood",
+    "icon": "104_0.png"
+  },
+  "104:Hands": {
+    "name": "Hunter's Lizard Gloves",
+    "icon": "104_1.png"
+  },
+  "104:Body": {
+    "name": "Hunter's Ice Dragon Cloak",
+    "icon": "104_2.png"
+  },
+  "104:Feet": {
+    "name": "Hunter's Soft Elkskin Boots",
+    "icon": "104_3.png"
+  },
+  "105:Head": {
+    "name": "Champion's Headgear",
+    "icon": "105_0.png"
+  },
+  "105:Hands": {
+    "name": "Champion's Heavy Gloves",
+    "icon": "105_1.png"
+  },
+  "105:Body": {
+    "name": "Champion's Chest Guard",
+    "icon": "105_2.png"
+  },
+  "105:Feet": {
+    "name": "Champion's Fleetfoot Boots",
+    "icon": "105_3.png"
+  },
+  "106:Head": {
+    "name": "Guard's Cast Iron Helmet",
+    "icon": "106_0.png"
+  },
+  "106:Hands": {
+    "name": "Guard's Shining Gauntlets",
+    "icon": "106_1.png"
+  },
+  "106:Body": {
+    "name": "Guard's Uniform of Old",
+    "icon": "106_2.png"
+  },
+  "106:Feet": {
+    "name": "Guard's Silver Greaves",
+    "icon": "106_3.png"
+  },
+  "107:Head": {
+    "name": "Firesmith's Obsidian Goggles",
+    "icon": "107_0.png"
+  },
+  "107:Hands": {
+    "name": "Firesmith's Ring of Flame-Mastery",
+    "icon": "107_1.png"
+  },
+  "107:Body": {
+    "name": "Firesmith's Fireproof Apron",
+    "icon": "107_2.png"
+  },
+  "107:Feet": {
+    "name": "Firesmith's Alloy Leg",
+    "icon": "107_3.png"
+  },
+  "108:Head": {
+    "name": "Genius's Ultraremote Sensing Visor",
+    "icon": "108_0.png"
+  },
+  "108:Hands": {
+    "name": "Genius's Frequency Catcher",
+    "icon": "108_1.png"
+  },
+  "108:Body": {
+    "name": "Genius's Metafield Suit",
+    "icon": "108_2.png"
+  },
+  "108:Feet": {
+    "name": "Genius's Gravity Walker",
+    "icon": "108_3.png"
+  },
+  "109:Head": {
+    "name": "Band's Polarized Sunglasses",
+    "icon": "109_0.png"
+  },
+  "109:Hands": {
+    "name": "Band's Touring Bracelet",
+    "icon": "109_1.png"
+  },
+  "109:Body": {
+    "name": "Band's Leather Jacket With Studs",
+    "icon": "109_2.png"
+  },
+  "109:Feet": {
+    "name": "Band's Ankle Boots With Rivets",
+    "icon": "109_3.png"
+  },
+  "110:Head": {
+    "name": "Eagle's Beaked Helmet",
+    "icon": "110_0.png"
+  },
+  "110:Hands": {
+    "name": "Eagle's Soaring Ring",
+    "icon": "110_1.png"
+  },
+  "110:Body": {
+    "name": "Eagle's Winged Suit Harness",
+    "icon": "110_2.png"
+  },
+  "110:Feet": {
+    "name": "Eagle's Quilted Puttees",
+    "icon": "110_3.png"
+  },
+  "111:Head": {
+    "name": "Thief's Myriad-Faced Mask",
+    "icon": "111_0.png"
+  },
+  "111:Hands": {
+    "name": "Thief's Gloves With Prints",
+    "icon": "111_1.png"
+  },
+  "111:Body": {
+    "name": "Thief's Steel Grappling Hook",
+    "icon": "111_2.png"
+  },
+  "111:Feet": {
+    "name": "Thief's Meteor Boots",
+    "icon": "111_3.png"
+  },
+  "112:Head": {
+    "name": "Wastelander's Breathing Mask",
+    "icon": "112_0.png"
+  },
+  "112:Hands": {
+    "name": "Wastelander's Desert Terminal",
+    "icon": "112_1.png"
+  },
+  "112:Body": {
+    "name": "Wastelander's Friar Robe",
+    "icon": "112_2.png"
+  },
+  "112:Feet": {
+    "name": "Wastelander's Powered Greaves",
+    "icon": "112_3.png"
+  },
+  "113:Head": {
+    "name": "Disciple's Prosthetic Eye",
+    "icon": "113_0.png"
+  },
+  "113:Hands": {
+    "name": "Disciple's Ingenium Hand",
+    "icon": "113_1.png"
+  },
+  "113:Body": {
+    "name": "Disciple's Dewy Feather Garb",
+    "icon": "113_2.png"
+  },
+  "113:Feet": {
+    "name": "Disciple's Celestial Silk Sandals",
+    "icon": "113_3.png"
+  },
+  "114:Head": {
+    "name": "Messenger's Holovisor",
+    "icon": "114_0.png"
+  },
+  "114:Hands": {
+    "name": "Messenger's Transformative Arm",
+    "icon": "114_1.png"
+  },
+  "114:Body": {
+    "name": "Messenger's Secret Satchel",
+    "icon": "114_2.png"
+  },
+  "114:Feet": {
+    "name": "Messenger's Par-kool Sneakers",
+    "icon": "114_3.png"
+  },
+  "115:Head": {
+    "name": "Grand Duke's Crown of Netherflame",
+    "icon": "115_0.png"
+  },
+  "115:Hands": {
+    "name": "Grand Duke's Gloves of Fieryfur",
+    "icon": "115_1.png"
+  },
+  "115:Body": {
+    "name": "Grand Duke's Robe of Grace",
+    "icon": "115_2.png"
+  },
+  "115:Feet": {
+    "name": "Grand Duke's Ceremonial Boots",
+    "icon": "115_3.png"
+  },
+  "116:Head": {
+    "name": "Prisoner's Sealed Muzzle",
+    "icon": "116_0.png"
+  },
+  "116:Hands": {
+    "name": "Prisoner's Leadstone Shackles",
+    "icon": "116_1.png"
+  },
+  "116:Body": {
+    "name": "Prisoner's Repressive Straitjacket",
+    "icon": "116_2.png"
+  },
+  "116:Feet": {
+    "name": "Prisoner's Restrictive Fetters",
+    "icon": "116_3.png"
+  },
+  "117:Head": {
+    "name": "Pioneer's Heatproof Shell",
+    "icon": "117_0.png"
+  },
+  "117:Hands": {
+    "name": "Pioneer's Lacuna Compass",
+    "icon": "117_1.png"
+  },
+  "117:Body": {
+    "name": "Pioneer's Sealed Lead Apron",
+    "icon": "117_2.png"
+  },
+  "117:Feet": {
+    "name": "Pioneer's Starfaring Anchor",
+    "icon": "117_3.png"
+  },
+  "118:Head": {
+    "name": "Watchmaker's Telescoping Lens",
+    "icon": "118_0.png"
+  },
+  "118:Hands": {
+    "name": "Watchmaker's Fortuitous Wristwatch",
+    "icon": "118_1.png"
+  },
+  "118:Body": {
+    "name": "Watchmaker's Illusory Formal Suit",
+    "icon": "118_2.png"
+  },
+  "118:Feet": {
+    "name": "Watchmaker's Dream-Concealing Dress Shoes",
+    "icon": "118_3.png"
+  },
+  "119:Head": {
+    "name": "Iron Cavalry's Homing Helm",
+    "icon": "119_0.png"
+  },
+  "119:Hands": {
+    "name": "Iron Cavalry's Crushing Wristguard",
+    "icon": "119_1.png"
+  },
+  "119:Body": {
+    "name": "Iron Cavalry's Silvery Armor",
+    "icon": "119_2.png"
+  },
+  "119:Feet": {
+    "name": "Iron Cavalry's Skywalk Greaves",
+    "icon": "119_3.png"
+  },
+  "120:Head": {
+    "name": "Valorous Mask of Northern Skies",
+    "icon": "120_0.png"
+  },
+  "120:Hands": {
+    "name": "Valorous Bracelet of Grappling Hooks",
+    "icon": "120_1.png"
+  },
+  "120:Body": {
+    "name": "Valorous Plate of Soaring Flight",
+    "icon": "120_2.png"
+  },
+  "120:Feet": {
+    "name": "Valorous Greaves of Pursuing Hunt",
+    "icon": "120_3.png"
+  },
+  "121:Head": {
+    "name": "Sacerdos' Melodic Earrings",
+    "icon": "121_0.png"
+  },
+  "121:Hands": {
+    "name": "Sacerdos' Welcoming Gloves",
+    "icon": "121_1.png"
+  },
+  "121:Body": {
+    "name": "Sacerdos' Ceremonial Garb",
+    "icon": "121_2.png"
+  },
+  "121:Feet": {
+    "name": "Sacerdos' Arduous Boots",
+    "icon": "121_3.png"
+  },
+  "122:Head": {
+    "name": "Scholar's Silver-Rimmed Monocle",
+    "icon": "122_0.png"
+  },
+  "122:Hands": {
+    "name": "Scholar's Auxiliary Knuckle",
+    "icon": "122_1.png"
+  },
+  "122:Body": {
+    "name": "Scholar's Tweed Jacket",
+    "icon": "122_2.png"
+  },
+  "122:Feet": {
+    "name": "Scholar's Felt Snowboots",
+    "icon": "122_3.png"
+  },
+  "123:Head": {
+    "name": "Hero's Wreath of Championship",
+    "icon": "123_0.png"
+  },
+  "123:Hands": {
+    "name": "Hero's Gilded Bracers",
+    "icon": "123_1.png"
+  },
+  "123:Body": {
+    "name": "Hero's Gallant Golden Armor",
+    "icon": "123_2.png"
+  },
+  "123:Feet": {
+    "name": "Hero's Firechasing Shinguard",
+    "icon": "123_3.png"
+  },
+  "124:Head": {
+    "name": "Poet's Dill Wreath",
+    "icon": "124_0.png"
+  },
+  "124:Hands": {
+    "name": "Poet's Gilded Bracelet",
+    "icon": "124_1.png"
+  },
+  "124:Body": {
+    "name": "Poet's Star-Studded Skirt",
+    "icon": "124_2.png"
+  },
+  "124:Feet": {
+    "name": "Poet's Silver-Studded Shoes",
+    "icon": "124_3.png"
+  },
+  "125:Head": {
+    "name": "Warrior Goddess's Winged Helm",
+    "icon": "125_0.png"
+  },
+  "125:Hands": {
+    "name": "Warrior Goddess's Cavalry Gauntlets",
+    "icon": "125_1.png"
+  },
+  "125:Body": {
+    "name": "Warrior Goddess's Dawn Cape",
+    "icon": "125_2.png"
+  },
+  "125:Feet": {
+    "name": "Warrior Goddess's Honor Spurs",
+    "icon": "125_3.png"
+  },
+  "126:Head": {
+    "name": "Captain's Navigator Hat",
+    "icon": "126_0.png"
+  },
+  "126:Hands": {
+    "name": "Captain's Lightcatcher Astrolabe",
+    "icon": "126_1.png"
+  },
+  "126:Body": {
+    "name": "Captain's Wind Mantle",
+    "icon": "126_2.png"
+  },
+  "126:Feet": {
+    "name": "Captain's Tidal Boots",
+    "icon": "126_3.png"
+  },
+  "127:Head": {
+    "name": "Deliverer's Hood",
+    "icon": "127_0.png"
+  },
+  "127:Hands": {
+    "name": "Deliverer's Sword Gauntlet",
+    "icon": "127_1.png"
+  },
+  "127:Body": {
+    "name": "Deliverer's Robe of Legacy",
+    "icon": "127_2.png"
+  },
+  "127:Feet": {
+    "name": "Deliverer's Boots of Pioneering",
+    "icon": "127_3.png"
+  },
+  "128:Head": {
+    "name": "Recluse's Wide-Brimmed Fedora",
+    "icon": "128_0.png"
+  },
+  "128:Hands": {
+    "name": "Recluse's Refined Timepiece",
+    "icon": "128_1.png"
+  },
+  "128:Body": {
+    "name": "Recluse's Camel-Colored Coat",
+    "icon": "128_2.png"
+  },
+  "128:Feet": {
+    "name": "Recluse's Soft Suede Boots",
+    "icon": "128_3.png"
+  },
+  "129:Head": {
+    "name": "Magical Girl's Shining Medal",
+    "icon": "129_0.png"
+  },
+  "129:Hands": {
+    "name": "Magical Girl's Protective Gloves",
+    "icon": "129_1.png"
+  },
+  "129:Body": {
+    "name": "Magical Girl's Everdance Battle Skirt",
+    "icon": "129_2.png"
+  },
+  "129:Feet": {
+    "name": "Magical Girl's Contract Boots",
+    "icon": "129_3.png"
+  },
+  "130:Head": {
+    "name": "Diviner's Extrapolation Jade Abacus",
+    "icon": "130_0.png"
+  },
+  "130:Hands": {
+    "name": "Diviner's Ingenium Prosthetic Hand",
+    "icon": "130_1.png"
+  },
+  "130:Body": {
+    "name": "Diviner's Astral Robe",
+    "icon": "130_2.png"
+  },
+  "130:Feet": {
+    "name": "Diviner's Cloud-Soaring Boots",
+    "icon": "130_3.png"
+  },
+  "131:Head": {
+    "name": "Navigator's Deep Space Mirror",
+    "icon": "131_0.png"
+  },
+  "131:Hands": {
+    "name": "Navigator's Game Die",
+    "icon": "131_1.png"
+  },
+  "131:Body": {
+    "name": "Navigator's Astral Chart Uniform",
+    "icon": "131_2.png"
+  },
+  "131:Feet": {
+    "name": "Navigator's Everstride Boots",
+    "icon": "131_3.png"
+  },
+  "132:Head": {
+    "name": "Smith's Fire Beast Mask",
+    "icon": "132_0.png"
+  },
+  "132:Hands": {
+    "name": "Smith's Damascus Steel Gauntlets",
+    "icon": "132_1.png"
+  },
+  "132:Body": {
+    "name": "Smith's Fireproof Garment",
+    "icon": "132_2.png"
+  },
+  "132:Feet": {
+    "name": "Smith's Unbridled Boots",
+    "icon": "132_3.png"
+  },
+  "133:Head": {
+    "name": "Actor's Weeping Masque",
+    "icon": "133_0.png"
+  },
+  "133:Hands": {
+    "name": "Actor's Vibrant Handfan",
+    "icon": "133_1.png"
+  },
+  "133:Body": {
+    "name": "Actor's Jester Garb",
+    "icon": "133_2.png"
+  },
+  "133:Feet": {
+    "name": "Actor's Crescent Dance Boots",
+    "icon": "133_3.png"
+  },
+  "134:Head": {
+    "name": "Heretic's Cranial Apparatus",
+    "icon": "134_0.png"
+  },
+  "134:Hands": {
+    "name": "Heretic's Injection Gloves",
+    "icon": "134_1.png"
+  },
+  "134:Body": {
+    "name": "Heretic's Straitjacket of Reason",
+    "icon": "134_2.png"
+  },
+  "134:Feet": {
+    "name": "Heretic's Ravenous Ankle-Boots",
+    "icon": "134_3.png"
+  },
+  "301:Planar Sphere": {
+    "name": "Herta's Space Station",
+    "icon": "301_0.png"
+  },
+  "301:Link Rope": {
+    "name": "Herta's Wandering Trek",
+    "icon": "301_1.png"
+  },
+  "302:Planar Sphere": {
+    "name": "The Xianzhou Luofu's Celestial Ark",
+    "icon": "302_0.png"
+  },
+  "302:Link Rope": {
+    "name": "The Xianzhou Luofu's Ambrosial Arbor Vines",
+    "icon": "302_1.png"
+  },
+  "303:Planar Sphere": {
+    "name": "The IPC's Mega HQ",
+    "icon": "303_0.png"
+  },
+  "303:Link Rope": {
+    "name": "The IPC's Trade Route",
+    "icon": "303_1.png"
+  },
+  "304:Planar Sphere": {
+    "name": "Belobog's Fortress of Preservation",
+    "icon": "304_0.png"
+  },
+  "304:Link Rope": {
+    "name": "Belobog's Iron Defense",
+    "icon": "304_1.png"
+  },
+  "305:Planar Sphere": {
+    "name": "Planet Screwllum's Mechanical Sun",
+    "icon": "305_0.png"
+  },
+  "305:Link Rope": {
+    "name": "Planet Screwllum's Ring System",
+    "icon": "305_1.png"
+  },
+  "306:Planar Sphere": {
+    "name": "Salsotto's Moving City",
+    "icon": "306_0.png"
+  },
+  "306:Link Rope": {
+    "name": "Salsotto's Terminator Line",
+    "icon": "306_1.png"
+  },
+  "307:Planar Sphere": {
+    "name": "Talia's Nailscrap Town",
+    "icon": "307_0.png"
+  },
+  "307:Link Rope": {
+    "name": "Talia's Exposed Electric Wire",
+    "icon": "307_1.png"
+  },
+  "308:Planar Sphere": {
+    "name": "Vonwacq's Island of Birth",
+    "icon": "308_0.png"
+  },
+  "308:Link Rope": {
+    "name": "Vonwacq's Islandic Coast",
+    "icon": "308_1.png"
+  },
+  "309:Planar Sphere": {
+    "name": "Taikiyan Laser Stadium",
+    "icon": "309_0.png"
+  },
+  "309:Link Rope": {
+    "name": "Taikiyan's Arclight Race Track",
+    "icon": "309_1.png"
+  },
+  "310:Planar Sphere": {
+    "name": "Insumousu's Whalefall Ship",
+    "icon": "310_0.png"
+  },
+  "310:Link Rope": {
+    "name": "Insumousu's Frayed Hawser",
+    "icon": "310_1.png"
+  },
+  "311:Planar Sphere": {
+    "name": "Glamoth's Iron Cavalry Regiment",
+    "icon": "311_0.png"
+  },
+  "311:Link Rope": {
+    "name": "Glamoth's Silent Tombstone",
+    "icon": "311_1.png"
+  },
+  "312:Planar Sphere": {
+    "name": "Penacony's Grand Hotel",
+    "icon": "312_0.png"
+  },
+  "312:Link Rope": {
+    "name": "Penacony's Dream-Seeking Tracks",
+    "icon": "312_1.png"
+  },
+  "313:Planar Sphere": {
+    "name": "Sigonia's Gaiathra Berth",
+    "icon": "313_0.png"
+  },
+  "313:Link Rope": {
+    "name": "Sigonia's Knot of Cyclicality",
+    "icon": "313_1.png"
+  },
+  "314:Planar Sphere": {
+    "name": "Izumo's Magatsu no Morokami",
+    "icon": "314_0.png"
+  },
+  "314:Link Rope": {
+    "name": "Izumo's Blades of Origin and End",
+    "icon": "314_1.png"
+  },
+  "315:Planar Sphere": {
+    "name": "Duran's Tent of Golden Sky",
+    "icon": "315_0.png"
+  },
+  "315:Link Rope": {
+    "name": "Duran's Mechabeast Bridle",
+    "icon": "315_1.png"
+  },
+  "316:Planar Sphere": {
+    "name": "Forge's Lotus Lantern Wick",
+    "icon": "316_0.png"
+  },
+  "316:Link Rope": {
+    "name": "Forge's Heavenly Flamewheel Silk",
+    "icon": "316_1.png"
+  },
+  "317:Planar Sphere": {
+    "name": "Lushaka's Waterscape",
+    "icon": "317_0.png"
+  },
+  "317:Link Rope": {
+    "name": "Lushaka's Twinlanes",
+    "icon": "317_1.png"
+  },
+  "318:Planar Sphere": {
+    "name": "BananAmusement Park's BananAxis Plaza",
+    "icon": "318_0.png"
+  },
+  "318:Link Rope": {
+    "name": "BananAmusement Park's Memetic Cables",
+    "icon": "318_1.png"
+  },
+  "319:Planar Sphere": {
+    "name": "Aidonia's Deceased Gravestones",
+    "icon": "319_0.png"
+  },
+  "319:Link Rope": {
+    "name": "Aidonia's Deathward Bone Chains",
+    "icon": "319_1.png"
+  },
+  "320:Planar Sphere": {
+    "name": "Grove of Epiphany's Pondering Colossus",
+    "icon": "320_0.png"
+  },
+  "320:Link Rope": {
+    "name": "Grove of Epiphany's Interwoven Veins",
+    "icon": "320_1.png"
+  },
+  "321:Planar Sphere": {
+    "name": "Membrance Maze's Serene Treehouse",
+    "icon": "321_0.png"
+  },
+  "321:Link Rope": {
+    "name": "Membrance Maze's Wishing Whistle",
+    "icon": "321_1.png"
+  },
+  "322:Planar Sphere": {
+    "name": "Warbling Shores' Blazing Beacon",
+    "icon": "322_0.png"
+  },
+  "322:Link Rope": {
+    "name": "Warbling Shores' Cantillation Trail",
+    "icon": "322_1.png"
+  },
+  "323:Planar Sphere": {
+    "name": "Last West Wind of Amphoreus",
+    "icon": "323_0.png"
+  },
+  "323:Link Rope": {
+    "name": "Eternal Verses of Amphoreus",
+    "icon": "323_1.png"
+  },
+  "324:Planar Sphere": {
+    "name": "Livestream's Protean Vistas",
+    "icon": "324_0.png"
+  },
+  "324:Link Rope": {
+    "name": "Livestream's Chatter Banter",
+    "icon": "324_1.png"
+  },
+  "325:Planar Sphere": {
+    "name": "Punklorde's Rainbow City",
+    "icon": "325_0.png"
+  },
+  "325:Link Rope": {
+    "name": "Punklorde's Data Deluge",
+    "icon": "325_1.png"
+  },
+  "326:Planar Sphere": {
+    "name": "Astropolis Media Headquarters",
+    "icon": "326_0.png"
+  },
+  "326:Link Rope": {
+    "name": "Astropolis Employee Credentials",
+    "icon": "326_1.png"
+  },
+  "327:Planar Sphere": {
+    "name": "Stranded Express at the Anchorage",
+    "icon": "327_0.png"
+  },
+  "327:Link Rope": {
+    "name": "Silver Rails of the Anchorage",
+    "icon": "327_1.png"
+  },
+  "328:Planar Sphere": {
+    "name": "Central Synapse of the Life Sciences Institute",
+    "icon": "328_0.png"
+  },
+  "328:Link Rope": {
+    "name": "Peripheral Conduits of the Life Sciences Institute",
+    "icon": "328_1.png"
+  }
+}

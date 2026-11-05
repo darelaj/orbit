@@ -27,7 +27,7 @@ Avoid a general component framework, global state library, or chart package unti
 
 ## Data flow
 
-O-04a implementation: `src/domain/inventory.ts` validates scanner/backup JSON and normalizes relics; `src/storage/inventory.ts` reads/writes one versioned backup in an IndexedDB transaction; `src/features/inventory/InventoryWorkspace.tsx` owns file preview, replacement, source precision, filters, pagination, backup download, and imported-item details. The synthetic demo remains separate in `src/app/`. Only 48 imported cards are mounted per page. Catalogue/main-stat amounts and character/Light Cone reference processing remain O-04b; workers and saved builds remain planned.
+O-04a implementation: `src/domain/inventory.ts` validates scanner/backup JSON and normalizes relics; `src/storage/inventory.ts` reads/writes one versioned backup in an IndexedDB transaction; `src/features/inventory/InventoryWorkspace.tsx` owns file preview, replacement, source precision, filters, pagination, backup download, and imported-item details. The synthetic demo remains separate in `src/app/`. Only 48 imported cards are mounted per page. O-04b adds pinned local relic metadata/main-affix tables in src/data, pure catalogue calculation in domain/catalogue.ts, imported reference metadata and richer inventory filters; workers and saved builds remain planned.
 
 File selection -> parse unknown JSON -> validate complete export -> normalize required fields -> atomically persist workspace -> render inventory. Errors before persistence keep the old workspace. A storage failure must be visible and must not claim durable success.
 

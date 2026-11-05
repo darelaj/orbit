@@ -5,7 +5,7 @@ export type Objective='ATK'|'HP'|'DEF'|'SPD'|'Break Effect_'|'crit-index';
 export type SearchOptions={mode:'exact'|'limited';budget:number;objective:Objective;minSPD?:number;maxSPD?:number;requiredSets:{id:string;pieces:number}[];includeLocked:boolean;includeDiscarded:boolean;includeEquipped:boolean;excludeIds:string[];mainStats:Partial<Record<InventorySlot,string>>};
 export type SearchInput={profile:BuildProfile;relics:InventoryRelic[];options:SearchOptions};
 export type SearchResult={score:number;loadout:Loadout;totals:ReturnType<typeof calculateBuild>['totals'];warnings:string[]};
-export type SearchReport={results:SearchResult[];total:string;evaluated:number;feasible:number;invalid:number;exhaustive:boolean;counts:number[]};
+export type SearchReport={results:SearchResult[];total:string;evaluated:number;feasible:number;invalid:number;invalidReasons:string[];exhaustive:boolean;counts:number[]};
 export type Progress=Pick<SearchReport,'total'|'evaluated'|'feasible'|'invalid'>;
 export const defaultOptions:SearchOptions={mode:'exact',budget:100000,objective:'ATK',requiredSets:[],includeLocked:true,includeDiscarded:false,includeEquipped:true,excludeIds:[],mainStats:{}};
 export function objectiveScore(totals:SearchResult['totals'],objective:Objective):number {
@@ -30,7 +30,7 @@ export function* optimize(input:SearchInput):Generator<Progress,SearchReport,voi
   const count=groups.reduce((total,g)=>total*BigInt(g.length),1n);const total=count.toString();
   if(options.mode==='exact'&&count>BigInt(options.budget))throw new Error(`Exact search needs ${total} evaluations. Increase filters/budget or choose limited sampling.`);
   const limit=Number(count<BigInt(options.budget)?count:BigInt(options.budget));
-  const report:SearchReport={results:[],total,evaluated:0,feasible:0,invalid:0,exhaustive:count<=BigInt(limit),counts:groups.map(g=>g.length)};
+  const report:SearchReport={results:[],total,evaluated:0,feasible:0,invalid:0,invalidReasons:[],exhaustive:count<=BigInt(limit),counts:groups.map(g=>g.length)};
   for(let i=0;i<limit;i++){
     let index=report.exhaustive?BigInt(i):count*BigInt(i)/BigInt(limit);
     const loadout:Loadout={};const sets=new Map<string,number>();
@@ -40,11 +40,11 @@ export function* optimize(input:SearchInput):Generator<Progress,SearchReport,voi
       try{
         const calculated=calculateBuild(input.profile,loadout);const speed=calculated.totals.SPD;
         if((options.minSPD===undefined||speed>=options.minSPD)&&(options.maxSPD===undefined||speed<=options.maxSPD)){
-          report.feasible++;const score=objectiveScore(calculated.totals,options.objective);
+          const score=objectiveScore(calculated.totals,options.objective);if(!Number.isFinite(score))throw new Error('Objective overflow. Check imported values and profile.');report.feasible++;
           const result:SearchResult={score,loadout,totals:calculated.totals,warnings:calculated.warnings};
           report.results.push(result);report.results.sort((a,b)=>b.score-a.score||inventorySlots.map(s=>a.loadout[s]!.id).join('\0').localeCompare(inventorySlots.map(s=>b.loadout[s]!.id).join('\0')));report.results.length=Math.min(10,report.results.length);
         }
-      }catch{report.invalid++;}
+      }catch(error){report.invalid++;const reason=error instanceof Error?error.message:'Build calculation failed.';if(report.invalidReasons.length<3&&!report.invalidReasons.includes(reason))report.invalidReasons.push(reason);}
     }
     if(report.evaluated%1000===0)yield {total,evaluated:report.evaluated,feasible:report.feasible,invalid:report.invalid};
   }

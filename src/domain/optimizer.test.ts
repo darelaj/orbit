@@ -27,3 +27,15 @@ test('limits disclose non-exhaustive sampling and invalid configurations fail',(
   expect(()=>runSearch({...searchFixture,relics:[]})).toThrow('No eligible');
   expect(()=>runSearch({...searchFixture,options:{...defaultOptions,minSPD:150,maxSPD:120}})).toThrow('Minimum');
 });
+test('large combination counts use integer arithmetic without allocating the search space',()=>{
+  const large=Array.from({length:9996},(_,i)=>({...relics[(i%6)*2],id:`large_${i}`}));
+  const result=runSearch({...searchFixture,relics:large,options:{...defaultOptions,mode:'limited',budget:1}});
+  expect(BigInt(result.total)).toBeGreaterThan(BigInt(Number.MAX_SAFE_INTEGER));
+  expect(result.evaluated).toBe(1);expect(result.results).toHaveLength(1);expect(result.exhaustive).toBe(false);
+});
+test('uncomputable builds are disclosed and index objective is explicitly separate from ATK',()=>{
+  const result=runSearch({...searchFixture,relics:relics.map(r=>r.slot==='Head'?{...r,mainStat:'Unsupported'}:r)});
+  expect(result.invalid).toBe(64);expect(result.invalidReasons.length).toBeGreaterThan(0);expect(result.results).toEqual([]);
+  const indexed=runSearch({...searchFixture,options:{...defaultOptions,objective:'crit-index'}});
+  const best=indexed.results[0];expect(best.score).toBeCloseTo(best.totals.ATK*(1+best.totals['CRIT Rate_']/100*best.totals['CRIT DMG_']/100));
+});

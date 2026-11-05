@@ -17,7 +17,7 @@ function Details({ relic, inventory }: { relic: InventoryRelic; inventory: Inven
     {relic.reroll.length > 0 && <><h3>Reroll · alternative</h3><StatList stats={relic.reroll} /></>}
     <p>Equipped by: {owner ?? (relic.location ? 'Character ' + relic.location : 'Not equipped')}</p><p>{relic.locked ? 'Locked' : 'Unlocked'} · {relic.discarded ? 'Marked for discard' : 'Not marked for discard'}</p><p>Scanner ID: {relic.id} · Set ID: {relic.setId}</p></>;
 }
-export default function InventoryWorkspace({ visible, onInventory, comparisonVisible = false }: { visible: boolean; onInventory: () => void; comparisonVisible?: boolean }) {
+export default function InventoryWorkspace({ visible, onInventory, comparisonVisible = false, optimizerVisible = false }: { visible: boolean; onInventory: () => void; comparisonVisible?: boolean; optimizerVisible?: boolean }) {
   const [inventory, setInventory] = useState<Inventory | null>(null);
   const [busy, setBusy] = useState(true);
   const [error, setError] = useState('');
@@ -75,7 +75,7 @@ export default function InventoryWorkspace({ visible, onInventory, comparisonVis
     {busy && <p role="status">Reading local inventory…</p>}
     {error && <p role="alert">{error}</p>}
     {pending && <div className="notice"><p>{pending.relics.length} relics from {pending.source}. Import replaces your saved inventory, including when this file is empty. Demo data is kept separate.</p><button disabled={busy} onClick={() => void commit()}>Replace inventory</button><button disabled={busy} onClick={() => setPending(null)}>Cancel import</button></div>}
-    <div hidden={!comparisonVisible}><ComparisonWorkspace inventory={inventory} /></div>
+    <div hidden={!comparisonVisible && !optimizerVisible}><ComparisonWorkspace optimizerVisible={optimizerVisible} inventory={inventory} /></div>
     {visible && inventory && <>
       <p>Imported {inventory.importedAt ? new Date(inventory.importedAt).toLocaleString() : 'time unavailable (legacy backup)'} · {inventory.source} · Schema {inventory.version} · {inventory.precision === 'ocr' ? 'OCR: hidden SPD decimals unavailable' : 'Packet-derived values: imported precision retained'}</p>
       <div className="filter-fields"><label>Search inventory<input type="search" value={query} onChange={e => { setQuery(e.target.value); setPage(0); }} /></label><label>Inventory slot<select value={slot} onChange={e => { setSlot(e.target.value); setPage(0); }}><option value="">All slots</option>{inventorySlots.map(s => <option key={s}>{s}</option>)}</select></label><label>Inventory status<select value={status} onChange={e => { setStatus(e.target.value); setPage(0); }}><option value="">All items</option><option value="locked">Locked</option><option value="unlocked">Unlocked</option><option value="kept">Not marked for discard</option><option value="discarded">Marked for discard</option><option value="equipped">Equipped</option><option value="stored">Not equipped</option></select></label><button onClick={() => { resetExtra(); setQuery(''); setSlot(''); setStatus(''); setPage(0); }}>Reset inventory filters</button></div>

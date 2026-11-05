@@ -29,7 +29,8 @@ Use this map instead of duplicating full specifications here:
 | docs/TESTING.md | Test scenarios and browser acceptance |
 | docs/SKILLS.md | Skill sources, pins, notices, validation history |
 | docs/RESEARCH.md | Dated research and source links, not proof that an integration is currently working |
-| docs/VERIFICATION.md | Actual UI walkthrough and delivery evidence, when created |
+| docs/VERIFICATION.md | Actual UI walkthrough, scoped delivery gate, and verification limits |
+| docs/ASSETS.md | Artwork/icon provenance, source pins, attribution, and bundled notices |
 
 Current owner instructions take precedence over older project decisions. The source code establishes what exists; the plan establishes what remains. If a document and code disagree, investigate and correct the affected document or implementation within the task's scope. Do not silently choose whichever interpretation is easier.
 

@@ -9,6 +9,8 @@
 | [IMPORT_FORMAT.md](IMPORT_FORMAT.md) | Supported exports, precision, validation, update semantics |
 | [CALCULATIONS.md](CALCULATIONS.md) | Stat formulas, search guarantees, speed assumptions |
 | [TESTING.md](TESTING.md) | Meaningful checks and browser verification |
+| [VERIFICATION.md](VERIFICATION.md) | Executed UI walkthrough, evidence, and antislop delivery gate |
+| [ASSETS.md](ASSETS.md) | Pinned artwork/icon sources and preserved notices |
 | [SKILLS.md](SKILLS.md) | Installed skills, pinned sources, routing, licenses |
 | [RESEARCH.md](RESEARCH.md) | Verified API/scanner findings and source links |
 | [../DESIGN.md](../DESIGN.md) | Product direction, two themes, hierarchy and interaction decisions |

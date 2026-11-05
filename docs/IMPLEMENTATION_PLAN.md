@@ -7,6 +7,7 @@ Each task has a branch and at least one focused commit. Integrate through a PR, 
 | O-01 | `chore/agent-guidance` | Complete | none | AGENTS.md, pinned upstream skills, HSR integrity skill, provenance and skill validation |
 | O-01a | `docs/agent-operating-guide` | Complete documentation revision | O-01, current framework/design state | Expanded AGENTS.md with current runtime commands, resume protocol, branch/commit rules, domain invariants, design routing, and change-specific verification; no runtime changes |
 | O-02 | `docs/project-plan` | Complete | O-01 | Product scope, design for both themes, architecture, import contract, formula scope, testing plan, resume checkpoint |
+| O-02a | `docs/readme-architecture` | Complete documentation revision | Current merged main | README setup/dev/build/preview instructions, current-vs-planned architecture, and ongoing README maintenance rule; documentation-only validation |
 | O-03 | `feat/react-workspace` | Complete technical baseline | O-02 | React/TypeScript/Vite and working two-theme shell; visual direction rejected, see O-03a |
 | O-03a | `docs/design-direction`, then `feat/hsr-visual-direction` | Brief rewritten; UI pending | O-03 | HSR character/relic inspiration, balanced density, prominent splash art, top navigation, side details, subtle motion, both themes |
 | O-04 | `feat/inventory-import` | Not started | O-03 | Atomic validated scanner JSON import, all relics, local persistence, backup, inventory filters, explicit empty/error/loading/demo states |

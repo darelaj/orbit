@@ -1,6 +1,6 @@
 # Architecture decision
 
-Status: selected; framework implementation is O-03.
+Status: the React/TypeScript/Vite shell and theme persistence are implemented in O-03. Inventory/domain modules, optimization workers, and IndexedDB persistence below are the planned target architecture; they are not implemented yet. See [README.md](../README.md) for the current source tree and local run instructions.
 
 Use React and strict TypeScript with Vite for a client-side local application. The project does not need server rendering, authentication, a database server, or a cloud service. React owns interface state; pure domain modules own parsing, calculations, and search. Heavy optimization runs in a module Web Worker. Vitest covers deterministic domain behavior and selected component flows.
 

@@ -18,6 +18,7 @@ Use this map instead of duplicating full specifications here:
 
 | File | Authority and when to read |
 | --- | --- |
+| README.md | Human-facing setup, run commands, current feature availability, and architecture overview |
 | docs/SESSION_STATE.md | Current branch, latest verified work, unfinished tasks, blockers, running services, next action; first read on resume |
 | docs/IMPLEMENTATION_PLAN.md | Task IDs, dependencies, acceptance criteria, branch boundaries |
 | docs/PRODUCT.md | Product workflows and exclusions |
@@ -33,6 +34,8 @@ Use this map instead of duplicating full specifications here:
 Current owner instructions take precedence over older project decisions. The source code establishes what exists; the plan establishes what remains. If a document and code disagree, investigate and correct the affected document or implementation within the task's scope. Do not silently choose whichever interpretation is easier.
 
 Keep volatile commit hashes, process/session IDs, test counts, and task status in SESSION_STATE.md, not in this operating guide. Inspect package.json and the lockfile for current dependency versions. Update this guide when working rules, scope, architecture, verification requirements, or accepted owner decisions change; use the checkpoint for routine progress instead of rewriting AGENTS.md every task.
+
+Maintain README.md in the same task when setup/Node requirements, commands, supported workflows, architecture boundaries, storage behavior, or implemented feature availability changes. Verify its examples against the code and package scripts. Label future modules and features as planned; do not rewrite the README for routine progress that belongs in SESSION_STATE.md.
 
 ## Starting or resuming work
 

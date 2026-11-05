@@ -8,11 +8,19 @@ English is the primary interface language, including scanner guidance, accessibi
 
 The React/TypeScript/Vite application follows the owner's Figma equipment design with the approved density and interaction revisions: a horizontal Acheron context, six equipment selectors, a visual relic grid, and a selected-item inspector. Both light and dark themes retain the local preference. On smaller screens, detail opens in a native dialog, with a full-height layout on mobile.
 
-The app opens with eight clearly labeled synthetic demo relics. Search by name/set/main stat, filter by slot or locked/unlocked status, and sort by equipped-first or either slot direction. Equipment selection keeps the current filters; Show selected relic clears filters when the selected item is hidden. Reset filters restores the default collection/order. Exit demo opens the empty workspace; Open demo or Explore demo restores the example. Selection, filters, and sorting reset on reload; demo items are not saved as a personal inventory.
+Without a saved personal inventory, the app opens with eight clearly labeled synthetic demo relics. Saved inventory restores from IndexedDB on reload. Search by name/set/main stat, filter by slot or locked/unlocked status, and sort by equipped-first or either slot direction. Equipment selection keeps the current filters; Show selected relic clears filters when the selected item is hidden. Reset filters restores the default collection/order. Exit demo opens the empty workspace; Open demo or Explore demo restores the example. Selection, filters, and sorting reset on reload; demo items are not saved as a personal inventory.
 
-Full inventory import, build comparison, optimization, and the speed timeline are planned and are not usable yet. The design is documented in [DESIGN.md](DESIGN.md) and the [Figma handoff](docs/FIGMA_HANDOFF.md). See [browser verification](docs/VERIFICATION.md) and [asset sources/notices](docs/ASSETS.md).
+Scanner inventory import is available as the first O-04 milestone. Build comparison, optimization, and the speed timeline are not usable yet. The design is documented in [DESIGN.md](DESIGN.md) and the [Figma handoff](docs/FIGMA_HANDOFF.md). See [browser verification](docs/VERIFICATION.md) and [asset sources/notices](docs/ASSETS.md).
 
 See the [implementation plan](docs/IMPLEMENTATION_PLAN.md) for feature acceptance criteria and the [resume checkpoint](docs/SESSION_STATE.md) for the latest verified work.
+
+## Import your inventory
+
+Use **Import scanner JSON or Orbit backup** to choose a Reliquary Archiver or Kel-Z HSR Scanner export (source schema 4). Check the relic count, then choose **Replace inventory**. Cancel keeps your existing collection. Validation or storage errors also leave it unchanged. Limit: 20 MiB and 10,000 relics.
+
+Search by set, main stat, owner or scanner ID; filter slot and equipment/lock/discard status. The collection uses 48-item pages. Select an item to see active, preview and reroll substats separately. Source precision is shown: OCR cannot reveal hidden SPD decimals. Imported cards currently show set names and main-stat keys; catalogue artwork, main-stat amounts and character-name lookup remain planned in O-04b.
+
+Use **Download backup** before clearing browser data. Re-import that file through the same picker. Inventory stays in IndexedDB in this browser profile and origin; it is not synchronized to GitHub or another device. Demo selection never replaces your saved inventory. Only supported relic fields are retained, not the scanner's account/gacha/material data. No real-account export has been tested yet.
 
 ## Requirements
 
@@ -120,6 +128,9 @@ orbit/
 │       ├── theme.ts          Theme selection and preference persistence
 │       ├── styles.css        Shared styles and light/dark theme tokens
 │       └── App.test.tsx      Theme, filtering, selection, empty and image-error flows
+├── src/domain/               Implemented scanner validation and backup format
+├── src/features/inventory/   Implemented import and personal inventory view
+├── src/storage/              Implemented IndexedDB inventory persistence
 ├── public/assets/            Game images, Figma SVGs, local fonts, source notices
 ├── docs/                     Product contracts, architecture, planning, checkpoints
 ├── .agents/skills/           Pinned project skills and HSR integrity guidance
@@ -138,25 +149,25 @@ Artwork is bundled locally, with attribution and the upstream license recorded i
 
 ### Planned feature architecture
 
-The following layers are design decisions for upcoming features, not implemented modules:
+Inventory validation, its React view, and IndexedDB inventory storage are implemented. Remaining responsibilities in these layers are planned:
 
 | Layer | Responsibility |
 | --- | --- |
 | React feature views | Inventory filters/details, A/B loadouts, optimizer controls/results, team timeline |
-| Pure TypeScript domain modules | Export validation, normalization, stat calculations, legal-build checks, action-value math |
+| Pure TypeScript domain modules | Implemented export validation/normalization; planned stat calculations, legal-build checks, action-value math |
 | Module Web Worker | Bounded optimization with progress, cancellation, and stale-result protection |
-| Versioned IndexedDB records | Local inventory, profiles, saved loadouts, and team configuration |
+| Versioned IndexedDB records | Implemented local inventory; planned profiles, saved loadouts, and team configuration |
 | Game-data catalogue | Explicitly sourced/versioned constants with visible handling of unknown records |
 
-The planned import flow is scanner JSON -> complete validation -> normalized inventory -> atomic local persistence -> React views. Invalid input must preserve the previous valid inventory. Search will run off the main thread so controls remain responsive.
+The implemented import flow is scanner JSON -> complete validation -> normalized inventory -> atomic local persistence -> React views. Invalid input must preserve the previous valid inventory. Search will run off the main thread so controls remain responsive.
 
-Personal inventory will be processed locally in the browser. No cloud sync or account login is planned. See [ARCHITECTURE.md](docs/ARCHITECTURE.md) for module boundaries, worker messages, persistence, and game-data requirements.
+Personal inventory is processed locally in the browser. No cloud sync or account login is planned. See [ARCHITECTURE.md](docs/ARCHITECTURE.md) for module boundaries, worker messages, persistence, and game-data requirements.
 
 ## Inventory source
 
-The intended full-inventory inputs are JSON exports from [Reliquary Archiver](https://github.com/IceDynamix/reliquary-archiver) or [Kel-Z HSR Scanner](https://github.com/kel-z/HSR-Scanner). Extraction happens in those tools; Orbit does not currently scan the game or accept these files yet.
+The intended full-inventory inputs are JSON exports from [Reliquary Archiver](https://github.com/IceDynamix/reliquary-archiver) or [Kel-Z HSR Scanner](https://github.com/kel-z/HSR-Scanner). Extraction happens in those tools; Orbit accepts schema 4 files locally but does not scan the game.
 
-Enka UID lookup supplies public showcase data and cannot provide every unequipped relic. OCR exports also cannot recover hidden SPD decimals, which matters for close speed thresholds. The planned importer preserves provenance and precision as described in [IMPORT_FORMAT.md](docs/IMPORT_FORMAT.md).
+Enka UID lookup supplies public showcase data and cannot provide every unequipped relic. OCR exports also cannot recover hidden SPD decimals, which matters for close speed thresholds. The importer preserves provenance and precision as described in [IMPORT_FORMAT.md](docs/IMPORT_FORMAT.md).
 
 No personal inventory, game credentials, or packet captures are included in this repository.
 

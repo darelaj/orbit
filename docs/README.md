@@ -11,6 +11,7 @@
 | [TESTING.md](TESTING.md) | Meaningful checks and browser verification |
 | [VERIFICATION.md](VERIFICATION.md) | Executed UI walkthrough, evidence, and antislop delivery gate |
 | [ASSETS.md](ASSETS.md) | Pinned artwork/icon sources and preserved notices |
+| [FIGMA_HANDOFF.md](FIGMA_HANDOFF.md) | Figma source frames, approved implementation revisions, component mapping |
 | [SKILLS.md](SKILLS.md) | Installed skills, pinned sources, routing, licenses |
 | [RESEARCH.md](RESEARCH.md) | Verified API/scanner findings and source links |
 | [../DESIGN.md](../DESIGN.md) | Product direction, two themes, hierarchy and interaction decisions |

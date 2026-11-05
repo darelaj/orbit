@@ -2,6 +2,8 @@
 
 Orbit helps one HSR player inspect the complete relic inventory on a PC, compare alternative loadouts, search for stat targets, and reason about speed tuning. It runs locally in a browser. The owner requested a framework, focused commits, feature branches, project skills, durable docs, and both light and dark themes.
 
+English is the primary application language, including interface copy, accessibility names, errors, and document metadata. Preserve official game names and stat labels.
+
 ## Core workflows
 
 1. Export the account using a supported scanner, import its JSON, and inspect equipped and unequipped relics together.

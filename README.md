@@ -4,9 +4,11 @@ A local Honkai: Star Rail relic workspace for PC players. Orbit is being built t
 
 ## Current status
 
+English is the primary interface language, including scanner guidance, accessibility labels, error states, and document metadata. Familiar HSR character, relic, set, and stat names are preserved.
+
 The React/TypeScript/Vite application follows the owner's Figma equipment design with the approved density and interaction revisions: a horizontal Acheron context, six equipment selectors, a visual relic grid, and a selected-item inspector. Both light and dark themes retain the local preference. On smaller screens, detail opens in a native dialog, with a full-height layout on mobile.
 
-The app opens with eight clearly labeled synthetic demo relics. Search by name/set/main stat, filter by slot or locked/unlocked status, and sort by equipped-first or either slot direction. Equipment selection keeps the current filters; Tampilkan relic terpilih clears filters when the selected item is hidden. Reset filter restores the default collection/order. Keluar demo opens the empty workspace; Buka demo or Jelajahi demo restores the example. Selection, filters, and sorting reset on reload; demo items are not saved as a personal inventory.
+The app opens with eight clearly labeled synthetic demo relics. Search by name/set/main stat, filter by slot or locked/unlocked status, and sort by equipped-first or either slot direction. Equipment selection keeps the current filters; Show selected relic clears filters when the selected item is hidden. Reset filters restores the default collection/order. Exit demo opens the empty workspace; Open demo or Explore demo restores the example. Selection, filters, and sorting reset on reload; demo items are not saved as a personal inventory.
 
 Full inventory import, build comparison, optimization, and the speed timeline are planned and are not usable yet. The design is documented in [DESIGN.md](DESIGN.md) and the [Figma handoff](docs/FIGMA_HANDOFF.md). See [browser verification](docs/VERIFICATION.md) and [asset sources/notices](docs/ASSETS.md).
 

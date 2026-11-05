@@ -1,5 +1,7 @@
 # O-03b Figma implementation verification
 
+Layout/interaction evidence for O-03b. The subsequent English-primary UI request is verified in [VERIFICATION.md](VERIFICATION.md); Indonesian labels quoted here belong to the earlier revision.
+
 Recorded 2026-11-06 on Windows at http://127.0.0.1:4173. This report supersedes the O-03a walkthrough for the current UI. Scope is the Figma-based synthetic demo plus the owner-approved revisions in FIGMA_HANDOFF.md. No real-account/import/calculation/optimizer/timeline acceptance is inferred.
 
 ## Executed verification

@@ -19,7 +19,7 @@ Updated: 2026-11-05, Asia/Jakarta.
 - Checkout: `D:\Kuliah\Oprekan\Enka smth\orbit`.
 - Remote: `origin = https://github.com/darelaj/orbit.git`.
 - Initial clone was empty. Git author identity is already configured; do not replace it.
-- Current work branch: `docs/design-direction`, based on framework commit `e2ab362`. Main includes documentation merge `e7d6e1d` and foundation commit `a1647a8`. Framework/design branches are not yet pushed or integrated.
+- Current work branch: `docs/design-direction`, based on framework commit `e2ab362`, with design brief commit `e5c48b6`. Main includes documentation merge `e7d6e1d` and foundation commit `a1647a8`. Both framework/design branches have been pushed; they are not integrated into main.
 - Four upstream antislop skills have been installed under `.agents/skills` at commit `9504989f162a92b1996853eccbb3d8a86e73df68`.
 - Karpathy and React skills are installed at pins in SKILLS.md. The local HSR integrity skill is present. All seven passed the official validator.
 - `../relic-lab` contains the unfinished earlier plain JS prototype. Preserve it; do not ship it. It includes an untested engine and a game-data snapshot, but no app.js, no tests, and no completed UI.
@@ -40,10 +40,10 @@ Updated: 2026-11-05, Asia/Jakarta.
 
 ## Next actions
 
-1. Review and commit the revised DESIGN.md on `docs/design-direction`, keeping accepted choices separate from palette/type proposals.
-2. Push the framework and design-document branches. The old technical shell is not approved visual design.
-3. Implement the equipment-oriented direction on `feat/hsr-visual-direction`, with two themes and asset provenance.
-4. Continue O-04 and subsequent tasks in plan order. Keep domain correctness and feature work separate from design changes.
+1. Read the revised DESIGN.md. The deep design interview is complete; no required design decision is outstanding. Palette/type remain explicitly proposed choices.
+2. Create `feat/hsr-visual-direction` from this branch and implement the equipment-oriented layout, two themes, and documented real-asset provenance. The current browser still shows the rejected technical baseline.
+3. Continue O-04 and subsequent tasks in plan order. Keep domain correctness and feature work separate from design changes.
+4. Integrate checked feature branches into main without deleting their refs. Push and verify the completed refs. The framework/design branches currently form a stack based on `e7d6e1d`.
 
 ## Technical cautions discovered in the prototype
 
@@ -59,8 +59,8 @@ Updated: 2026-11-05, Asia/Jakarta.
 | --- | --- | --- | --- |
 | `chore/agent-guidance` | `a1647a8` | Agent routing, 7 validated skills, source pins, notices, ignore rules | Main and feature branch pushed and verified |
 | `docs/project-plan` | `ba87730` | Product/design/architecture/import/math/testing/research docs and resume plan | Merged into main as `e7d6e1d`; pushed and verified |
-| `feat/react-workspace` | `e2ab362` | Framework shell, exact dependency versions, theme persistence, run scripts | Typecheck, 1 test, build, two-theme browser smoke passed; visual direction rejected; not pushed/integrated yet |
-| `docs/design-direction` | Pending | Owner interview recorded; DESIGN.md rewritten for HSR equipment, artwork, top navigation, side details, and motion | Documentation review pending |
+| `feat/react-workspace` | `e2ab362` | Framework shell, exact dependency versions, theme persistence, run scripts | Typecheck, 1 test, build, two-theme browser smoke passed; visual direction rejected; pushed, not integrated |
+| `docs/design-direction` | `e5c48b6` | Owner interview recorded; DESIGN.md rewritten for HSR equipment, artwork, top navigation, side details, and motion | Project-owned whitespace check passed; pushed, not integrated |
 
 Remote heads for main and the first two task branches were confirmed with `git ls-remote --heads origin`. Retain feature branches after integration. Record a push only after confirming the remote refs.
 

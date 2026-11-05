@@ -10,7 +10,7 @@ The React/TypeScript/Vite application follows the owner's Figma equipment design
 
 Without a saved personal inventory, the app opens with eight clearly labeled synthetic demo relics. Saved inventory restores from IndexedDB on reload. Search by name/set/main stat, filter by slot or locked/unlocked status, and sort by equipped-first or either slot direction. Equipment selection keeps the current filters; Show selected relic clears filters when the selected item is hidden. Reset filters restores the default collection/order. Exit demo opens the empty workspace; Open demo or Explore demo restores the example. Selection, filters, and sorting reset on reload; demo items are not saved as a personal inventory.
 
-Scanner inventory import and catalogue inspection are available (O-04). Build comparison, optimization, and the speed timeline are not usable yet. The design is documented in [DESIGN.md](DESIGN.md) and the [Figma handoff](docs/FIGMA_HANDOFF.md). See [browser verification](docs/VERIFICATION.md) and [asset sources/notices](docs/ASSETS.md).
+Scanner inventory import and catalogue inspection are available (O-04). Manual-profile A/B build comparison is available (O-05). Optimization and the speed timeline are not usable yet. The design is documented in [DESIGN.md](DESIGN.md) and the [Figma handoff](docs/FIGMA_HANDOFF.md). See [browser verification](docs/VERIFICATION.md) and [asset sources/notices](docs/ASSETS.md).
 
 See the [implementation plan](docs/IMPLEMENTATION_PLAN.md) for feature acceptance criteria and the [resume checkpoint](docs/SESSION_STATE.md) for the latest verified work.
 
@@ -21,6 +21,14 @@ Use **Import scanner JSON or Orbit backup** to choose a Reliquary Archiver or Ke
 Search by set, main stat, owner or scanner ID; filter slot and equipment/lock/discard status. The collection uses 48-item pages. Select an item to see active, preview and reroll substats separately. Source precision is shown: OCR cannot reveal hidden SPD decimals. Known set/slot combinations show local icons and item names. Main-stat amounts are derived from a pinned catalogue and labeled in details. Character names come from the export; missing references retain their IDs with warnings. Additional filters cover set, main stat, rarity, minimum level, and equipped character. Import time is preserved in backups; legacy backups show when that time is unavailable.
 
 Use **Download backup** before clearing browser data. Re-import that file through the same picker. Inventory stays in IndexedDB in this browser profile and origin; it is not synchronized to GitHub or another device. Demo selection never replaces your saved inventory. Only supported relic fields are retained, not the scanner's account/gacha/material data. No real-account export has been tested yet.
+
+## Compare two builds
+
+Open **Comparison** in the top navigation. Import inventory first to choose real candidates; a manual profile and saved snapshots also work without the active inventory. Choose an equipped character and **Initialize A and B**, then enter its base HP/ATK/DEF/SPD and Light Cone base HP/ATK/DEF at the relevant levels. The character name does not initialize stats. Use **Manual corrections** for baseline CRIT, baseline Energy Regeneration Rate, known permanent Trace/passive additions and other corrections. Zero means no contribution, not a guessed game default.
+
+Use **Choose [slot]** and a candidate to edit B. A remains fixed until **Set A from B** or explicit reinitialization. **Reset B to A** restores the reference. The table aligns A, B and signed deltas; empty slots yield clearly marked partial totals. Static set properties are calculated from the pinned catalogue; descriptions also disclose conditional effects that are excluded. No damage/DPS simulation or automatic Trace/Eidolon/Light Cone passive model is provided.
+
+Save up to 20 named comparison snapshots locally. The same name replaces that saved pair. Snapshots retain the shared profile, both relic loadouts and precision across inventory imports; switching views keeps unsaved drafts during the session. Reload requires loading a named snapshot. **Download comparison backup** exports saved pairs, separately from inventory backups. Restore uses a validated preview and explicit replacement. Back up both files before clearing browser data. Comparison backups currently require the same catalogue pin; they fail visibly rather than silently recalculating against a different version.
 
 ## Requirements
 
@@ -154,9 +162,9 @@ Inventory validation, its React view, and IndexedDB inventory storage are implem
 | Layer | Responsibility |
 | --- | --- |
 | React feature views | Inventory filters/details, A/B loadouts, optimizer controls/results, team timeline |
-| Pure TypeScript domain modules | Implemented export validation/normalization; planned stat calculations, legal-build checks, action-value math |
+| Pure TypeScript domain modules | Implemented export validation/normalization; implemented manual-profile build calculations; planned optimizer legality checks and action-value math |
 | Module Web Worker | Bounded optimization with progress, cancellation, and stale-result protection |
-| Versioned IndexedDB records | Implemented local inventory; planned profiles, saved loadouts, and team configuration |
+| Versioned IndexedDB records | Implemented local inventory and comparison/profile snapshots; planned team configuration |
 | Game-data catalogue | Explicitly sourced/versioned constants with visible handling of unknown records |
 
 The implemented import flow is scanner JSON -> complete validation -> normalized inventory -> atomic local persistence -> React views. Invalid input must preserve the previous valid inventory. Search will run off the main thread so controls remain responsive.

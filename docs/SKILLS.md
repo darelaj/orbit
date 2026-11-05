@@ -26,4 +26,4 @@ Keep upstream files intact. Record local overrides in AGENTS.md and project docs
 
 Antislop is MIT-licensed; its root notice is preserved at `third_party/antislop-LICENSE.txt`, along with bundled notices inside the installed skill folders. Karpathy and React skills declare MIT in their original SKILL.md metadata; those files are preserved. No project-wide license has been selected on the owner's behalf.
 
-Run the Codex `skill-creator/scripts/quick_validate.py` helper against each skill when it is added or changed. Record actual results in SESSION_STATE.md. Upstream optional metadata may require a compatibility note if the validator is stricter than the source format; do not silently rewrite upstream instructions to satisfy a superficial check.
+All seven skills passed the Codex `skill-creator/scripts/quick_validate.py` helper on 2026-11-05. Re-run it when adding or changing a skill. Upstream React guidance includes trailing whitespace; preserve the upstream copy and exclude vendor files from project-owned whitespace checks. Do not silently rewrite upstream instructions to satisfy a superficial check.

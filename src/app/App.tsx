@@ -1,5 +1,5 @@
 import InventoryWorkspace from '../features/inventory/InventoryWorkspace';
-import { useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { initialTheme, persistTheme } from './theme';
 import { demoRelics, slots, type DemoRelic, type Slot } from './demo';
 import { FigmaIcon, GameImage, RelicCard, RelicDetails } from './Equipment';
@@ -10,6 +10,8 @@ export default function App() {
   const [themeStored, setThemeStored] = useState(true);
   const [demo, setDemo] = useState(true);
   const [hasInventory, setHasInventory] = useState(false);
+  const [view, setView] = useState<'inventory'|'comparison'>(() => location.hash === '#comparison' ? 'comparison' : 'inventory');
+  useEffect(() => { const syncView = () => setView(location.hash === '#comparison' ? 'comparison' : 'inventory'); window.addEventListener('hashchange', syncView); return () => window.removeEventListener('hashchange', syncView); }, []);
   const [slot, setSlot] = useState<Slot | 'all'>('all');
   const [query, setQuery] = useState('');
   const [lockFilter, setLockFilter] = useState<LockFilter>('all');
@@ -41,20 +43,20 @@ export default function App() {
     setSelectedId(relic.id);
     if (globalThis.matchMedia?.('(max-width: 1099px)').matches) detail.current?.showModal();
   }
-  function toggleDemo() { setDemo(!demo); resetFilters(); setSelectedId('demo-body-01'); }
+  function toggleDemo() { setView('inventory'); location.hash = 'inventory'; setDemo(!demo); resetFilters(); setSelectedId('demo-body-01'); }
 
   return <div className="app">
     <a className="skip-link" href="#main">Skip to content</a>
     <header className="app-header">
       <a className="wordmark" href="#inventory" aria-label="Orbit, relic inventory">ORBIT</a>
-      <nav className="main-nav" aria-label="Workspace"><a href="#inventory" aria-current="page">Inventory</a><button onClick={() => guide.current?.showModal()}>Scanner guide</button></nav>
+      <nav className="main-nav" aria-label="Workspace"><a href="#inventory" onClick={() => setView('inventory')} aria-current={view === 'inventory' ? 'page' : undefined}>Inventory</a><a href="#comparison" onClick={() => setView('comparison')} aria-current={view === 'comparison' ? 'page' : undefined}>Comparison</a><button onClick={() => guide.current?.showModal()}>Scanner guide</button></nav>
       <div className="header-actions"><span className="local-label">Local workspace · No account</span><button className="theme-toggle" onClick={toggleTheme} aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`} title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}><FigmaIcon name="theme" /></button></div>
     </header>
     <main id="main" tabIndex={-1}>
       {!themeStored ? <p className="notice" role="status">Theme changed for this session. Your browser could not save the preference.</p> : null}
-      <div className="page-heading" id="inventory"><div><p className="eyebrow">Honkai: Star Rail / Relic workspace</p><h1>{demo || hasInventory ? 'Relic workspace' : 'Your inventory is empty'}</h1></div><div className="page-actions">{demo ? <span className="demo-label">Demo · 8 synthetic relics</span> : null}<button className={demo ? 'quiet-button' : 'primary'} onClick={toggleDemo}>{demo ? 'Exit demo' : 'Open demo'}</button></div></div>
-      <InventoryWorkspace visible={!demo} onInventory={() => { setHasInventory(true); setDemo(false); }} />
-      {demo ? <div className="equipment-workspace">
+      <div className="page-heading" id="inventory"><div><p className="eyebrow">Honkai: Star Rail / Relic workspace</p><h1>{view === 'comparison' ? 'Build comparison' : demo || hasInventory ? 'Relic workspace' : 'Your inventory is empty'}</h1></div><div className="page-actions">{demo ? <span className="demo-label">Demo · 8 synthetic relics</span> : null}<button className={demo ? 'quiet-button' : 'primary'} onClick={toggleDemo}>{demo ? 'Exit demo' : 'Open demo'}</button></div></div>
+      <InventoryWorkspace comparisonVisible={view === 'comparison'} visible={!demo && view === 'inventory'} onInventory={() => { setHasInventory(true); setDemo(false); }} />
+      {view === 'comparison' ? null : demo ? <div className="equipment-workspace">
         <div className="collection-workspace">
           <CharacterEquipment selectedId={selectedId} onSelect={selectRelic} />
           <section className="inventory-panel" aria-labelledby="collection-heading">

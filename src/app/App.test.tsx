@@ -4,7 +4,18 @@ import userEvent from '@testing-library/user-event';
 import App from './App';
 import { GameImage } from './Equipment';
 
-afterEach(() => { cleanup(); localStorage.clear(); });
+afterEach(() => { cleanup(); localStorage.clear(); history.replaceState(null, '', '/'); });
+
+test('comparison navigation preserves unsaved manual profile across views', async () => {
+  const user=userEvent.setup();
+  render(<App />);
+  await user.click(screen.getByRole('link',{name:'Comparison'}));
+  await user.type(screen.getByRole('textbox',{name:'Character/profile name'}),'Manual profile');
+  await user.click(screen.getByRole('link',{name:'Inventory'}));
+  expect(screen.queryByRole('textbox',{name:'Character/profile name'})).toBeNull();
+  await user.click(screen.getByRole('link',{name:'Comparison'}));
+  expect(screen.getByRole('textbox',{name:'Character/profile name'})).toHaveProperty('value','Manual profile');
+});
 
 test('theme toggle changes the rendered theme and persists the choice', async () => {
   localStorage.setItem('orbit:theme:v1', 'light');

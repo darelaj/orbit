@@ -26,3 +26,11 @@ test('invalid profiles, wrong slots and conflicting equipped records fail explic
   expect(()=>calculateBuild(profile,{Head:relic})).toThrow('Wrong relic slot');
   expect(()=>equippedLoadout([relic,{...relic,id:'2'}],'1308')).toThrow('Multiple');
 });
+test('planar static bonuses apply without conditional team bonuses',()=>{
+  const sphere={...relic,id:'sphere',slot:'Planar Sphere' as const,mainStat:'HP',setId:'314',substats:[]};
+  const rope={...sphere,id:'rope',slot:'Link Rope' as const};
+  const result=calculateBuild(profile,{'Planar Sphere':sphere,'Link Rope':rope});
+  expect(result.totals['CRIT Rate_']).toBe(5);
+  expect(result.activeSets).toHaveLength(1);
+  expect(result.activeSets[0].applied).toEqual(['ATK %: 12']);
+});

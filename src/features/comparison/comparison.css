@@ -1,0 +1,25 @@
+.comparison-workspace { margin: 24px 0; }
+.comparison-workspace p { line-height: 1.6; max-width: 100ch; }
+.comparison-fields, .comparison-toolbar { display: flex; flex-wrap: wrap; gap: 12px; align-items: end; margin: 16px 0; }
+.comparison-workspace label { display: grid; gap: 8px; min-width: 0; }
+.comparison-fields label { flex: 1 1 180px; }
+.comparison-profile, .comparison-loadouts > section { padding: 20px; border: 1px solid var(--line); border-radius: 6px; }
+.comparison-loadouts { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.comparison-slots { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 12px; }
+.comparison-slot { display: flex; flex-direction: column; gap: 8px; min-width: 0; overflow-wrap: anywhere; padding: 10px; }
+.comparison-slot.selected { outline: 1px solid currentColor; }
+.comparison-slot img, .comparison-candidates img { width: 56px; height: 56px; object-fit: contain; }
+.comparison-candidates { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 12px; }
+.comparison-candidates button { display: flex; gap: 10px; text-align: left; min-width: 0; overflow-wrap: anywhere; }
+.comparison-workspace table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+.comparison-workspace th, .comparison-workspace td { padding: 8px; text-align: right; border-bottom: 1px solid var(--line); }
+.comparison-workspace th:first-child { text-align: left; }
+.comparison-workspace button { min-height: 44px; }
+@media(max-width:900px) { .comparison-slots { grid-template-columns: repeat(2,minmax(0,1fr)); } .comparison-candidates { grid-template-columns: repeat(2,minmax(0,1fr)); } }
+@media(max-width:600px) { .comparison-loadouts { grid-template-columns: 1fr; } .comparison-candidates { grid-template-columns: 1fr; } .comparison-workspace th,.comparison-workspace td { padding: 6px 2px; font-size: 12px; } }
+
+.comparison-fields { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); }
+.comparison-context { margin-bottom: 16px; }
+@media(max-width:700px) { .comparison-fields { grid-template-columns: repeat(2,minmax(0,1fr)); } }
+
+.comparison-ledger { max-width: 100%; overflow-x: auto; }

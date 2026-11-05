@@ -35,9 +35,12 @@ export function encodeComparisons(comparisons:Comparison[]):string {
 export function decodeComparisons(text:string):Comparison[] {
   const raw=object(JSON.parse(text));
   if (raw.schemaVersion!==1 || raw.cataloguePin!==CATALOGUE_PIN || !Array.isArray(raw.items) || raw.items.length>20) throw new Error('Unsupported comparison storage version or catalogue.');
+  const names=new Set<string>();
   return raw.items.map(value=>{
     const c=object(value);
     if (typeof c.name!=='string' || !c.name.trim() || c.name.length>100 || !['packet','ocr','unknown'].includes(String(c.precision))) throw new Error('Invalid comparison metadata.');
+    if (names.has(c.name)) throw new Error('Duplicate comparison name.');
+    names.add(c.name);
     return {name:c.name,profile:profileFrom(c.profile),precision:c.precision as Comparison['precision'],a:loadoutFrom(c.a),b:loadoutFrom(c.b)};
   });
 }

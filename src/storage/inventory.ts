@@ -1,6 +1,6 @@
 import { backupInventory, parseInventory, type Inventory } from '../domain/inventory';
 
-function open(): Promise<IDBDatabase> {
+export function openWorkspace(): Promise<IDBDatabase> {
   return new Promise((resolve, reject) => {
     const request = indexedDB.open('orbit-workspace', 1);
     request.onupgradeneeded = () => request.result.createObjectStore('workspace');
@@ -10,7 +10,7 @@ function open(): Promise<IDBDatabase> {
   });
 }
 export async function loadInventory(): Promise<Inventory | null> {
-  const db = await open();
+  const db = await openWorkspace();
   try {
     const text = await new Promise<unknown>((resolve, reject) => {
       const request = db.transaction('workspace').objectStore('workspace').get('inventory');
@@ -24,7 +24,7 @@ export async function loadInventory(): Promise<Inventory | null> {
 }
 export async function saveInventory(inventory: Inventory): Promise<void> {
   const text = backupInventory(inventory);
-  const db = await open();
+  const db = await openWorkspace();
   try {
     await new Promise<void>((resolve, reject) => {
       const transaction = db.transaction('workspace', 'readwrite');

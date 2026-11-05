@@ -57,3 +57,5 @@ Do not treat Enka JSON, a Fribbels save format with a different schema, or a new
 
 
 O-04b keeps backup schema 1 backward compatible: optional importedAt is an ISO date or null; absent legacy timestamps remain unknown. Only scanner imports assign a new timestamp. Optional characters/light_cones arrays preserve supported reference fields. Re-export/reimport retains the timestamp and precision. IndexedDB database/store versions do not change.
+
+O-05 comparison snapshots are stored independently from inventory and retain relic values across replacement. Comparison backup is a separate schema-1 file with profile, A/B relic snapshots, precision and catalogue pin. Restore validates the whole list (maximum 20 named comparisons, file limit 20 MiB) before confirmation/persistence. Inventory backup alone does not contain saved comparisons. Unsupported catalogue pins are rejected; do not silently rebind older builds to imported IDs. Full character/Light Cone stats remain manual calculation inputs, not recovered from the minimal imported references.

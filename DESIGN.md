@@ -1,6 +1,6 @@
 # Orbit design brief
 
-Status: O-03b implements the owner's Figma reference with the approved review revisions. The earlier O-03a layout is superseded. The synthetic demo remains separate from O-04a personal inventory import. Imported items use the same panel/grid/theme language with catalogue-derived main stats and sourced local set/slot icons; unknown sets keep textual identification; no unrelated artwork is substituted. Calculation, comparison, optimization and timeline remain planned. See docs/FIGMA_HANDOFF.md for source frames/deviations and docs/VERIFICATION.md for executed checks.
+Status: O-03b implements the owner's Figma reference with the approved review revisions. The earlier O-03a layout is superseded. The synthetic demo remains separate from O-04a personal inventory import. Imported items use the same panel/grid/theme language with catalogue-derived main stats and sourced local set/slot icons; unknown sets keep textual identification; no unrelated artwork is substituted. Manual-profile calculation and A/B comparison are implemented in O-05; optimization and timeline remain planned. See docs/FIGMA_HANDOFF.md for source frames/deviations and docs/VERIFICATION.md for executed checks.
 
 ## Decisions from the owner
 
@@ -156,3 +156,6 @@ All fields have visible labels, controls at least 44px hit targets, logical keyb
 Keep visual changes separate from importer/math tasks and use the current task branch recorded in SESSION_STATE.md. Source frames and deliberate Figma deviations belong in FIGMA_HANDOFF.md.
 
 Before UI delivery, record a scoped antislop gate and control walkthrough linked from docs/VERIFICATION.md. Verify both themes, wide/narrow layouts, keyboard operation, image failure, and the implemented workflows. Import, comparison, cancellation, and timeline acceptance belong to their respective implementation tasks. Passing checks does not imply owner approval of the visual result.
+
+
+O-05 follows the shared equipment palette and six-slot layout with a collapsible manual profile, reference/candidate columns, bounded candidate pages and an aligned numeric ledger. Acheron artwork is reused only when the user explicitly declares that manual profile; no unbundled character art is substituted. Mobile stacks A and B, keeps both navigation destinations visible, and confines very wide numeric rows to a keyboard-focusable ledger scroll area.

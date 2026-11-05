@@ -52,3 +52,5 @@ All three families use SIL Open Font License 1.1. Copyright/license files are pr
 ## O-04b inventory catalogue
 
 `scripts/fetch-catalogue.mjs` reproducibly retrieves data at the same pinned StarRailRes commit above. `src/data/relic-main-affixes.json` retains its main-affix groups; `src/data/relic-catalogue.json` projects English item names and icon filenames keyed by set ID and slot. The 192 distinct icons from `icon/relic/` are bundled under `public/assets/hsr/relic/`. The existing upstream license and HoYoverse attribution apply. No runtime remote asset requests are introduced. Unknown set/slot records remain importable with an explicit artwork fallback.
+
+O-05 additionally bundles index_new/en/relic_sets.json at the same StarRailRes pin, using scripts/fetch-sets.mjs. Existing upstream license/attribution apply. Acheron's existing portrait is reused for an explicitly declared Acheron manual profile; no new artwork or runtime CDN was introduced.

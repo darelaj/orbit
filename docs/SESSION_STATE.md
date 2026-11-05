@@ -19,7 +19,7 @@ Updated: 2026-11-05, Asia/Jakarta.
 - Checkout: `D:\Kuliah\Oprekan\Enka smth\orbit`.
 - Remote: `origin = https://github.com/darelaj/orbit.git`.
 - Initial clone was empty. Git author identity is already configured; do not replace it.
-- Current work branch: `docs/design-direction`, based on framework commit `e2ab362`, with design brief commit `e5c48b6`. Main includes documentation merge `e7d6e1d` and foundation commit `a1647a8`. Both framework/design branches have been pushed; they are not integrated into main.
+- Current work branch: `docs/agent-operating-guide`, branched from design checkpoint `90ebecc`. It includes framework commit `e2ab362` and design brief `e5c48b6`. Main remains at documentation merge `e7d6e1d`; framework/design work is pushed on separate branches and not integrated into main.
 - Four upstream antislop skills have been installed under `.agents/skills` at commit `9504989f162a92b1996853eccbb3d8a86e73df68`.
 - Karpathy and React skills are installed at pins in SKILLS.md. The local HSR integrity skill is present. All seven passed the official validator.
 - `../relic-lab` contains the unfinished earlier plain JS prototype. Preserve it; do not ship it. It includes an untested engine and a game-data snapshot, but no app.js, no tests, and no completed UI.
@@ -35,15 +35,16 @@ Updated: 2026-11-05, Asia/Jakarta.
 - React 19.3.1, TypeScript 7.0.2, Vite 8.3.6, and Vitest 5.1.0 are installed with exact versions and a lockfile.
 - O-03 checks passed: `npm.cmd run typecheck`, `npm.cmd test` (1 theme persistence test), and `npm.cmd run build`. The app currently contains the framework shell and theme toggle, not inventory features.
 - Browser smoke verified the shell at a 703px-wide viewport: dark theme rendered, clicking the theme toggle rendered light theme. This is functional evidence only; the owner did not approve its visual direction.
+- O-01a documentation verification passed: all 11 referenced project documents, 7 skill entrypoints, and 6 documented npm scripts exist; `git diff --check -- AGENTS.md docs/SESSION_STATE.md docs/IMPLEMENTATION_PLAN.md` passed. No application tests/build were rerun because this task changes documentation only.
 - Vite dev server is running at `http://127.0.0.1:4173/` in exec session `90637`. Reuse it while valid; check readiness before starting another process on the same port.
 - Earlier research successfully queried Enka HSR: HTTP 200 with 8 showcased characters and 6 equipped relics on the first character. This is not a full inventory method.
 
 ## Next actions
 
-1. Read the revised DESIGN.md. The deep design interview is complete; no required design decision is outstanding. Palette/type remain explicitly proposed choices.
-2. Create `feat/hsr-visual-direction` from this branch and implement the equipment-oriented layout, two themes, and documented real-asset provenance. The current browser still shows the rejected technical baseline.
-3. Continue O-04 and subsequent tasks in plan order. Keep domain correctness and feature work separate from design changes.
-4. Integrate checked feature branches into main without deleting their refs. Push and verify the completed refs. The framework/design branches currently form a stack based on `e7d6e1d`.
+1. The owner's latest task is documentation only: expand AGENTS.md. This branch changes agent instructions and continuation docs, not application behavior.
+2. Before implementing another feature, read the expanded AGENTS.md and revised DESIGN.md. The deep design interview is complete; palette/type remain explicitly proposed choices.
+3. When UI development resumes, create `feat/hsr-visual-direction` from a base containing the latest framework/design/agent work and implement the equipment-oriented layout with both themes and asset provenance. The browser's old shell is not approved visual design.
+4. Continue O-04 and later tasks in plan order when requested. Integrate checked branches without deleting their refs, then push and verify. Existing framework/design/documentation branches form a stack above `e7d6e1d`.
 
 ## Technical cautions discovered in the prototype
 
@@ -61,6 +62,7 @@ Updated: 2026-11-05, Asia/Jakarta.
 | `docs/project-plan` | `ba87730` | Product/design/architecture/import/math/testing/research docs and resume plan | Merged into main as `e7d6e1d`; pushed and verified |
 | `feat/react-workspace` | `e2ab362` | Framework shell, exact dependency versions, theme persistence, run scripts | Typecheck, 1 test, build, two-theme browser smoke passed; visual direction rejected; pushed, not integrated |
 | `docs/design-direction` | `e5c48b6` | Owner interview recorded; DESIGN.md rewritten for HSR equipment, artwork, top navigation, side details, and motion | Project-owned whitespace check passed; pushed, not integrated |
+| `docs/agent-operating-guide` | Resolve this branch's HEAD | Expanded AGENTS.md: resume protocol, source-of-truth map, Git/dependency workflow, domain invariants, design rules, scoped verification, handoff | Document/skill/script reference and scoped whitespace checks passed; verify remote ref on resume; not integrated |
 
 Remote heads for main and the first two task branches were confirmed with `git ls-remote --heads origin`. Retain feature branches after integration. Record a push only after confirming the remote refs.
 

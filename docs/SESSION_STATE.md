@@ -1,5 +1,20 @@
 # Resume checkpoint
 
+O-04a local scanner import, 2026-11-06. Current branch `feat/inventory-import`, base `b21b08c994f84606c287b7dd528c1b0637cf7617`. PR #8 (English UI) is merged and its branch deleted remotely/locally.
+
+Owner now explicitly requires incremental commits, not one commit for an entire feature. This branch has parser/tests `461f1e5`, atomic storage `6de24c1`, and import UI/integration tests `dffa28e`, followed by a documentation checkpoint. No delegation requested.
+
+Implemented: source/schema-4 validation, InitialScan and Orbit backup parsing, unrounded active/preview/reroll values, duplicate-ID rejection, confirmation/cancel, atomic IndexedDB save/restore, backup download, source precision, 48-card pages, search/slot/status filters, raw relic inspection, mobile native dialog. Demo remains separate. Limits: 20 MiB and 10,000 relics. Unknown set/owner IDs remain literal; no unrelated artwork is substituted. Character/Light Cone records and unrelated scanner metadata are not retained. Main-stat amounts, catalogue artwork, reference integrity and richer filters remain O-04b; O-04 overall is still in progress. Comparison/math/optimizer/timeline are not implemented.
+
+Checks: typecheck, 12 tests (4 files), production build passed. Browser used 100 synthetic scanner items: confirmation, pagination, discard filter, mobile inspection/Escape/focus return, backup download, reload restoration, invalid JSON retention. No overflow at 390x844 light or 1440x1000 dark. Screenshots `.cache/import-qa/`; browser viewport reset. Vite session `27510` stopped. Downloaded synthetic backup is `C:\Users\Chroma\Downloads\orbit-inventory.json`; no personal export was used.
+
+Next actions:
+1. Check this branch's existing PR status; finish its integration rather than opening a duplicate. After verified merge, sync main, verify all task commits are ancestors and delete its remote/local source branch.
+2. Continue O-04b on `feat/inventory-catalogue` when requested, before treating O-04 as complete or starting O-05. Read IMPORT_FORMAT.md, CALCULATIONS.md and source current game constants explicitly. Do not infer main-stat values from demo fixtures.
+3. Real-account validation remains pending an export from the owner; synthetic coverage does not prove scanner OCR correctness. No current blocker prevents catalogue work.
+
+# Prior checkpoint (historical)
+
 English interface checkpoint, 2026-11-06 (Asia/Jakarta). PR #1 through #7 are merged and their source branches have been removed. O-03c implementation and checks are complete; verify its integration status before creating a branch or PR.
 
 ## Owner instructions
@@ -59,7 +74,7 @@ English interface checkpoint, 2026-11-06 (Asia/Jakarta). PR #1 through #7 are me
 
 ## Next actions
 
-1. Check whether `feat/english-ui` already has an open or merged PR before creating one. Finish its existing integration; after a successful merge, synchronize main, verify ancestry, and delete the source branch remotely and locally.
+1. Historical instruction, superseded by the O-04a checkpoint above: Finish its existing integration; after a successful merge, synchronize main, verify ancestry, and delete the source branch remotely and locally.
 2. Keep new UI and accessibility copy in English. VERIFICATION.md has the current language check; FIGMA_HANDOFF.md and FIGMA_VERIFICATION.md retain the layout and asset history. Preserve font/SVG notices and game attribution.
 3. README distinguishes the working synthetic demo from planned personal-inventory/domain/worker/storage features. Preserve this distinction and update README in the affected implementation task.
 4. Continue O-04 and later tasks when requested, using separate branches and focused PRs. The demo fixtures are not a parser/normalization contract; read IMPORT_FORMAT.md before replacing them with real imported records.

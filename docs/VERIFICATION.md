@@ -1,3 +1,11 @@
+# O-04a import verification (current)
+
+Executed 2026-11-06. `npm.cmd run typecheck`, `npm.cmd test` (12 tests in 4 files), `npm.cmd run build` passed. Existing six demo tests remain passing. Added domain tests cover both scanner sources, separate preview/reroll values, precision-preserving backup round trips, invalid field paths, unsupported source/version/events, duplicate IDs, malformed JSON and limits. Storage test uses pinned dev-only fake-indexeddb and aborts a replacement transaction before asserting the prior inventory is still readable. UI tests cover preview/confirm/cancel, storage-failure retry, invalid-file retention, restoration and 48-item pagination.
+
+Browser controls exercised with 100 synthetic items: file chooser and preview, Replace inventory, Download backup, Next page (page 2 of 3), Inventory status (discard: 1 of 100), search, Reset inventory filters, selection, Back to inventory/Escape with focus return, theme switch, reload restore and invalid JSON alert without losing inventory. Actual backup download succeeded. Source precision and inactive preview labels were visible. Desktop 1440x1000 dark and mobile 390x844 light had no document overflow. Screenshots: `.cache/import-qa/desktop-dark.jpg`, `.cache/import-qa/mobile-light.jpg`. Vite session 27510 stopped and temporary viewport reset.
+
+Scoped antislop gate: direction follows existing theme/grid/inspector; no generated assets or arbitrary character art for unknown records. English copy and actionable import errors present. Relevant controls function as tested above; unrelated planned actions are not advertised. No full accessibility/contrast certification or measured large-inventory performance is claimed. Browser console audit and real-account validation were not completed. Numeric main-stat amounts, catalogue images, reference validation and richer filters remain O-04b; overall O-04 is not complete. Historical Figma/demo reports below apply to that separate view.
+
 # UI verification
 
 ## O-03c English interface (current)

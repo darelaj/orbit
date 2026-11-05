@@ -1,6 +1,6 @@
 # Architecture decision
 
-Status: the React/TypeScript/Vite shell, theme persistence, and O-03b Figma equipment demo are implemented. App.tsx owns transient filter/sort/selection state and native dialogs; Workspace.tsx composes the character context, filter controls, and scanner guide; Equipment.tsx renders cards/details/image fallbacks and theme-specific Figma icons. demo.ts contains eight synthetic fixtures; it is not the future inventory domain model. Assets/fonts are local with provenance in ASSETS.md. Inventory import/domain modules, optimization workers, and IndexedDB persistence below remain planned. See [README.md](../README.md) for the current source tree and local run instructions.
+Status: the React/TypeScript/Vite shell, theme persistence, and O-03b Figma equipment demo are implemented. App.tsx owns transient filter/sort/selection state and native dialogs; Workspace.tsx composes the character context, filter controls, and scanner guide; Equipment.tsx renders cards/details/image fallbacks and theme-specific Figma icons. demo.ts contains eight synthetic fixtures; it is not the future inventory domain model. Assets/fonts are local with provenance in ASSETS.md. O-04a inventory import/domain and IndexedDB inventory persistence are implemented as described below; catalogue enrichment, optimization workers and other persisted features remain planned. See [README.md](../README.md) for the current source tree and local run instructions.
 
 Use React and strict TypeScript with Vite for a client-side local application. The project does not need server rendering, authentication, a database server, or a cloud service. React owns interface state; pure domain modules own parsing, calculations, and search. Heavy optimization runs in a module Web Worker. Vitest covers deterministic domain behavior and selected component flows.
 
@@ -26,6 +26,8 @@ docs/                  decisions and verified continuation state
 Avoid a general component framework, global state library, or chart package until a concrete need justifies it. Use native controls where possible. Derive filtered rows, build stats, and timeline events from current inputs; do not mirror them into effect-driven state.
 
 ## Data flow
+
+O-04a implementation: `src/domain/inventory.ts` validates scanner/backup JSON and normalizes relics; `src/storage/inventory.ts` reads/writes one versioned backup in an IndexedDB transaction; `src/features/inventory/InventoryWorkspace.tsx` owns file preview, replacement, source precision, filters, pagination, backup download, and imported-item details. The synthetic demo remains separate in `src/app/`. Only 48 imported cards are mounted per page. Catalogue/main-stat amounts and character/Light Cone reference processing remain O-04b; workers and saved builds remain planned.
 
 File selection -> parse unknown JSON -> validate complete export -> normalize required fields -> atomically persist workspace -> render inventory. Errors before persistence keep the old workspace. A storage failure must be visible and must not claim durable success.
 

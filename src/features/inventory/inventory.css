@@ -1,0 +1,10 @@
+.import-workspace { margin: 0 0 24px; }
+.import-toolbar, .inventory-pagination { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; margin: 16px 0; }
+.import-toolbar label { display: grid; gap: 8px; min-width: 0; }
+.import-toolbar input { max-width: 100%; }
+.imported-card { text-align: left; height: auto; min-height: 230px; padding: 16px; gap: 12px; overflow-wrap: anywhere; }
+.imported-card > strong { font-size: 16px; }
+.import-workspace .filter-fields { display: flex; flex-wrap: wrap; }
+.import-workspace .filter-fields label { display: grid; gap: 8px; flex: 1 1 160px; min-width: 0; }
+.import-workspace button { min-height: 44px; }
+.import-workspace .detail-panel { padding: 20px; overflow-wrap: anywhere; }

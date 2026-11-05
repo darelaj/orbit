@@ -80,7 +80,7 @@ Repository remote: https://github.com/darelaj/orbit.git.
 - Create a new branch per feature or coherent documentation/setup task. Use descriptive names such as docs/agent-operating-guide, feat/inventory-import, feat/build-comparison, feat/relic-optimizer, or feat/speed-tuning.
 - Check the actual dependency branch before creating it. Some existing branches are stacked and not merged into main; branching from main blindly can lose required framework or design work.
 - Record the base branch/commit and integration status in the checkpoint. An unmerged feature branch is not a missing feature if the checkpoint says where it lives.
-- Make focused commits per completed task. Keep a design change, importer behavior, and a search algorithm in separate reviewable commits.
+- Make focused commits per completed task. The owner explicitly requests incremental commits rather than one final commit for an entire feature. Separate validated milestones (for example parser, persistence, UI, and handoff); keep each reviewable and record its checks. Keep a design change, importer behavior, and a search algorithm in separate reviewable commits.
 - Stage explicit task files and inspect git diff --cached and the staged file list. Never include personal exports, tokens, packet captures, node_modules, dist, local caches, or unrelated changes.
 - Run checks appropriate to the change before committing. A command must succeed; the final command's exit status does not erase an earlier failure.
 - Preserve existing author identity and published history. Do not force-push, amend published commits, or run destructive Git cleanup. Branch deletion is allowed after the successful-merge checks below.

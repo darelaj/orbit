@@ -3,6 +3,11 @@ import { backupInventory, MAX_RELICS, parseInventory, referenceWarnings } from '
 
 export const relicFixture = { _uid: '1', set_id: '102', name: 'Musketeer of Wild Wheat', slot: 'Hands', rarity: 5, level: 15, mainstat: 'ATK', substats: [{ key: 'SPD', value: 2.59999 }], preview_substats: [{ key: 'HP', value: 38 }], reroll_substats: [{ key: 'SPD', value: 6.1 }], location: '', lock: false, discard: true };
 export const scannerFixture = { source: 'reliquary_archiver', version: 4, relics: [relicFixture] };
+test('legacy schema-1 backups remain readable without inventing an import time', () => {
+  const legacy = parseInventory(JSON.stringify({format:'orbit-inventory', schemaVersion:1, scanner:scannerFixture}));
+  expect(legacy.importedAt).toBeNull();
+  expect(parseInventory(backupInventory(legacy))).toEqual(legacy);
+});
 test('reference metadata and import time survive backup; missing owners remain visible', () => {
   const raw = { ...scannerFixture, relics: [{ ...relicFixture, location: '1308' }], characters: [{ id: '1308', name: 'Acheron' }], light_cones: [{ id: '23024', _uid: 'cone1', name: 'Along the Passing Shore', location: '1308' }] };
   const parsed = parseInventory(JSON.stringify(raw));

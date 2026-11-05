@@ -9,7 +9,7 @@ export type InventoryRelic = {
 export type Inventory = {
   source: 'reliquary_archiver' | 'HSR-Scanner'; version: 4;
   precision: 'packet' | 'ocr'; relics: InventoryRelic[];
-  importedAt: string; characters: { id: string; name: string }[];
+  importedAt: string | null; characters: { id: string; name: string }[];
   lightCones: { id: string; name: string; uid: string; location: string }[];
 };
 export const MAX_BYTES = 20 * 1024 * 1024;
@@ -54,11 +54,12 @@ export function parseInventory(text: string): Inventory {
   let raw: unknown;
   try { raw = JSON.parse(text); } catch { return fail('File', 'invalid JSON'); }
   let root = record(raw, 'File');
-  let importedAt = new Date().toISOString();
+  let importedAt: string | null = new Date().toISOString();
   if (root.event === 'InitialScan') root = record(root.data, 'data');
   if (root.format === 'orbit-inventory') {
     if (root.schemaVersion !== 1) return fail('Backup', 'unsupported schema version');
-    if (root.importedAt !== undefined) {
+    importedAt = null;
+    if (root.importedAt !== undefined && root.importedAt !== null) {
       importedAt = string(root.importedAt, 'importedAt');
       if (!Number.isFinite(Date.parse(importedAt))) return fail('importedAt', 'invalid date');
     }

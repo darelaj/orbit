@@ -8,3 +8,7 @@
 .import-workspace .filter-fields label { display: grid; gap: 8px; flex: 1 1 160px; min-width: 0; }
 .import-workspace button { min-height: 44px; }
 .import-workspace .detail-panel { padding: 20px; overflow-wrap: anywhere; }
+
+.imported-identity { display: flex; gap: 10px; align-items: center; }
+.imported-identity img { width: 56px; height: 56px; object-fit: contain; }
+.import-workspace .detail-panel img, .import-workspace .detail-dialog img { width: 128px; height: 128px; object-fit: contain; }

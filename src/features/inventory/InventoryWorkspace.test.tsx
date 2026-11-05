@@ -49,3 +49,20 @@ test('restores saved inventory and cancels a valid replacement without saving', 
   expect(saveInventory).not.toHaveBeenCalled();
   expect(screen.getByText('100 of 100 imported relics')).toBeTruthy();
 });
+test('ten thousand relics remain paginated while catalogue filters compose and reset', async () => {
+  const large = { ...fixture, characters: [{ id: '1308', name: 'Acheron' }], relics: Array.from({length:10000}, (_,i) => ({ ...fixture.relics[0], _uid:String(i), level:i % 16, set_id:i % 2 ? '117' : '102', location:'1308' })) };
+  vi.mocked(loadInventory).mockResolvedValue(parseInventory(JSON.stringify(large)));
+  render(<InventoryWorkspace visible onInventory={() => {}} />);
+  await screen.findByText('10000 of 10000 imported relics');
+  expect(screen.getAllByRole('button', {pressed:false})).toHaveLength(48);
+  const user = userEvent.setup();
+  await user.selectOptions(screen.getByLabelText('Minimum level'), '15');
+  await user.selectOptions(screen.getByLabelText('Relic set'), '117');
+  await user.selectOptions(screen.getByLabelText('Main stat'), 'ATK');
+  await user.selectOptions(screen.getByLabelText('Rarity'), '5');
+  await user.selectOptions(screen.getByLabelText('Equipped character'), '1308');
+  expect(screen.getByText('625 of 10000 imported relics')).toBeTruthy();
+  expect(screen.getByText('Page 1 of 14')).toBeTruthy();
+  await user.click(screen.getByRole('button', {name:'Reset inventory filters'}));
+  expect(screen.getByText('10000 of 10000 imported relics')).toBeTruthy();
+});

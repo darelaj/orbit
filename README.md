@@ -4,11 +4,11 @@ A local Honkai: Star Rail relic workspace for PC players. Orbit is being built t
 
 ## Current status
 
-The React/TypeScript/Vite application now uses the HSR equipment direction: Acheron artwork, six equipment-slot shortcuts, a visual relic grid, and a selected-item panel. Both light and dark themes work and retain the local preference. On smaller screens, item detail opens in a native dialog.
+The React/TypeScript/Vite application follows the owner's Figma equipment design with the approved density and interaction revisions: a horizontal Acheron context, six equipment selectors, a visual relic grid, and a selected-item inspector. Both light and dark themes retain the local preference. On smaller screens, detail opens in a native dialog, with a full-height layout on mobile.
 
-The app opens with eight clearly labeled synthetic demo relics. Try search by name/set/main stat, slot and locked-item filters, selection, and the scanner guide. Keluar demo shows the equipment-oriented empty workspace; Jelajahi demo restores the example. Demo selection and filters reset on reload; demo items are not saved as a personal inventory.
+The app opens with eight clearly labeled synthetic demo relics. Search by name/set/main stat, filter by slot or locked/unlocked status, and sort by equipped-first or either slot direction. Equipment selection keeps the current filters; Tampilkan relic terpilih clears filters when the selected item is hidden. Reset filter restores the default collection/order. Keluar demo opens the empty workspace; Buka demo or Jelajahi demo restores the example. Selection, filters, and sorting reset on reload; demo items are not saved as a personal inventory.
 
-Full inventory import, build comparison, optimization, and the speed timeline are planned and are not usable yet. The design direction is documented in [DESIGN.md](DESIGN.md); the implementation is ready for the owner's visual review. See [browser verification](docs/VERIFICATION.md) and [asset sources/notices](docs/ASSETS.md).
+Full inventory import, build comparison, optimization, and the speed timeline are planned and are not usable yet. The design is documented in [DESIGN.md](DESIGN.md) and the [Figma handoff](docs/FIGMA_HANDOFF.md). See [browser verification](docs/VERIFICATION.md) and [asset sources/notices](docs/ASSETS.md).
 
 See the [implementation plan](docs/IMPLEMENTATION_PLAN.md) for feature acceptance criteria and the [resume checkpoint](docs/SESSION_STATE.md) for the latest verified work.
 
@@ -112,11 +112,13 @@ orbit/
 │   └── app/
 │       ├── App.tsx           Shell, demo filters/selection, native dialogs
 │       ├── Equipment.tsx     Relic cards, detail, image fallback
+│       ├── Workspace.tsx     Character equipment, filters, scanner guide
 │       ├── demo.ts           Explicitly synthetic item fixtures and slot types
+│       ├── fonts.css         Local Figma font families and weights
 │       ├── theme.ts          Theme selection and preference persistence
 │       ├── styles.css        Shared styles and light/dark theme tokens
 │       └── App.test.tsx      Theme, filtering, selection, empty and image-error flows
-├── public/assets/hsr/        Pinned game artwork/icons and upstream license
+├── public/assets/            Game images, Figma SVGs, local fonts, source notices
 ├── docs/                     Product contracts, architecture, planning, checkpoints
 ├── .agents/skills/           Pinned project skills and HSR integrity guidance
 ├── AGENTS.md                 Repository operating instructions

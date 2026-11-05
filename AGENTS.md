@@ -23,6 +23,7 @@ Use this map instead of duplicating full specifications here:
 | docs/IMPLEMENTATION_PLAN.md | Task IDs, dependencies, acceptance criteria, branch boundaries |
 | docs/PRODUCT.md | Product workflows and exclusions |
 | DESIGN.md | Accepted design decisions, proposed visual choices, screen composition, themes, motion |
+| docs/FIGMA_HANDOFF.md | Owner-supplied Figma source frames, approved revisions, asset/component mapping |
 | docs/ARCHITECTURE.md | Module boundaries, client processing, persistence, workers |
 | docs/IMPORT_FORMAT.md | Scanner schemas, item identity, precision, validation, backup semantics |
 | docs/CALCULATIONS.md | Units, formulas, set scope, search guarantees, timeline assumptions |
@@ -177,9 +178,9 @@ Reject non-finite/non-positive speeds, use a bounded horizon/event count, and pr
 
 ## UI and assets
 
-The revised DESIGN.md supersedes the rejected plain analytical shell. Its accepted direction is HSR character/relic equipment composition, balanced density, prominent real artwork, top navigation, wide work area, a side details panel, and subtle user-triggered transitions.
+DESIGN.md and the owner-approved Figma reference in docs/FIGMA_HANDOFF.md supersede the earlier rejected layouts. Keep the HSR equipment composition, balanced density, real artwork, top navigation, wide work area, side details, and subtle user-triggered transitions. For Figma implementation, follow the applicable design-to-code skill and record approved deviations; a malformed component width is not a reason to copy broken fixed sizing into the app.
 
-Both themes are required and must work equally. Palette and typography are still documented proposals, not an owner-selected brand specification. Do not repeat answered design questions or silently call the old UI approved.
+Both themes are required and must work equally. The supplied Figma palette/type and approved review revisions are now the reference, with scoped contrast corrections documented in the handoff. Do not repeat answered design questions or silently call a superseded UI approved.
 
 - Keep relics visual and key stats visible without hover. Maintain stable six-slot positions and aligned measurements.
 - Character artwork represents the selected character/context. It cannot cover controls, obscure numeric contrast, or become a random background.

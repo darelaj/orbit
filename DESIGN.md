@@ -1,6 +1,6 @@
 # Orbit design brief
 
-Status: the HSR equipment direction is implemented as a clearly labeled synthetic inventory demo in O-03a, ready for owner review. This brief replaces the rejected plain analytical interface. Import, calculation, comparison, optimization, and timeline workflows below remain planned unless their implementation task is complete. See docs/VERIFICATION.md for the current UI's actual checks.
+Status: O-03b implements the owner's Figma reference with the approved review revisions. The earlier O-03a layout is superseded. The application remains a clearly labeled synthetic inventory demo; import, calculation, comparison, optimization, and timeline workflows below remain planned unless their implementation task is complete. See docs/FIGMA_HANDOFF.md for source frames/deviations and docs/VERIFICATION.md for executed checks.
 
 ## Decisions from the owner
 
@@ -14,7 +14,7 @@ Status: the HSR equipment direction is implemented as a clearly labeled syntheti
 | Themes | Fully working dark and light modes |
 | Process | Antislop DURING, applied while planning and implementing |
 
-The owner has not selected a palette/type option or supplied an external reference URL. The choices below are proposals, not an attributed owner preference. Do not repeat the already answered questions.
+The owner supplied [the Orbit Figma file](https://www.figma.com/design/pVMHEP3S3rp9vMRIlfoeUp/Untitled?node-id=2-2698) and authorized implementation with the review revisions. This supersedes the earlier palette/type proposals. Keep the Figma identity while reducing excess vertical space and completing interaction states; the Figma canvas itself was not edited.
 
 ## Design read
 
@@ -39,23 +39,23 @@ Orbit remains a text wordmark. The owner authorized game artwork, not an invente
 
 Use selected-character artwork as a contained visual anchor. Show art for the character being inspected or optimized, not a random decorative character. If no character is selected, item content leads and the art area stays absent or shows an honest empty state. Record asset URLs, source, and any redistribution notices before committing files.
 
-## Proposed palette and typography
+## Figma palette and typography
 
-| Role | Dark proposal | Light proposal | Purpose |
+| Role | Dark | Light | Purpose |
 | --- | --- | --- | --- |
-| Page | Midnight #0E1726 | Warm ivory #F3F0E8 | Frame equipment and artwork |
-| Panel | Blue slate #18283D | Near-white #FFFDF7 | Keep numerical content on opaque surfaces |
-| Selected surface | Slate #23374D | Pale stone #E8E7DF | Distinguish selection and active controls |
-| Primary text | Ivory #F2EEE3 | Ink #17283C | Stable reading contrast |
-| Secondary text | Pale gray #B7C4CE | Slate gray #4D606D | Readable supporting labels |
-| Main accent | Muted gold #DFC38A | Dark gold #805A15 | Primary action, equipment annotations, selected framing |
+| Page | Midnight #10151E | Warm ivory #F1EDE4 | Frame equipment and artwork |
+| Panel | Blue slate #181F2B | Near-white #FAF7F0 | Keep numerical content on opaque surfaces |
+| Selected surface | Warm slate #29271F | Pale gold #EEE4CF | Distinguish selection and active controls |
+| Primary text | Ivory #F0F2F5 | Ink #242A32 | Stable reading contrast |
+| Secondary text | Pale gray #AAB5C5 | Gray #60656C | Readable labels; light token darkened from Figma #646970 for selected-surface contrast |
+| Main accent | Muted gold #CFB47B | Dark gold #80612B | Primary action, equipment annotations, selected framing |
 | Structural color | Ice blue #9CCBDD | Deep blue #285F75 | Slot context and timeline guides, used sparingly |
 
-These are starting tokens, not a contrast certification. Measure actual foreground/background pairs in both themes and adjust before delivery. Neutrals plus gold and one cool structural color form the palette. Timeline actors also need names/lane numbers rather than extra hues alone.
+These tokens are not an accessibility certification. Scoped text-pair checks are recorded in VERIFICATION.md. Neutrals plus gold and one cool focus color form the palette. Timeline actors also need names/lane numbers rather than extra hues alone.
 
 Avoid neon cyan, purple gradients, glowing background orbs, and starfield wallpaper. A quiet image fade may protect reading contrast, with a defined boundary and purpose. It must not turn every panel into glass.
 
-Proposed heading direction: a moderately condensed sans-serif, starting with Windows Bahnschrift or an appropriately licensed locally bundled alternative after inspecting it. This is not a final font choice by the owner. Use Segoe UI/system sans-serif for controls and explanations, tabular numerals for stats, and monospace only where AV timestamp alignment benefits. Do not use oversized marketing headings or extreme tracking.
+Use the Figma families: Rajdhani Semibold for headings/main measurements, Inter for controls and prose, and IBM Plex Mono for aligned substat values. Latin WOFF2 subsets and SIL Open Font License notices are bundled locally; system fonts cover unsupported glyphs. The text wordmark follows the supplied ORBIT treatment.
 
 No external font CDN at runtime. Record the source and license before bundling a font.
 
@@ -70,6 +70,10 @@ Use actual relic/set/character assets where relevant. Stat labels do not need an
 Top bar: Orbit text name, implemented workspace destinations, theme control, import/backup actions. An inventory context row shows source, import time, actual counts, and precision because they affect the player's decisions.
 
 At wide desktop widths, use a flexible work area and a 320-380px detail panel. At intermediate widths, detail becomes a drawer. At narrow widths, retain top navigation and a single-column equipment flow; the document itself never overflows horizontally.
+
+O-03b uses a contained horizontal character banner above the collection, six compact equipment selectors, four relic columns at 1440px, and a 344px inspector. Mobile uses compact single-column cards with two-column substats and a full-height native detail dialog. The banner, slot controls, and filters must leave the first card visible at a 390x844 viewport. Full stat labels and four active substats remain present.
+
+Equipment selectors choose the equipped example without changing filters or sort. Slot/status controls filter independently; sort supports equipped-first and both slot directions. If selection is outside a nonempty filtered list, show a clear-reset action. Inspector position follows the visible sorted results, or states Di luar hasil. Reset and exit-demo controls remain available. Source/precision text is progressively disclosed; credits belong in the footer.
 
 The four requested destinations are Inventory, Perbandingan build, Optimizer, and Speed tuning. Add links only when their views work. Use links for navigation and buttons for actions.
 
@@ -148,6 +152,6 @@ All fields have visible labels, controls at least 44px hit targets, logical keyb
 
 ## Implementation and review
 
-Design documentation branch: docs/design-direction. Implement visual changes on feat/hsr-visual-direction, separate from importer/math work.
+Keep visual changes separate from importer/math tasks and use the current task branch recorded in SESSION_STATE.md. Source frames and deliberate Figma deviations belong in FIGMA_HANDOFF.md.
 
-Before final UI delivery, record the antislop gate and a control-by-control walkthrough in docs/VERIFICATION.md. Verify both themes, wide/narrow layouts, keyboard operation, image failure, import/error states, comparison, search cancellation, and timeline behavior. A functional shell is not evidence of accepted visual design.
+Before UI delivery, record a scoped antislop gate and control walkthrough linked from docs/VERIFICATION.md. Verify both themes, wide/narrow layouts, keyboard operation, image failure, and the implemented workflows. Import, comparison, cancellation, and timeline acceptance belong to their respective implementation tasks. Passing checks does not imply owner approval of the visual result.

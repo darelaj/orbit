@@ -1,5 +1,7 @@
 # O-03a equipment UI verification
 
+Historical report. The current O-03b Figma implementation is verified in [FIGMA_VERIFICATION.md](FIGMA_VERIFICATION.md); use that report for current controls, assets, measurements, and delivery gate.
+
 Recorded 2026-11-06, Windows, at http://127.0.0.1:4173. This verifies the HSR equipment redesign using synthetic demo fixtures. It does not verify a real inventory, importer, stat calculator, comparison, optimizer, or speed timeline. Those controls are not presented as available.
 
 Direction: the owner's HSR character/relic equipment reference; ENERGY 2 / RHYTHM 2 / MOTION 2. The two themes use the palette/type proposals in DESIGN.md. Owner visual acceptance is still pending.

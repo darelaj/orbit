@@ -1,6 +1,6 @@
 # Resume checkpoint
 
-HSR equipment redesign checkpoint, 2026-11-06 (Asia/Jakarta). PR #1 through #5 are merged and their source branches have been removed. On resume, verify this redesign task's integration status before recreating a branch or PR.
+Figma implementation checkpoint, 2026-11-06 (Asia/Jakarta). PR #1 through #6 are merged and their source branches have been removed. O-03b implementation and checks are complete; verify its integration status before creating a branch or PR.
 
 ## Owner instructions
 
@@ -10,7 +10,7 @@ HSR equipment redesign checkpoint, 2026-11-06 (Asia/Jakarta). PR #1 through #5 a
 - Install antislop and Karpathy skills, use them to rebuild the project, add relevant skills, and create AGENTS.md, docs, and planning.
 - Antislop mode for this session: DURING, explicitly selected by the owner.
 - Ship both light and dark modes, explicitly requested by the owner.
-- The owner rejected the plain analytical UI and selected HSR character/relic inspiration, balanced density, prominent real character/splash art, top navigation, a wide work area, side details, and subtle panel/selection motion. The answers are incorporated into DESIGN.md. Palette/type are labeled proposals because those questions were not answered.
+- The owner rejected earlier layouts, supplied the Orbit Figma reference, and authorized implementation with the review revisions. Keep HSR equipment inspiration, balanced density, real artwork, top navigation, side details, subtle transitions, and both themes. Figma palette/type now supersede earlier proposals; DESIGN.md and FIGMA_HANDOFF.md record the reference and revisions.
 - Create a new branch per feature; commit per task; integrate through PRs. After successful merge and ancestry verification, delete the source branch remotely and locally. This supersedes the earlier branch-retention rule.
 - Update AGENTS.md when working rules or project decisions change; routine progress belongs in this checkpoint.
 - Maintain README.md when run instructions, requirements, supported workflows, architecture, storage, or implemented feature availability changes.
@@ -21,8 +21,13 @@ HSR equipment redesign checkpoint, 2026-11-06 (Asia/Jakarta). PR #1 through #5 a
 - Checkout: `D:\Kuliah\Oprekan\Enka smth\orbit`.
 - Remote: `origin = https://github.com/darelaj/orbit.git`.
 - Initial clone was empty. Git author identity is already configured; do not replace it.
-- Current task branch: `feat/hsr-visual-direction`, based on synchronized main at `efb37e9c1181af059d5eca57563bb0463256b7d6`. It replaces the old shell with a working HSR equipment demo, assets/notices, tests, and affected documentation.
-- Main includes PR #1 through [PR #5](https://github.com/darelaj/orbit/pull/5). All seven earlier task branches were verified as ancestors of main and deleted remotely and locally. Do not try to restore them.
+- Current task branch: `feat/figma-equipment-polish`, based on synchronized main at `e8d431c5c5581a0e2cb9333f73df49acd28f21f3`. Working changes adapt the supplied Figma design with the owner's approved review revisions. No Figma canvas edits are in scope.
+- Main includes PR #1 through [PR #6](https://github.com/darelaj/orbit/pull/6). All eight earlier task branches were verified as ancestors of main and deleted remotely and locally. Do not try to restore them.
+- Figma file: `pVMHEP3S3rp9vMRIlfoeUp`; desktop dark `2:2698`, desktop light `2:3063`, mobile `2:3428`, mobile detail `2:3743`. Figma session `c9720619-30e6-499c-9ca5-331d1310b3cd` was reused from the review. High-fidelity contexts and reference screenshots were read before editing; no Tailwind dependency was added.
+- Owner authorized implementation with the review revisions: reduce context/card height, restore reset/exit controls, separate equipment selection from filters, simplify repeated notices, and make code components responsive rather than copying the malformed 1720px kit sizing.
+- Final O-03b checks passed: npm.cmd run typecheck; npm.cmd test (6 component tests); npm.cmd run build. Browser checks exercised all card/equipment selections, composed filters, empty results, selected-hidden recovery, sort/reset states, native mobile close/Escape/focus return, source disclosure, and both theme reloads. Details/gate are in FIGMA_VERIFICATION.md.
+- O-03b verification Vite session `75696` was stopped with Ctrl+C after browser checks; port 4173 was checked free. Do not reinstall dependencies while a dev/preview/watch process is active. Screenshots are ignored artifacts under .cache/figma-polish/; browser viewport overrides were reset.
+- At 1440x1000, the first card starts around 526px; at 390x844 it starts around 589px and is 227px tall. The mobile page is about 2578px rather than the reference's 3933px. Eight tested widths had no document overflow or undersized visible controls. Final text-pair minima were about 4.54:1 light and 7.21:1 dark; these are scoped checks, not certification.
 - Four upstream antislop skills have been installed under `.agents/skills` at commit `9504989f162a92b1996853eccbb3d8a86e73df68`.
 - Karpathy and React skills are installed at pins in SKILLS.md. The local HSR integrity skill is present. All seven passed the official validator.
 - `../relic-lab` contains the unfinished earlier plain JS prototype. Preserve it; do not ship it. It includes an untested engine and a game-data snapshot, but no app.js, no tests, and no completed UI.
@@ -51,8 +56,8 @@ HSR equipment redesign checkpoint, 2026-11-06 (Asia/Jakarta). PR #1 through #5 a
 
 ## Next actions
 
-1. Check whether `feat/hsr-visual-direction` already has an open or merged PR. Finish its existing integration if needed; do not create a duplicate. After a successful merge, synchronize main, verify ancestry, and delete the source branch remotely and locally.
-2. Let the owner review the implemented equipment design. Do not claim the visual direction is approved merely because its checks pass. Retain both themes and the source notices during revisions.
+1. Check whether `feat/figma-equipment-polish` already has an open or merged PR before creating one. Finish its existing integration; after a successful merge, synchronize main, verify ancestry, and delete the source branch remotely and locally.
+2. Retain FIGMA_HANDOFF.md, FIGMA_VERIFICATION.md, local font/SVG notices, and existing game attribution. The local PNGs match all seven Figma image-reference hashes exactly. Owner review of the revised implementation remains separate from test results.
 3. README distinguishes the working synthetic demo from planned personal-inventory/domain/worker/storage features. Preserve this distinction and update README in the affected implementation task.
 4. Continue O-04 and later tasks when requested, using separate branches and focused PRs. The demo fixtures are not a parser/normalization contract; read IMPORT_FORMAT.md before replacing them with real imported records.
 
@@ -75,10 +80,11 @@ HSR equipment redesign checkpoint, 2026-11-06 (Asia/Jakarta). PR #1 through #5 a
 | `docs/agent-operating-guide` | `41b648a`, `592a8af` | Expanded guide, current commands, PR and cleanup workflow | [PR #3](https://github.com/darelaj/orbit/pull/3) merged as `6964b82`; branch deleted remotely/locally |
 | `docs/readme-architecture` | `fe9d523` | Setup/dev/build/preview instructions, current/planned architecture, README maintenance rule | [PR #4](https://github.com/darelaj/orbit/pull/4) merged as `acc06c4`; branch deleted remotely/locally |
 | `docs/windows-dependency-recovery` | `00845c5` | Restore local dependencies and document Windows recovery | [PR #5](https://github.com/darelaj/orbit/pull/5) merged as `efb37e9`; branch deleted remotely/locally |
-| `feat/hsr-visual-direction` | Resolve this task's integration record | HSR equipment demo, two themes, browser evidence, asset provenance | Verify its existing PR and branch refs on resume |
+| `feat/hsr-visual-direction` | `9b6b331` | HSR equipment demo, two themes, browser evidence, asset provenance | [PR #6](https://github.com/darelaj/orbit/pull/6) merged as `e8d431c`; branch deleted remotely/locally |
+| `feat/figma-equipment-polish` | Resolve this task's integration record | Figma-based equipment UI with approved review revisions and local fonts/SVGs | Verify its existing PR and branch refs on resume |
 
 PR records and commits remain the integration history after source branch deletion. Confirm local/remote refs rather than trying to restore an intentionally removed task branch. Record pushes and merges only after verified success.
 
 ## Current blockers
 
-No required design answer blocks work. Palette/type and reference URLs were not supplied; DESIGN.md labels proposed choices clearly. Do not repeat answered design questions. No personal export is available for account-specific acceptance testing; schema-derived synthetic fixtures remain usable.
+No input blocks this UI task. The owner supplied Figma and authorized the review revisions; do not repeat answered design questions. No personal export is available for account-specific acceptance testing. Import and game calculations remain separate future tasks.

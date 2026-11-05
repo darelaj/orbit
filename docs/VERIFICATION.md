@@ -1,6 +1,23 @@
-# O-03a equipment UI verification
+# UI verification
 
-Historical report. The current O-03b Figma implementation is verified in [FIGMA_VERIFICATION.md](FIGMA_VERIFICATION.md); use that report for current controls, assets, measurements, and delivery gate.
+## O-03c English interface (current)
+
+The owner requested English as the primary product language on 2026-11-06. Visible labels, scanner guidance, empty/no-result/hidden-selection copy, source disclosure, image fallbacks, screen-reader names, theme announcements, page language, and description are English. Game names, assets, layout/styles, storage keys, and dependency versions are retained. The transient slot-filter sentinel is now all rather than a translated display word.
+
+Executed checks:
+
+- npm.cmd run typecheck and npm.cmd test passed (6 existing interaction tests updated to the English accessible names). npm.cmd run build passed for the same final source.
+- Browser confirmed html lang=en and the English page description. Desktop snapshot showed English navigation, controls/options, status counts, equipment/detail state, and footer.
+- Scanner guide opened with English instructions and both scanner links; Close guide closed it. Unmatched search showed No matching relics and 0 of 8 relics; Show all relics restored the collection. Equipment selection preserved an Izumo filter, showed the English hidden-selection notice, and Show selected relic restored the selected card to the full results.
+- Exit demo showed Your inventory is empty and English preparation text; Explore demo restored the fixtures. Source & precision opened the English disclosure. The image-fallback component test checks Artwork unavailable and decorative-image semantics.
+- Desktop 1440x1000 dark and mobile 390x844 light were checked for text contrast, visible control bounds, and overflow: no failures. Mobile Enter opened Selected relic details; Back to collection/Escape closed it and focus returned to View Body equipment. The original 703px viewport was restored, with no overflow.
+- Copy gate PASS: concise English actions, clear synthetic/pending-feature boundaries, semantic English names, and matching lang/metadata. Layout/media/state behavior inherits the unchanged Figma implementation; current text/layout checks supplement its detailed gate in FIGMA_VERIFICATION.md. Historical Indonesian labels in older evidence below describe those earlier revisions.
+
+Local ignored screenshots: .cache/english-ui/desktop-dark.jpg and mobile-light.jpg. The owned verification server was stopped after the walkthrough. Source text, documentation references, and scoped whitespace checks were reviewed before integration.
+
+## O-03a equipment UI verification (historical)
+
+The O-03b Figma layout is verified in [FIGMA_VERIFICATION.md](FIGMA_VERIFICATION.md). O-03c above updates its product language; earlier labels/screenshots remain historical evidence.
 
 Recorded 2026-11-06, Windows, at http://127.0.0.1:4173. This verifies the HSR equipment redesign using synthetic demo fixtures. It does not verify a real inventory, importer, stat calculator, comparison, optimizer, or speed timeline. Those controls are not presented as available.
 

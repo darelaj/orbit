@@ -12,6 +12,7 @@ Status: O-03b implements the owner's Figma reference with the approved review re
 | Workspace | Top navigation, wide working area, details in a side panel |
 | Motion | Short panel and selection transitions; numeric information remains stable |
 | Themes | Fully working dark and light modes |
+| Interface language | English, including accessibility labels and metadata; supersedes the Figma reference's Indonesian copy |
 | Process | Antislop DURING, applied while planning and implementing |
 
 The owner supplied [the Orbit Figma file](https://www.figma.com/design/pVMHEP3S3rp9vMRIlfoeUp/Untitled?node-id=2-2698) and authorized implementation with the review revisions. This supersedes the earlier palette/type proposals. Keep the Figma identity while reducing excess vertical space and completing interaction states; the Figma canvas itself was not edited.
@@ -130,7 +131,7 @@ Place fixed-speed/buff/initial-advance assumptions near controls. Carry the sour
 
 ## States, copy, and accessibility
 
-Use Indonesian actions and familiar HSR stat names. Preserve source character/set names. Explain limitations next to affected results. Do not claim an optimal build unless the search establishes the stated guarantee.
+Use English actions and familiar HSR stat names. The owner selected English as the primary product language after the Figma implementation. Preserve source character/set names, use English accessibility names/fallbacks/errors, and keep document metadata and lang consistent. Explain limitations next to affected results. Do not claim an optimal build unless the search establishes the stated guarantee.
 
 Cover first run, filtered-empty results, validation error, storage restore/failure, missing images, search, cancellation, no result, and uncertain data. A missing image gets a labeled slot/name fallback, never a broken layout or invented official-looking art.
 

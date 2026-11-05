@@ -2,6 +2,8 @@
 
 The owner supplied [this Orbit file](https://www.figma.com/design/pVMHEP3S3rp9vMRIlfoeUp/Untitled?node-id=2-2698), requested a review first, then authorized implementation with that review's revisions on 2026-11-06. The Figma canvas was not edited. This document describes the code translation, not changes to the design file.
 
+The owner subsequently requested English as the primary application language in O-03c. English copy, accessibility names, and metadata supersede Indonesian labels in the reference; the layout and assets remain the same.
+
 ## Source frames
 
 | Frame | Node | Role |
@@ -23,8 +25,8 @@ High-fidelity get_design_context responses and screenshots were read for the scr
 | --- | --- |
 | Character/slot context pushes inventory below the fold | Horizontal banner reduced from 228px to 128px desktop / 88px mobile; compact selectors below it. At 1440x1000, cards start around 526px rather than the reference's 764px. |
 | Mobile cards too tall | Single-column 227px cards with two-column active substats, compared with the reference's 354px cards. At 390x844 the first card starts around 589px and ends around 816px; the complete eight-item page is about 2578px instead of 3933px. |
-| Reset/exit/menu behavior incomplete | Visible Reset filter and Keluar demo, native slot/status/sort selects, both empty-state entry actions, no-results recovery, and selected-hidden recovery. |
-| Equipment and filter roles ambiguous | Equipment selectors choose the equipped example without changing query/filter/sort. A hidden selection is explicitly labeled; Tampilkan relic terpilih resets filters. Position in the inspector follows visible sorted results, otherwise Di luar hasil. |
+| Reset/exit/menu behavior incomplete | Visible Reset filters and Exit demo, native slot/status/sort selects, both empty-state entry actions, no-results recovery, and selected-hidden recovery. |
+| Equipment and filter roles ambiguous | Equipment selectors choose the equipped example without changing query/filter/sort. A hidden selection is explicitly labeled; Show selected relic resets filters. Position in the inspector follows visible sorted results, otherwise Outside results. |
 | Repeated explanations occupy the inspector | One collection demo label; source/precision is a native disclosure in detail, credits are in the footer. No score/DPS/future feature navigation is invented. |
 | Component sizing copied at 1720px | Responsive CSS grid/minmax and content sizing, no fixed 1720px slot or inspector widths. Actual Figma component definitions are unchanged. |
 | Light selected-surface text | Secondary text darkened from #646970 to #60656C; original pairing measured about 4.38:1 and corrected pairing about 4.65:1. Main gold pairing remains about 4.54:1. |

@@ -191,7 +191,7 @@ Both themes are required and must work equally. The supplied Figma palette/type 
 - Keep the page within the viewport; any necessary table scrolling stays inside a named region.
 - Respect reduced motion. No endless pulses, particles, counting animations, or disruptive movement of numeric results.
 - Provide real empty, loading, error, cancelled, and no-result states. Demo content is clearly synthetic.
-- Product copy is Indonesian with familiar HSR stat labels; code identifiers and developer docs use consistent English. Follow an explicit user language request when it differs.
+- English is the primary product language. Use English for interface copy, accessibility names, image fallbacks, errors, scanner guidance, and document metadata; keep familiar HSR character/set/stat names. Set the document language to en. Code identifiers and developer docs also use consistent English. Follow the user's language for conversation unless asked otherwise.
 
 ## Verification by change type
 

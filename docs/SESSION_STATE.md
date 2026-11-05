@@ -1,6 +1,6 @@
 # Resume checkpoint
 
-Figma implementation checkpoint, 2026-11-06 (Asia/Jakarta). PR #1 through #6 are merged and their source branches have been removed. O-03b implementation and checks are complete; verify its integration status before creating a branch or PR.
+English interface checkpoint, 2026-11-06 (Asia/Jakarta). PR #1 through #7 are merged and their source branches have been removed. O-03c implementation and checks are complete; verify its integration status before creating a branch or PR.
 
 ## Owner instructions
 
@@ -10,6 +10,7 @@ Figma implementation checkpoint, 2026-11-06 (Asia/Jakarta). PR #1 through #6 are
 - Install antislop and Karpathy skills, use them to rebuild the project, add relevant skills, and create AGENTS.md, docs, and planning.
 - Antislop mode for this session: DURING, explicitly selected by the owner.
 - Ship both light and dark modes, explicitly requested by the owner.
+- English is now the primary product language, including visible copy, accessible names, fallbacks/errors, scanner guidance, and document metadata. This supersedes earlier Indonesian UI instructions and Figma text. Conversation follows the user's language.
 - The owner rejected earlier layouts, supplied the Orbit Figma reference, and authorized implementation with the review revisions. Keep HSR equipment inspiration, balanced density, real artwork, top navigation, side details, subtle transitions, and both themes. Figma palette/type now supersede earlier proposals; DESIGN.md and FIGMA_HANDOFF.md record the reference and revisions.
 - Create a new branch per feature; commit per task; integrate through PRs. After successful merge and ancestry verification, delete the source branch remotely and locally. This supersedes the earlier branch-retention rule.
 - Update AGENTS.md when working rules or project decisions change; routine progress belongs in this checkpoint.
@@ -21,8 +22,10 @@ Figma implementation checkpoint, 2026-11-06 (Asia/Jakarta). PR #1 through #6 are
 - Checkout: `D:\Kuliah\Oprekan\Enka smth\orbit`.
 - Remote: `origin = https://github.com/darelaj/orbit.git`.
 - Initial clone was empty. Git author identity is already configured; do not replace it.
-- Current task branch: `feat/figma-equipment-polish`, based on synchronized main at `e8d431c5c5581a0e2cb9333f73df49acd28f21f3`. Working changes adapt the supplied Figma design with the owner's approved review revisions. No Figma canvas edits are in scope.
-- Main includes PR #1 through [PR #6](https://github.com/darelaj/orbit/pull/6). All eight earlier task branches were verified as ancestors of main and deleted remotely and locally. Do not try to restore them.
+- Current task branch: `feat/english-ui`, based on synchronized main at `a55f5477ab1193c0d34311daeca487cc81d4cd6a`. Changes translate UI/accessibility/metadata, update existing interaction tests and language guidance, and keep the existing layout/assets. No Figma canvas edits are in scope.
+- Main includes PR #1 through [PR #7](https://github.com/darelaj/orbit/pull/7). All nine earlier task branches were verified as ancestors of main and deleted remotely and locally. Do not try to restore them.
+- O-03c checks passed: npm.cmd run typecheck, npm.cmd test (6 tests), npm.cmd run build, English desktop/mobile walkthrough, metadata check, source-copy scan, and scoped documentation/whitespace review. Evidence is in VERIFICATION.md. No new dependency or language switcher was added.
+- O-03c verification server session `76529` was stopped after the walkthrough. Viewport overrides were reset to 703px. Screenshots are under .cache/english-ui/; the owner can run npm.cmd run dev from their terminal.
 - Figma file: `pVMHEP3S3rp9vMRIlfoeUp`; desktop dark `2:2698`, desktop light `2:3063`, mobile `2:3428`, mobile detail `2:3743`. Figma session `c9720619-30e6-499c-9ca5-331d1310b3cd` was reused from the review. High-fidelity contexts and reference screenshots were read before editing; no Tailwind dependency was added.
 - Owner authorized implementation with the review revisions: reduce context/card height, restore reset/exit controls, separate equipment selection from filters, simplify repeated notices, and make code components responsive rather than copying the malformed 1720px kit sizing.
 - Final O-03b checks passed: npm.cmd run typecheck; npm.cmd test (6 component tests); npm.cmd run build. Browser checks exercised all card/equipment selections, composed filters, empty results, selected-hidden recovery, sort/reset states, native mobile close/Escape/focus return, source disclosure, and both theme reloads. Details/gate are in FIGMA_VERIFICATION.md.
@@ -56,8 +59,8 @@ Figma implementation checkpoint, 2026-11-06 (Asia/Jakarta). PR #1 through #6 are
 
 ## Next actions
 
-1. Check whether `feat/figma-equipment-polish` already has an open or merged PR before creating one. Finish its existing integration; after a successful merge, synchronize main, verify ancestry, and delete the source branch remotely and locally.
-2. Retain FIGMA_HANDOFF.md, FIGMA_VERIFICATION.md, local font/SVG notices, and existing game attribution. The local PNGs match all seven Figma image-reference hashes exactly. Owner review of the revised implementation remains separate from test results.
+1. Check whether `feat/english-ui` already has an open or merged PR before creating one. Finish its existing integration; after a successful merge, synchronize main, verify ancestry, and delete the source branch remotely and locally.
+2. Keep new UI and accessibility copy in English. VERIFICATION.md has the current language check; FIGMA_HANDOFF.md and FIGMA_VERIFICATION.md retain the layout and asset history. Preserve font/SVG notices and game attribution.
 3. README distinguishes the working synthetic demo from planned personal-inventory/domain/worker/storage features. Preserve this distinction and update README in the affected implementation task.
 4. Continue O-04 and later tasks when requested, using separate branches and focused PRs. The demo fixtures are not a parser/normalization contract; read IMPORT_FORMAT.md before replacing them with real imported records.
 
@@ -81,7 +84,8 @@ Figma implementation checkpoint, 2026-11-06 (Asia/Jakarta). PR #1 through #6 are
 | `docs/readme-architecture` | `fe9d523` | Setup/dev/build/preview instructions, current/planned architecture, README maintenance rule | [PR #4](https://github.com/darelaj/orbit/pull/4) merged as `acc06c4`; branch deleted remotely/locally |
 | `docs/windows-dependency-recovery` | `00845c5` | Restore local dependencies and document Windows recovery | [PR #5](https://github.com/darelaj/orbit/pull/5) merged as `efb37e9`; branch deleted remotely/locally |
 | `feat/hsr-visual-direction` | `9b6b331` | HSR equipment demo, two themes, browser evidence, asset provenance | [PR #6](https://github.com/darelaj/orbit/pull/6) merged as `e8d431c`; branch deleted remotely/locally |
-| `feat/figma-equipment-polish` | Resolve this task's integration record | Figma-based equipment UI with approved review revisions and local fonts/SVGs | Verify its existing PR and branch refs on resume |
+| `feat/figma-equipment-polish` | `0792404` | Figma-based equipment UI with approved review revisions and local fonts/SVGs | [PR #7](https://github.com/darelaj/orbit/pull/7) merged as `a55f547`; branch deleted remotely/locally |
+| `feat/english-ui` | Resolve this task's integration record | English primary UI, accessibility and metadata, updated language guidance | Verify its existing PR and branch refs on resume |
 
 PR records and commits remain the integration history after source branch deletion. Confirm local/remote refs rather than trying to restore an intentionally removed task branch. Record pushes and merges only after verified success.
 

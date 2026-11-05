@@ -1,0 +1,17 @@
+node_modules/
+dist/
+coverage/
+.cache/
+.tools/
+.env
+.env.*
+!.env.example
+*.log
+test-results/
+playwright-report/
+inventory*.json
+archive_output*.json
+*.pcap
+*.pcapng
+*.etl
+.DS_Store

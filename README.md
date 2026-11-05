@@ -30,11 +30,31 @@ npm.cmd ci
 npm.cmd run dev
 ```
 
-For an existing checkout, run the npm commands from its repository root. On other shells/platforms, use npm in place of npm.cmd.
+For an existing checkout, run commands from its repository root. If dependencies are already installed and unchanged, start with npm.cmd run dev; npm.cmd ci is not needed on every launch. Stop any running Orbit dev/preview/test-watch process before reinstalling dependencies. On other shells/platforms, use npm in place of npm.cmd.
 
 Open [http://127.0.0.1:4173](http://127.0.0.1:4173). The dev server provides hot module replacement while source files change. Keep the terminal running; press Ctrl+C in that terminal to stop it.
 
 The scripts deliberately bind to loopback and use a fixed port. If port 4173 is occupied, stop the existing Orbit dev/preview process or choose a different port explicitly. Do not terminate an unrelated process to free the port.
+
+### Windows dependency recovery
+
+If PowerShell reports that npm.ps1 cannot run because scripts are disabled, use npm.cmd for the commands in this README. Changing the execution policy is not required.
+
+If npm.cmd ci fails with EPERM / unlink on a native .node file such as rolldown-binding.win32-x64-msvc.node, a running Orbit process may still have the file loaded. Stop Orbit with Ctrl+C in the terminal that launched it, including any Orbit process started by an IDE or agent. A failed clean install can leave dependencies incomplete, so a subsequent 'vite' is not recognized error does not mean Vite needs a global installation.
+
+After stopping those processes, run from the repository root:
+
+```powershell
+npm.cmd ci
+```
+
+Wait for a successful exit before starting the app:
+
+```powershell
+npm.cmd run dev
+```
+
+As described in the [npm ci documentation](https://docs.npmjs.com/cli/v11/commands/npm-ci/), a clean install removes the existing node_modules directory before installing from the lockfile. Keep package-lock.json when recovering. If EPERM persists after Orbit has stopped, check the error's named file for another process lock or a permissions/security-software issue before retrying.
 
 ## Build and preview
 

@@ -10,7 +10,7 @@ The React/TypeScript/Vite application follows the owner's Figma equipment design
 
 Without a saved personal inventory, the app opens with eight clearly labeled synthetic demo relics. Saved inventory restores from IndexedDB on reload. Search by name/set/main stat, filter by slot or locked/unlocked status, and sort by equipped-first or either slot direction. Equipment selection keeps the current filters; Show selected relic clears filters when the selected item is hidden. Reset filters restores the default collection/order. Exit demo opens the empty workspace; Open demo or Explore demo restores the example. Selection, filters, and sorting reset on reload; demo items are not saved as a personal inventory.
 
-Scanner inventory import and catalogue inspection are available (O-04). Manual-profile A/B build comparison is available (O-05). Relic optimization is available (O-06); the speed timeline is not usable yet. The design is documented in [DESIGN.md](DESIGN.md) and the [Figma handoff](docs/FIGMA_HANDOFF.md). See [browser verification](docs/VERIFICATION.md) and [asset sources/notices](docs/ASSETS.md).
+Scanner inventory import and catalogue inspection are available (O-04). Manual-profile A/B build comparison is available (O-05). Relic optimization (O-06) and fixed-speed team tuning (O-07) are available. The design is documented in [DESIGN.md](DESIGN.md) and the [Figma handoff](docs/FIGMA_HANDOFF.md). See [browser verification](docs/VERIFICATION.md) and [asset sources/notices](docs/ASSETS.md).
 
 See the [implementation plan](docs/IMPLEMENTATION_PLAN.md) for feature acceptance criteria and the [resume checkpoint](docs/SESSION_STATE.md) for the latest verified work.
 
@@ -37,6 +37,18 @@ Open **Optimizer**, then load a saved comparison profile or fill the shared manu
 **Exact** enumerates the entire filtered pool only when it fits the budget; otherwise it rejects the run with the required count. **Limited sampling** evaluates evenly spaced mixed-radix combinations in scanner order, up to the budget. It can miss feasible/better builds and makes no global optimality claim. Reports show candidate counts, exact total combinations, evaluated/feasible/invalid counts, coverage and the best ten computable results. Invalid calculations have visible example reasons. No-result sampling does not prove infeasibility.
 
 **Cancel search** terminates the Worker. Input changes, inventory replacement, leaving the optimizer or unmounting invalidate its run/results; old messages cannot overwrite a new run. **Compare result N in B** transfers a snapshot to Comparison and keeps A fixed. Save the comparison explicitly to persist a result. Search settings/results themselves are session-only. Retained filters that are unavailable after import are labeled explicitly. Conditional combat effects remain excluded, and OCR SPD uncertainty still applies near thresholds.
+
+## Tune team speed
+
+Open **Speed tuning** for a four-member fixed-speed AV model. The initial 100-SPD values are illustrative inputs. Enter each member's character base SPD, panel SPD, additional fixed percentage/flat SPD and initial action advance. Percentage buffs scale character base SPD; do not re-enter permanent bonuses already in panel SPD. Collapse **Edit team speeds and buffs** to prioritize the chart.
+
+Load a complete, valid B in Comparison, then use **Use comparison B SPD** to copy it into a selected member. This captures base/panel SPD and provenance, and resets additional buffs/advance to zero. Later B changes do not alter the team automatically. Editing copied base/panel SPD changes its source to manual. OCR/unknown/manual precision remains disclosed near threshold results.
+
+Cycle 0 lasts 150 AV and later cycles last 100 AV. Advance affects the first action only; the later interval remains 10000 / effective SPD. Exact ties use member order. Cycle-end actions belong to the ending cycle with a 1e-9 AV numeric tolerance. The chart uses named/numbered lanes and action markers; per-cycle counts and a 50-row paginated chronological ledger provide numeric values. On narrow screens, the chart/tables scroll inside their own focusable regions (arrow keys supported).
+
+Limits are 1–20 cycles, four members, finite inputs within ±1,000,000, positive base/panel/effective SPD and 0–100% initial advance. More than 2,000 actions is rejected rather than truncated. The unbuffed target helper retains fractional thresholds (two actions in cycle 0 require about 133.333… SPD). Repeated/mid-turn advance, changing buffs, delay, summons, ultimates and SP economy are not modeled.
+
+**Save team** explicitly saves one configuration locally; it restores on reload. **Download team backup** exports the current valid inputs, including unsaved edits. Restore validates a schema-1 team file (maximum 16 KiB), previews replacement, then saves before changing current inputs. **Reset team inputs** affects the session, not the saved configuration. Inventory, comparison and team backups are separate files; back up each before clearing browser data.
 
 ## Requirements
 
@@ -170,9 +182,9 @@ Inventory validation, its React view, and IndexedDB inventory storage are implem
 | Layer | Responsibility |
 | --- | --- |
 | React feature views | Inventory filters/details, A/B loadouts, optimizer controls/results, team timeline |
-| Pure TypeScript domain modules | Implemented export validation/normalization; implemented manual-profile build calculations; implemented bounded optimizer; planned action-value math |
+| Pure TypeScript domain modules | Implemented export validation/normalization; implemented manual-profile build calculations; implemented bounded optimizer; implemented bounded action-value math |
 | Module Web Worker | Implemented bounded optimization with progress, cancellation, and stale-result protection |
-| Versioned IndexedDB records | Implemented local inventory and comparison/profile snapshots; planned team configuration |
+| Versioned IndexedDB records | Implemented inventory, comparison/profile snapshots and speed-team configuration |
 | Game-data catalogue | Explicitly sourced/versioned constants with visible handling of unknown records |
 
 The implemented import flow is scanner JSON -> complete validation -> normalized inventory -> atomic local persistence -> React views. Invalid input must preserve the previous valid inventory. Search will run off the main thread so controls remain responsive.

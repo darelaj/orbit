@@ -4,7 +4,9 @@
 
 O-09a records the new authorized scope and plan in SCANNER.md, AGENTS.md, PRODUCT.md and IMPLEMENTATION_PLAN.md. Reliquary v0.19.0 pktmon x64 release URL, 12,294,144-byte size and SHA-256 were read from official GitHub metadata. Pinned source confirms schema 4 and required Administrator privilege. Decision: ordinary-user Node server, elevated one-shot native helper only on Scan; browser validation/IndexedDB remain authoritative. No scanner has been installed or executed, no personal capture performed, no running service started.
 
-Next: implement O-09b setup/runtime/helper and synthetic tests, commit independently, then O-09c UI/import integration and tests, then O-09d docs/browser/CI/PR. Read SCANNER.md before implementing. Do not mark capture/UAC/real inventory compatibility verified from mocks. Preserve incremental commits, feature branch and merge-commit PR cleanup workflow. No delegation requested. Skills: existing Karpathy, HSR integrity, antislop DURING, UI/copywriting/React; accepted design remains unchanged.
+O-09a committed as fddc6e3. O-09b now adds pinned setup/download, Node runtime/same-origin token API, normal-user server with elevated helper, metadata projection, expiry and cancellation/drain. Nine Node tests pass (fake native adapter, actual loopback HTTP); both PowerShell helpers parse without errors. Actual scanner:setup downloaded the official 12,294,144-byte engine and verified SHA-256, without executing it. No personal capture or UAC prompt has run. Cache is ignored. npm test now includes the Node suite; existing Vitest tests will run again after UI integration. No new npm dependency or lockfile change.
+
+Next: commit the verified O-09b foundation, implement O-09c UI/import integration and tests, then O-09d docs/browser/CI/PR. Read SCANNER.md before implementing. Do not mark capture/UAC/real inventory compatibility verified from mocks. Preserve incremental commits, feature branch and merge-commit PR cleanup workflow. No delegation requested. Skills: existing Karpathy, HSR integrity, antislop DURING, UI/copywriting/React; accepted design remains unchanged. No running service.
 
 ## Historical checkpoints below
 

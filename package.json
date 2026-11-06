@@ -5,9 +5,12 @@
   "packageManager": "npm@11.21.1",
   "type": "module",
   "scripts": {
+    "start": "npm run build && node server/start.mjs",
+    "scanner:setup": "node scripts/setup-scanner.mjs",
     "dev": "vite --host 127.0.0.1 --port 4173 --strictPort",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run",
+    "test": "vitest run && npm run test:scanner",
+    "test:scanner": "node --test tests/server.test.mjs",
     "test:watch": "vitest",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview --host 127.0.0.1 --port 4173 --strictPort"

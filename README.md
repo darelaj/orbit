@@ -61,6 +61,8 @@ Internet access is needed to clone the repository and download dependencies. No 
 
 ## Run locally on Windows
 
+O-09 adds an integrated Windows x64 scanner runtime. `npm.cmd start` builds and serves Orbit on the same origin, checks/downloads pinned Reliquary v0.19.0 into the ignored cache, and leaves capture idle. `npm.cmd run scanner:setup` restores/verifies that engine without running it. The scanner panel is the next O-09 milestone; see [the scanner contract](docs/SCANNER.md). The web server runs as your normal user; only a requested native scan uses Windows elevation. No global PowerShell policy change is needed. `npm.cmd run dev` and `npm.cmd run preview` remain frontend-only.
+
 Open PowerShell and clone the project:
 
 ```powershell

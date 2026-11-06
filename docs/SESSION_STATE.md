@@ -1,4 +1,18 @@
-# Current O-09 checkpoint
+# Current O-10 planning checkpoint
+
+2026-11-06 (Asia/Jakarta). Owner asked for a plan only for a hosted Orbit website with a Windows Companion. Branch docs/deployed-companion-plan, base clean main 7c20c76ea1a95292037c29c43ac3332df27eee96. Plan commit d47d044 adds docs/DEPLOYED_COMPANION_PLAN.md; the following documentation commit routes it from README/AGENTS/planning/docs and records this checkpoint. No runtime/UI/package/installer code, dependency, capture, infrastructure or deployment changed. No services started and no delegation requested.
+
+O-09 is already merged via PR #15, with all eight task commits verified in main and its source branch deleted locally/remotely. Final exact-head CI run 42227191886 passed Windows/Linux for 1614374. The older O-09 next actions below are historical. Actual native scan/UAC/cleanup and real-account compatibility remain pending; this planning task does not establish them.
+
+O-10 plan defines eight future implementation branches/tasks and blocking gates. Start with a synthetic HTTPS-to-loopback transport proof and current browser permissions; choose transport/packaging only after evidence. Then pairing/session contract, self-contained Windows package, hosted UI, explicit migration of all three backup types, release artifacts, owner-driven real acceptance and separately authorized deployment. Hosted domain/provider, packaging framework, signing and update decisions remain open. Manual JSON import and current local mode stay available; no cloud inventory sync is proposed.
+
+Research used Chrome's official Local Network Access article and MDN CORS/IndexedDB references, linked in the plan. Planning review separates proposed behavior from current implementation and sources browser/origin constraints. Validation for this documentation-only task: local Markdown links, task references, scoped whitespace and changed-file review. Application suites/build were not rerun because no application code changed.
+
+Next: hand over the plan and wait for the owner's requested direction. Do not begin O-10 implementation automatically. If requested later, read DEPLOYED_COMPANION_PLAN.md and SCANNER.md, refresh browser-policy research, inspect actual client/runtime and start O-10a on its feature branch. Preserve focused commits and PR integration rules for future implementation. This documentation branch has local commits only unless subsequent Git/PR evidence says otherwise.
+
+## Historical checkpoints below
+
+# O-09 checkpoint (historical)
 
 2026-11-06. Owner selected an integrated local scanner controlled from Orbit. Implementation branch `feat/integrated-scanner`, based on main `0f890adec144db5ca01a90bfe4d24125397b3beb` (PR #14 merged, both exact-head CI jobs passed in run 42177844143, its source branch deleted). Check actual branch/PR refs before resuming; the O-08 integration instructions below are historical.
 

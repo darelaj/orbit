@@ -8,6 +8,7 @@
 | [ARCHITECTURE.md](ARCHITECTURE.md) | Framework, modules, persistence, worker boundary |
 | [IMPORT_FORMAT.md](IMPORT_FORMAT.md) | Supported exports, precision, validation, update semantics |
 | [SCANNER.md](SCANNER.md) | Integrated Windows reader, engine pin, local API, lifecycle and verification limits |
+| [DEPLOYED_COMPANION_PLAN.md](DEPLOYED_COMPANION_PLAN.md) | Proposed hosted web/Windows Companion roadmap; implementation not authorized by the planning request |
 | [CALCULATIONS.md](CALCULATIONS.md) | Stat formulas, search guarantees, speed assumptions |
 | [TESTING.md](TESTING.md) | Meaningful checks and browser verification |
 | [VERIFICATION.md](VERIFICATION.md) | Executed UI walkthrough, evidence, and antislop delivery gate |

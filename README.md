@@ -104,6 +104,12 @@ npm.cmd run dev
 
 As described in the [npm ci documentation](https://docs.npmjs.com/cli/v11/commands/npm-ci/), a clean install removes the existing node_modules directory before installing from the lockfile. Keep package-lock.json when recovering. If EPERM persists after Orbit has stopped, check the error's named file for another process lock or a permissions/security-software issue before retrying.
 
+### Scanner fails before the Administrator prompt
+
+Use `npm.cmd start` for scanning. After updating scanner code, stop the old runtime with Ctrl+C and restart it; reloading the browser alone does not reload the Node process. Earlier versions started Windows PowerShell with a detached process flag that could exit successfully without executing the helper. The current launcher uses a hidden, non-detached process and explicitly waits for the elevated helper.
+
+Failure messages now identify the stage without exposing local paths: `[engine:ENOENT]` means the cached engine is missing/unreadable (stop Orbit, run `npm.cmd run scanner:setup`, then restart); `[status:ENOENT]` means the helper returned without a status file; `[helper:20]` means elevation was cancelled; `[helper:21]` means Windows could not request elevation; `[helper:23]` means worker bootstrap exited unsuccessfully. Report the complete message when a retry still fails. Windows may not show a new elevation prompt when the launching process is already elevated.
+
 ## Build and preview
 
 Create the production build:

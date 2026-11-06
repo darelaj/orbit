@@ -1,4 +1,12 @@
-# O-09 integrated scanner verification (current)
+# Windows scanner launch regression, 2026-11-07
+
+Owner reported immediate failure without UAC when using npm.cmd start. Read-only runtime status confirmed [status:ENOENT] after adding stage diagnostics. A harmless Windows PowerShell script writing a marker reproduced the cause: detached=true exited 0 without writing the marker, with windowsHide either true or false; detached=false executed the script and returned its intended exit code. The production launcher no longer uses detached mode.
+
+Local verification: 50 Vitest tests passed, production build/strict typecheck passed; after the final Node launch change, all 16 backend tests passed. New cases exercise the actual Node spawn options against a harmless fixture, worker bootstrap and real child argument forwarding with spaces/apostrophes, asynchronous child failure propagation, elevation intent via an intercepted RunAs boundary and redacted stage-specific errors. Worker fixtures use unique test mutexes to avoid competing with the owner's scan. No test launches a real reader or requests Administrator permission.
+
+The user was asked to restart the runtime and retry their own Scan action. Final UAC appearance, real capture, count/precision and normal/timeout/shutdown cleanup still require owner confirmation. The agent only read status metadata; it did not read scan results, start a scan or operate a Windows prompt. No browser layout changed; prior UI evidence remains applicable and no new screenshot/visual certification is claimed.
+
+# O-09 integrated scanner verification (historical baseline)
 
 2026-11-06. Final frontend suite: 50 tests in 16 Vitest files passed. Native-boundary suite: 10 Node tests passed on Windows, including PowerShell 5.1 syntax parsing without script execution. Production build (with strict typecheck), pinned engine setup and the actual `npm.cmd start` command succeeded. Later native-helper cleanup/redaction changes passed the affected Node suite again. Final source review also identified upstream's crashlog/Enter prompt: stdin now receives EOF, crash results are rejected and their artifacts cleaned. Synthetic crash cleanup and helper syntax are checked; the native crash path has not run. There is no new npm dependency or lockfile change.
 

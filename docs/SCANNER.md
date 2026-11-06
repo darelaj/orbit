@@ -20,6 +20,8 @@ The pinned upstream panic handler writes crashlog.txt and waits for Enter even i
 
 ## Runtime boundary
 
+Windows launch fix, 2026-11-07: the Node launcher keeps windows hidden but does not use detached mode. A local harmless-script probe reproduced detached Windows PowerShell exiting with code 0 without executing -File; the same probe executed normally without that flag. The launcher forwards a quoted -File worker path and payload, retains the child handle, explicitly waits and rejects missing/nonzero exit codes. Sanitized stage codes distinguish engine/folder/status/export failures from elevation/bootstrap errors. Windows tests execute a harmless replacement launcher using the actual Node spawn path and test the helper chain with an invalid engine and isolated mutex; they never request UAC or start capture.
+
 The Node local runtime serves the built React app and a small same-origin scanner API on `http://127.0.0.1:4173`, retaining the existing IndexedDB origin. It remains an ordinary user process. A Scan request starts a fixed PowerShell helper that requests Windows elevation for only the native scan. The elevated helper verifies the engine digest again, disables self-update and streaming, and runs a bounded, one-shot headless capture. No shell command, executable path, port or output filename comes from HTTP input.
 
 Bind only IPv4 loopback. Reject unexpected Host and Origin headers. Require a per-runtime random session token in a custom header on all scanner requests, including result reads. Do not enable CORS. Serve only the production `dist` tree, never the repository, cache or arbitrary filesystem paths. Do not expose native stdout/stderr, raw packets or account metadata in status responses.

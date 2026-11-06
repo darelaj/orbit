@@ -1,4 +1,18 @@
-# Current O-09 checkpoint
+# Current Windows scan-launch fix checkpoint
+
+2026-11-07. Branch fix/windows-scanner-launch based on origin/main 7c20c76. The unmerged documentation branches/PRs #16 (planning) and #17 (efficiency) remain separate; this fix does not include or merge them. Code/tests commit cbfc24f, followed by this focused troubleshooting/verification checkpoint.
+
+Owner reported Scan failing immediately without an Administrator prompt under npm.cmd start. Read-only local API status confirmed [status:ENOENT]. Harmless real Windows process probes isolated detached=true as the cause: PowerShell exited 0 without executing a marker script. Without detached, the same script ran and returned its intended code. Fixed actual Node spawn options; also forward a quoted -File path, explicitly wait/cache the helper handle and expose safe stage/error codes rather than labeling every I/O failure as unreadable output. Worker setup reports privilege/engine/native/capture phases. No real engine, UAC or capture was invoked by the agent.
+
+Checks: 50 Vitest tests and production build/typecheck passed; final backend suite 16 tests passed, including the exact Node launcher with a harmless fixture, unelevated helper chain with an invalid engine, quoting, exit handling and redacted errors. Fixture workers use unique mutexes so testing cannot contend with an owner scan. No UI/layout change or browser audit needed. Prior native game/precision/cleanup acceptance remains pending.
+
+Owner was asked to restart npm.cmd start and retry after the actual detached-flag fix (their earlier retry preceded that change). Await confirmation of UAC/current error. Do not claim full native capture success from synthetic tests. No services started/stopped by the agent; an owner runtime was reachable on 127.0.0.1:4173 and only its session/status endpoints were read. No personal inventory/result was retrieved.
+
+Next: finish this fix's PR/checks if not already done; inspect actual remote state before creating duplicates. Keep documentation PRs separate and unmerged unless requested. If the owner still sees a failure, use the new stage code/status to investigate; do not revert to generic messages or run personal capture as a test.
+
+## Historical checkpoints below
+
+# O-09 checkpoint (historical)
 
 2026-11-06. Owner selected an integrated local scanner controlled from Orbit. Implementation branch `feat/integrated-scanner`, based on main `0f890adec144db5ca01a90bfe4d24125397b3beb` (PR #14 merged, both exact-head CI jobs passed in run 42177844143, its source branch deleted). Check actual branch/PR refs before resuming; the O-08 integration instructions below are historical.
 

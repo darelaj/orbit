@@ -15,6 +15,7 @@ function Write-State([string]$state) {
 }
 $mutex = [Threading.Mutex]::new($false, 'Local\OrbitReliquaryCapture')
 $ownsMutex = $false
+$child = $null
 try {
     try { $ownsMutex = $mutex.WaitOne(0) } catch [Threading.AbandonedMutexException] { $ownsMutex = $true }
     if (-not $ownsMutex) { Write-State 'occupied'; exit 1 }
@@ -43,6 +44,8 @@ try {
     else { Write-State 'incomplete' }
 } catch { Write-State 'failed' }
 finally {
+    # Even a status-file error must not release the scan lease while the native reader is running.
+    if ($null -ne $child -and -not $child.HasExited) { $child.WaitForExit() }
     if ($ownsMutex) { $mutex.ReleaseMutex() }
     $mutex.Dispose()
 }

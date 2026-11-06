@@ -7,9 +7,19 @@ import { ENGINE, installEngine, verifyEngineBytes, enginePath } from '../server/
 import { Scanner, MAX_EXPORT_BYTES, RESULT_TTL, projectExport } from '../server/scanner.mjs';
 import { createOrbitServer } from '../server/http.mjs';
 import { request } from 'node:http';
+import { spawnSync } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
 
 const record = { _uid: '1', set_id: '102', name: 'Musketeer of Wild Wheat', slot: 'Head', rarity: 5, level: 15, mainstat: 'HP', substats: [{ key: 'SPD', value: 2.032, count: 1, secret: 'drop' }], preview_substats: [{ key: 'ATK', value: 16.9 }], location: '', lock: true, discard: false };
 const fixture = { source: 'reliquary_archiver', version: 4, relics: [record], characters: [{ id: '1308', name: 'Acheron', skills: { secret: true } }], light_cones: [{ id: '23024', name: 'Synthetic', _uid: '2', location: '' }], metadata: { uid: 'private' }, gacha: { private: true }, materials: [{ private: true }] };
+test('Windows PowerShell 5.1 parses both helpers without executing them', { skip: process.platform !== 'win32' }, () => {
+  for (const file of ['launch-scan.ps1', 'scan-worker.ps1']) {
+    const path = fileURLToPath(new URL(`../server/${file}`, import.meta.url)).replaceAll("'", "''");
+    const command = `$errors = $null; [System.Management.Automation.Language.Parser]::ParseFile('${path}', [ref]$null, [ref]$errors) | Out-Null; if ($errors.Count -gt 0) { $errors | Out-String | Write-Error; exit 1 }`;
+    const parsed = spawnSync(join(process.env.SystemRoot, 'System32', 'WindowsPowerShell', 'v1.0', 'powershell.exe'), ['-NoProfile', '-NonInteractive', '-Command', command], { windowsHide: true, encoding: 'utf8' });
+    assert.equal(parsed.status, 0, parsed.stderr);
+  }
+});
 async function workspace(t) {
   const root = await mkdtemp(join(tmpdir(), 'orbit-scanner-test-'));
   t.after(async () => {

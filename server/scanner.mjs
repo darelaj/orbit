@@ -44,7 +44,8 @@ export function projectExport(text) {
 export function launchNative(root, directory) {
   const payload = Buffer.from(JSON.stringify({ engine: enginePath(root), directory })).toString('base64');
   const executable = join(process.env.SystemRoot ?? 'C:\\Windows', 'System32', 'WindowsPowerShell', 'v1.0', 'powershell.exe');
-  const child = spawn(executable, ['-NoProfile', '-NonInteractive', '-ExecutionPolicy', 'Bypass', '-File', join(root, 'server', 'launch-scan.ps1'), '-Payload', payload], { windowsHide: true, stdio: 'ignore', shell: false });
+  // A separate console group keeps terminal Ctrl+C from killing the helper before native cleanup.
+  const child = spawn(executable, ['-NoProfile', '-NonInteractive', '-ExecutionPolicy', 'Bypass', '-File', join(root, 'server', 'launch-scan.ps1'), '-Payload', payload], { windowsHide: true, detached: true, stdio: 'ignore', shell: false });
   return new Promise((accept, reject) => {
     child.once('error', () => reject(new Error('Windows could not launch the scanner helper.')));
     child.once('close', code => code === 0 ? accept() : reject(new Error('Windows permission was denied or the scanner helper failed. Retry and approve the Administrator request.')));

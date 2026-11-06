@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto';
-import { readFile, mkdir, writeFile, rename, unlink } from 'node:fs/promises';
+import { readFile, mkdir, writeFile, rename, unlink, stat } from 'node:fs/promises';
 import { join } from 'node:path';
 import pin from './scanner-pin.json' with { type: 'json' };
 
@@ -14,7 +14,10 @@ export function verifyEngineBytes(bytes) {
     throw new Error('Scanner checksum mismatch. Run npm run scanner:setup to restore the pinned engine.');
   }
 }
-export async function verifyEngine(path) { verifyEngineBytes(await readFile(path)); }
+export async function verifyEngine(path) {
+  if ((await stat(path)).size !== ENGINE.bytes) throw new Error('Scanner checksum mismatch. Run npm run scanner:setup to restore the pinned engine.');
+  verifyEngineBytes(await readFile(path));
+}
 export async function installEngine(root, fetcher = fetch) {
   const path = enginePath(root);
   try { await verifyEngine(path); return path; } catch (error) {

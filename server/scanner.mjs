@@ -29,7 +29,8 @@ function list(value) {
   return value;
 }
 export function projectExport(text) {
-  const raw = JSON.parse(text);
+  let raw;
+  try { raw = JSON.parse(text); } catch { throw new Error('Scanner output is not valid JSON. Retry the scan or use JSON import.'); }
   if (raw?.source !== 'reliquary_archiver' || raw.version !== 4) throw new Error('Unsupported scanner source or schema.');
   return JSON.stringify({
     source: raw.source, version: raw.version,

@@ -58,6 +58,7 @@ test('projection preserves fractional active/preview values and strips unrelated
   assert.deepEqual(result.characters, [{ id: '1308', name: 'Acheron' }]);
   assert.ok(!JSON.stringify(result).includes('private'));
   assert.throws(() => projectExport(JSON.stringify({ ...fixture, version: 5 })), /Unsupported/);
+  assert.throws(() => projectExport('private_account_data'), error => /not valid JSON/.test(error.message) && !error.message.includes('private_account_data'));
   assert.throws(() => projectExport(JSON.stringify({ ...fixture, characters: [{ id: { private: 1 } }] })), /Invalid/);
   assert.throws(() => projectExport(JSON.stringify({ ...fixture, relics: Array(10001).fill(record) })), /limit/);
 });

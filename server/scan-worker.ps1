@@ -33,6 +33,7 @@ try {
     Write-State 'starting'
     $stage = 'native'
     $child = Start-Process -FilePath $engine -WindowStyle Hidden -WorkingDirectory $run -ArgumentList @('--headless', '--no-update', '--exit-after-capture', '--timeout', '120', ('"' + $output + '"')) -RedirectStandardInput $nativeInputPath -RedirectStandardOutput $stdout -RedirectStandardError $stderr -PassThru
+    $null = $child.Handle
     $stage = 'capture'
     $listening = $false
     while (-not $child.HasExited) {
@@ -47,8 +48,14 @@ try {
     $text = ''
     if ((Get-Item -LiteralPath $stdout).Length -le 1048576) { $text = Get-Content -LiteralPath $stdout -Raw }
     # The upstream CLI can export partial data on timeout. Require its initialization marker.
-    if ($child.ExitCode -eq 0 -and $text -match 'finished initialization' -and (Test-Path -LiteralPath $output) -and -not (Test-Path -LiteralPath (Join-Path $run 'crashlog.txt'))) { Write-State 'complete' }
-    else { Write-State 'incomplete' }
+    if ($null -eq $child.ExitCode) { Write-State 'incomplete' 'exit_unknown' }
+    elseif ($child.ExitCode -ne 0) { Write-State 'incomplete' 'native_exit' }
+    elseif (Test-Path -LiteralPath (Join-Path $run 'crashlog.txt')) { Write-State 'incomplete' 'crash' }
+    elseif ($text -match 'not supported yet|DecryptionKeyMissing') { Write-State 'incomplete' 'unsupported_version' }
+    elseif ($text -match 'Capture initialization error|Failed to create capture|Failed to start packet capture') { Write-State 'incomplete' 'capture_setup' }
+    elseif ($text -notmatch 'finished initialization') { Write-State 'incomplete' 'initialization_missing' }
+    elseif (-not (Test-Path -LiteralPath $output)) { Write-State 'incomplete' 'export_missing' }
+    else { Write-State 'complete' }
 } catch { Write-State 'failed' $stage }
 finally {
     # Even a status-file error must not release the scan lease while the native reader is running.

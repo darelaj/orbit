@@ -123,6 +123,10 @@ export class Scanner {
           const reasons = { privilege: 'Windows did not grant Administrator privileges to the reader.', engine: 'The scanner engine could not be verified. Stop Orbit, run npm run scanner:setup, then npm start.', native: 'Windows could not start the scanner engine. Check Windows Security protection history for a blocked application.', capture: 'The scanner process failed while running. Return to Click to Start and retry.' };
           throw new Error(reasons[state.reason] ?? 'Windows scanner setup failed. Restart Orbit and retry.');
         }
+        if (state.state === 'incomplete' && typeof state.reason === 'string') {
+          const reasons = { exit_unknown: 'Windows did not return the reader exit code.', native_exit: 'The native reader exited with an error.', crash: 'The native reader crashed.', unsupported_version: 'The pinned reader does not support the detected game protocol. A reviewed engine update is needed.', capture_setup: 'Windows Packet Monitor could not initialize capture.', initialization_missing: 'The reader exited before reporting complete inventory initialization.', export_missing: 'The reader completed initialization but did not write its export.' };
+          if (Object.hasOwn(reasons, state.reason)) throw new Error(`${reasons[state.reason]} [reader:${state.reason}]`);
+        }
         if (state.state !== 'complete') throw new Error(state.state === 'occupied' ? 'Another Orbit scan is active. Wait for it to finish.' : 'No complete inventory received. Return to Click to Start and retry. The game version may need a scanner update.');
         stage = 'output';
         if ((await stat(join(job.directory, 'output.json'))).size > MAX_EXPORT_BYTES) throw new Error('Scanner output exceeds the 20 MiB import limit.');

@@ -106,6 +106,15 @@ test('scan failures identify engine, folder, helper status and reader setup with
   native.start(); await native.operation;
   assert.match((await native.status()).job.message, /Windows could not start the scanner engine/);
 });
+test('incomplete native runs expose only recognized diagnostic reasons', async t => {
+  for (const reason of ['exit_unknown','native_exit','crash','unsupported_version','capture_setup','initialization_missing','export_missing','private_unknown_reason']) {
+    const scanner = await makeScanner(t, { launch: async (_, directory) => { await writeFile(join(directory,'status.json'), JSON.stringify({state:'incomplete',reason})); } });
+    scanner.start(); await scanner.operation;
+    const message = (await scanner.status()).job.message;
+    if (reason === 'private_unknown_reason') { assert.ok(!message.includes(reason)); assert.match(message,/No complete inventory/); }
+    else assert.ok(message.includes(`[reader:${reason}]`));
+  }
+});
 async function output(directory, state = 'complete', value = fixture) {
   await writeFile(join(directory, 'status.json'), JSON.stringify({ state }));
   await writeFile(join(directory, 'output.json'), JSON.stringify(value));

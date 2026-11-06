@@ -10,6 +10,8 @@ Owner was asked to restart npm.cmd start and retry after the actual detached-fla
 
 Next: finish this fix's PR/checks if not already done; inspect actual remote state before creating duplicates. Keep documentation PRs separate and unmerged unless requested. If the owner still sees a failure, use the new stage code/status to investigate; do not revert to generic messages or run personal capture as a test.
 
+Follow-up: owner retry now reached No complete inventory rather than missing helper status, and confirmed starting at Click to Start then entering after listening. Added a retained native-reader handle and fixed incomplete reason codes to distinguish exit/capture/initialization/export failures without raw logs. Owner asked to retry after this diagnostic change; exact remaining cause/real capture success is not yet confirmed. Backend tests include recognized-reason projection and unknown-value redaction. Push of this bugfix branch was rejected by the user; no remote push or new PR was made. Do not retry publishing without renewed authorization. Local commits so far: cbfc24f code/tests, d1b0dfc troubleshooting/docs, then this follow-up.
+
 ## Historical checkpoints below
 
 # O-09 checkpoint (historical)

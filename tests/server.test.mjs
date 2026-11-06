@@ -4,11 +4,12 @@ import { mkdtemp, mkdir, writeFile, readFile, readdir, rm, open, utimes } from '
 import { tmpdir } from 'node:os';
 import { join, resolve, sep } from 'node:path';
 import { ENGINE, installEngine, verifyEngineBytes, enginePath } from '../server/engine.mjs';
-import { Scanner, MAX_EXPORT_BYTES, RESULT_TTL, projectExport } from '../server/scanner.mjs';
+import { Scanner, MAX_EXPORT_BYTES, RESULT_TTL, projectExport, launchNative } from '../server/scanner.mjs';
 import { createOrbitServer } from '../server/http.mjs';
 import { request } from 'node:http';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
+import { randomUUID } from 'node:crypto';
 
 const record = { _uid: '1', set_id: '102', name: 'Musketeer of Wild Wheat', slot: 'Head', rarity: 5, level: 15, mainstat: 'HP', substats: [{ key: 'SPD', value: 2.032, count: 1, secret: 'drop' }], preview_substats: [{ key: 'ATK', value: 16.9 }], location: '', lock: true, discard: false };
 const fixture = { source: 'reliquary_archiver', version: 4, relics: [record], characters: [{ id: '1308', name: 'Acheron', skills: { secret: true } }], light_cones: [{ id: '23024', name: 'Synthetic', _uid: '2', location: '' }], metadata: { uid: 'private' }, gacha: { private: true }, materials: [{ private: true }] };
@@ -28,6 +29,92 @@ async function workspace(t) {
   });
   return root;
 }
+async function windowsHelperFixture(root) {
+  const server = join(root, 'server'); await mkdir(server, { recursive: true });
+  const worker = await readFile(new URL('../server/scan-worker.ps1', import.meta.url), 'utf8');
+  assert.ok(worker.includes('Local\\OrbitReliquaryCapture'));
+  // Test processes must not contend with the owner's live capture mutex.
+  await writeFile(join(server, 'scan-worker.ps1'), worker.replace('Local\\OrbitReliquaryCapture', `Local\\OrbitTest-${randomUUID()}`));
+  for (const file of ['scanner-pin.json', 'launch-scan.ps1']) await writeFile(join(server, file), await readFile(new URL(`../server/${file}`, import.meta.url)));
+  return server;
+}
+test('actual Node launcher executes a harmless PowerShell fixture with hidden stdio', { skip: process.platform !== 'win32' }, async t => {
+  const parent = await workspace(t); const root = join(parent, "fixture space's root");
+  await mkdir(join(root, 'server'), { recursive: true });
+  const marker = join(root, 'called.json');
+  await writeFile(join(root, 'server', 'launch-scan.ps1'), `param([string]$Payload)\n[IO.File]::WriteAllText('${marker.replaceAll("'", "''")}', [Text.Encoding]::UTF8.GetString([Convert]::FromBase64String($Payload)))\nexit 0\n`);
+  await launchNative(root, root);
+  const recorded = JSON.parse(await readFile(marker, 'utf8'));
+  assert.equal(recorded.directory, root); assert.equal(recorded.engine, enginePath(root));
+});
+test('Windows worker bootstrap writes failure status without elevation or a real engine', { skip: process.platform !== 'win32' }, async t => {
+  const root = await workspace(t);
+  const directory = join(root, "scan space's directory"); await mkdir(directory);
+  const engine = join(root, 'invalid-engine.exe'); await writeFile(engine, 'synthetic non-executable');
+  const payload = Buffer.from(JSON.stringify({ directory, engine })).toString('base64');
+  const helper = join(await windowsHelperFixture(root), 'scan-worker.ps1');
+  // An invalid engine cannot pass the pinned checksum even if the test host is already elevated.
+  const parsed = spawnSync(join(process.env.SystemRoot, 'System32', 'WindowsPowerShell', 'v1.0', 'powershell.exe'), ['-NoProfile', '-NonInteractive', '-ExecutionPolicy', 'Bypass', '-File', helper, '-Payload', payload], { windowsHide: true, encoding: 'utf8', timeout: 10000 });
+  assert.equal(parsed.status, 0, parsed.stderr);
+  assert.equal(JSON.parse(await readFile(join(directory, 'status.json'), 'utf8')).state, 'failed');
+});
+test('Windows launcher reaches the elevation boundary without calling RunAs', { skip: process.platform !== 'win32' }, async t => {
+  const root = await workspace(t); const captured = join(root, 'arguments.json');
+  const helper = fileURLToPath(new URL('../server/launch-scan.ps1', import.meta.url));
+  const literal = value => value.replaceAll("'", "''");
+  const payload = Buffer.from(JSON.stringify({ directory: root, engine: join(root, 'not-executed.exe') })).toString('base64');
+  const command = `function Start-Process { param($FilePath,$Verb,$WindowStyle,$ArgumentList,[switch]$Wait,[switch]$PassThru); [IO.File]::WriteAllText('${literal(captured)}', (ConvertTo-Json -InputObject @{verb=$Verb;style=$WindowStyle;args=@($ArgumentList)} -Compress)); $fake = [pscustomobject]@{ExitCode=0;Handle=0}; $fake | Add-Member ScriptMethod WaitForExit {}; $fake | Add-Member ScriptMethod Refresh {}; $fake }; & '${literal(helper)}' -Payload '${payload}'; exit $LASTEXITCODE`;
+  const parsed = spawnSync(join(process.env.SystemRoot, 'System32', 'WindowsPowerShell', 'v1.0', 'powershell.exe'), ['-NoProfile', '-NonInteractive', '-ExecutionPolicy', 'Bypass', '-EncodedCommand', Buffer.from(command, 'utf16le').toString('base64')], { windowsHide: true, encoding: 'utf8', timeout: 10000 });
+  assert.equal(parsed.status, 0, parsed.stderr);
+  const capturedLaunch = JSON.parse(await readFile(captured, 'utf8'));
+  assert.equal(capturedLaunch.verb, 'RunAs'); assert.equal(capturedLaunch.style, 'Hidden');
+  const args = capturedLaunch.args;
+  assert.equal(args.at(-2), '-Payload');
+  assert.equal(args.at(-1), payload);
+  assert.ok(args[args.indexOf('-File') + 1].includes('scan-worker.ps1'));
+});
+test('Windows launcher waits for an asynchronous child and propagates its failure', { skip: process.platform !== 'win32' }, async t => {
+  const root = await workspace(t);
+  const helper = fileURLToPath(new URL('../server/launch-scan.ps1', import.meta.url)).replaceAll("'", "''");
+  const payload = Buffer.from(JSON.stringify({ directory: root, engine: join(root, 'never-executed.exe') })).toString('base64');
+  const command = `function Start-Process { param($FilePath,$Verb,$WindowStyle,$ArgumentList,[switch]$Wait,[switch]$PassThru); Microsoft.PowerShell.Management\\Start-Process -FilePath $FilePath -WindowStyle Hidden -ArgumentList @('-NoProfile','-NonInteractive','-Command','Start-Sleep -Milliseconds 100; exit 7') -PassThru }; & '${helper}' -Payload '${payload}'; exit $LASTEXITCODE`;
+  const parsed = spawnSync(join(process.env.SystemRoot, 'System32', 'WindowsPowerShell', 'v1.0', 'powershell.exe'), ['-NoProfile', '-NonInteractive', '-ExecutionPolicy', 'Bypass', '-EncodedCommand', Buffer.from(command, 'utf16le').toString('base64')], { windowsHide: true, encoding: 'utf8', timeout: 10000 });
+  assert.equal(parsed.status, 23, parsed.stderr);
+});
+test('Windows helper chain forwards paths with spaces through a real unelevated child', { skip: process.platform !== 'win32' }, async t => {
+  const root = await workspace(t); const directory = join(root, "scan space's directory"); await mkdir(directory);
+  const engine = join(root, 'invalid-engine.exe'); await writeFile(engine, 'synthetic non-executable');
+  const payload = Buffer.from(JSON.stringify({ directory, engine })).toString('base64');
+  const helper = join(await windowsHelperFixture(root), 'launch-scan.ps1').replaceAll("'", "''");
+  const command = `function Start-Process { param($FilePath,$Verb,$WindowStyle,$ArgumentList,[switch]$Wait,[switch]$PassThru); Microsoft.PowerShell.Management\\Start-Process -FilePath $FilePath -WindowStyle Hidden -ArgumentList $ArgumentList -PassThru }; & '${helper}' -Payload '${payload}'; exit $LASTEXITCODE`;
+  const parsed = spawnSync(join(process.env.SystemRoot, 'System32', 'WindowsPowerShell', 'v1.0', 'powershell.exe'), ['-NoProfile', '-NonInteractive', '-ExecutionPolicy', 'Bypass', '-EncodedCommand', Buffer.from(command, 'utf16le').toString('base64')], { windowsHide: true, encoding: 'utf8', timeout: 10000 });
+  assert.equal(parsed.status, 0, parsed.stderr);
+  assert.equal(JSON.parse(await readFile(join(directory, 'status.json'), 'utf8')).state, 'failed');
+});
+test('scan failures identify engine, folder, helper status and reader setup without exposing paths', async t => {
+  const engine = await makeScanner(t);
+  engine.verify = async () => { throw Object.assign(new Error('private local path'), { code: 'ENOENT' }); };
+  engine.start(); await engine.operation;
+  const missing = await engine.status(); assert.equal(missing.installed, false);
+  assert.match(missing.job.message, /\[engine:ENOENT\]/); assert.ok(!missing.job.message.includes('private local path'));
+  const folder = await makeScanner(t); await rm(folder.runs, { recursive: true });
+  folder.start(); await folder.operation;
+  assert.match((await folder.status()).job.message, /\[directory:ENOENT\]/);
+  const status = await makeScanner(t, { launch: async () => {} }); status.start(); await status.operation;
+  assert.match((await status.status()).job.message, /\[status:ENOENT\]/);
+  const native = await makeScanner(t, { launch: async (_, directory) => { await writeFile(join(directory, 'status.json'), JSON.stringify({ state: 'failed', reason: 'native' })); } });
+  native.start(); await native.operation;
+  assert.match((await native.status()).job.message, /Windows could not start the scanner engine/);
+});
+test('incomplete native runs expose only recognized diagnostic reasons', async t => {
+  for (const reason of ['exit_unknown','native_exit','crash','unsupported_version','capture_setup','initialization_missing','export_missing','private_unknown_reason']) {
+    const scanner = await makeScanner(t, { launch: async (_, directory) => { await writeFile(join(directory,'status.json'), JSON.stringify({state:'incomplete',reason})); } });
+    scanner.start(); await scanner.operation;
+    const message = (await scanner.status()).job.message;
+    if (reason === 'private_unknown_reason') { assert.ok(!message.includes(reason)); assert.match(message,/No complete inventory/); }
+    else assert.ok(message.includes(`[reader:${reason}]`));
+  }
+});
 async function output(directory, state = 'complete', value = fixture) {
   await writeFile(join(directory, 'status.json'), JSON.stringify({ state }));
   await writeFile(join(directory, 'output.json'), JSON.stringify(value));

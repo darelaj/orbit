@@ -45,11 +45,19 @@ export function projectExport(text) {
 export function launchNative(root, directory) {
   const payload = Buffer.from(JSON.stringify({ engine: enginePath(root), directory })).toString('base64');
   const executable = join(process.env.SystemRoot ?? 'C:\\Windows', 'System32', 'WindowsPowerShell', 'v1.0', 'powershell.exe');
-  // A separate console group keeps terminal Ctrl+C from killing the helper before native cleanup.
-  const child = spawn(executable, ['-NoProfile', '-NonInteractive', '-ExecutionPolicy', 'Bypass', '-File', join(root, 'server', 'launch-scan.ps1'), '-Payload', payload], { windowsHide: true, detached: true, stdio: 'ignore', shell: false });
+  // Legacy Windows PowerShell can exit without executing -File when started detached.
+  const child = spawn(executable, ['-NoProfile', '-NonInteractive', '-ExecutionPolicy', 'Bypass', '-File', join(root, 'server', 'launch-scan.ps1'), '-Payload', payload], { windowsHide: true, stdio: 'ignore', shell: false });
   return new Promise((accept, reject) => {
-    child.once('error', () => reject(new Error('Windows could not launch the scanner helper.')));
-    child.once('close', code => code === 0 ? accept() : reject(new Error('Windows permission was denied or the scanner helper failed. Retry and approve the Administrator request.')));
+    child.once('error', () => reject(new Error('Windows could not start PowerShell for the scanner. Check Windows app restrictions. [helper:spawn]')));
+    child.once('close', code => {
+      const errors = {
+        20: 'Windows Administrator permission was cancelled. Retry and approve the Windows request.',
+        21: 'Windows could not request Administrator permission. Check Windows app restrictions and retry.',
+        22: 'Windows did not return the helper exit code. Restart Orbit and retry.',
+        23: 'The elevated helper exited before it finished setup. Restart Orbit and retry.',
+      };
+      code === 0 ? accept() : reject(new Error(`${errors[code] ?? 'The scanner helper stopped unexpectedly.'} [helper:${code ?? 'terminated'}]`));
+    });
   });
 }
 
@@ -98,21 +106,44 @@ export class Scanner {
     return { id: job.id };
   }
   async run(job) {
+    let stage = 'engine';
     try {
       await this.verify(enginePath(this.root));
+      stage = 'directory';
       job.directory = join(this.runs, job.id);
       await mkdir(job.directory, { recursive: false });
+      stage = 'helper';
       if (!job.discard) await this.launch(this.root, job.directory);
       if (!job.discard) {
         const crashed = await stat(join(job.directory, 'crashlog.txt')).then(() => true, error => { if (error.code === 'ENOENT') return false; throw error; });
         if (crashed) throw new Error('Scanner stopped unexpectedly. Return to Click to Start and retry, or use JSON import.');
+        stage = 'status';
         const state = JSON.parse(await readFile(join(job.directory, 'status.json'), 'utf8'));
+        if (state.state === 'failed') {
+          const reasons = { privilege: 'Windows did not grant Administrator privileges to the reader.', engine: 'The scanner engine could not be verified. Stop Orbit, run npm run scanner:setup, then npm start.', native: 'Windows could not start the scanner engine. Check Windows Security protection history for a blocked application.', capture: 'The scanner process failed while running. Return to Click to Start and retry.' };
+          throw new Error(reasons[state.reason] ?? 'Windows scanner setup failed. Restart Orbit and retry.');
+        }
+        if (state.state === 'incomplete' && typeof state.reason === 'string') {
+          const reasons = { exit_unknown: 'Windows did not return the reader exit code.', native_exit: 'The native reader exited with an error.', crash: 'The native reader crashed.', unsupported_version: 'The pinned reader does not support the detected game protocol. A reviewed engine update is needed.', capture_setup: 'Windows Packet Monitor could not initialize capture.', initialization_missing: 'The reader exited before reporting complete inventory initialization.', export_missing: 'The reader completed initialization but did not write its export.' };
+          if (Object.hasOwn(reasons, state.reason)) throw new Error(`${reasons[state.reason]} [reader:${state.reason}]`);
+        }
         if (state.state !== 'complete') throw new Error(state.state === 'occupied' ? 'Another Orbit scan is active. Wait for it to finish.' : 'No complete inventory received. Return to Click to Start and retry. The game version may need a scanner update.');
+        stage = 'output';
         if ((await stat(join(job.directory, 'output.json'))).size > MAX_EXPORT_BYTES) throw new Error('Scanner output exceeds the 20 MiB import limit.');
         job.result = projectExport(await readFile(join(job.directory, 'output.json'), 'utf8'));
         job.expiresAt = this.now() + RESULT_TTL;
       }
-    } catch (error) { if (!job.discard) job.error = error.code ? 'Could not read the scanner output. Retry the scan or use JSON import.' : error.message; }
+    } catch (error) {
+      if (!job.discard) {
+        if (!error.code) job.error = error.message;
+        else {
+          const code = /^[A-Z0-9_]+$/.test(error.code) ? error.code : 'IO';
+          const hints = { engine: 'Scanner engine is missing or unreadable. Stop Orbit, run npm run scanner:setup, then npm start.', directory: 'Could not create the temporary scan folder. Check write access to the Orbit folder.', status: 'Windows helper returned without a readable scan status. Restart Orbit and retry.', output: 'Scanner finished without a readable export. Return to Click to Start and retry.', helper: 'Could not read the Windows helper result.' };
+          job.error = `${hints[stage]} [${stage}:${code}]`;
+          if (stage === 'engine') this.available = false;
+        }
+      }
+    }
     finally {
       if (job.directory) {
         try { await this.clean(job.directory); } catch { job.error = 'Could not remove temporary scan files. Stop Orbit and check .cache/scanner/runs before retrying.'; }

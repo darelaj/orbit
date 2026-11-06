@@ -38,6 +38,10 @@ Manual file import stays available. `npm run dev` and `npm run preview` remain f
 
 ## Verification milestones
 
+Implemented locally and verified within the synthetic boundary: pinned provisioning, same-origin Node API, elevated one-shot helper, export projection/expiry/cleanup, English scanner UI, browser schema validation and explicit replacement. Actual npm start and engine download/checksum succeeded; the executable itself has not run. See [VERIFICATION.md](VERIFICATION.md) for exact results and the pending real-game checks.
+
+The API uses GET /api/scanner/session with X-Orbit-Client: 1, then X-Orbit-Session on status/result reads and commands. GET /api/scanner/status reads capability/current job; POST /api/scanner/scan starts one fixed job; GET /api/scanner/scan/{id}/result reads its projected export; DELETE /api/scanner/scan/{id} discards it. Commands accept no request body, executable path or shell text. The result expires after five minutes. Discarded jobs block a new scan until native completion, including after a status-file failure; the elevated helper waits before releasing its mutex.
+
 - O-09a: scope, source pin, privilege/lifecycle decision and resumable plan.
 - O-09b: verified setup, constrained runtime/API, native helper, synthetic process/HTTP tests, separate focused commits.
 - O-09c: English scan panel, status/cancel/retry, validated import preview, synthetic component tests and both-theme browser review.

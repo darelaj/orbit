@@ -141,15 +141,16 @@ Use npm.cmd in Windows PowerShell when script execution policy blocks npm.ps1. A
 
 ### Implemented foundation
 
-Orbit is a client-side React application served by Vite. React holds transient demo filters and selected-item identity; the filtered list is derived during rendering. Native dialogs provide scanner guidance and item details on smaller screens. There is no application backend, account system, or inventory database yet.
+Orbit uses React + TypeScript, built by Vite. The local Node runtime serves the production app and manages one native scan; Vite dev/preview are frontend-only alternatives. React owns interaction state, pure domain modules own calculations and validation, a module Worker runs relic search, and IndexedDB stores inventory, comparison snapshots and team settings. No account system or remote database is required.
 
 ```mermaid
 flowchart LR
-    Vite["Vite on 127.0.0.1:4173"] --> React["React app in the browser"]
-    React --> Theme["Theme selection"]
-    Theme --> Storage["Browser localStorage"]
-    React --> Styles["Shared light/dark CSS tokens"]
-    React --> Demo["Synthetic equipment fixtures + local artwork"]
+    React["React browser UI"] -->|"Same-origin scan controls"| Runtime["Node on 127.0.0.1:4173"]
+    Runtime -->|"Elevated one-shot helper"| Native["Pinned Reliquary reader"]
+    Native -->|"Temporary export"| Runtime
+    Runtime -->|"Required fields only"| React
+    React -->|"Validate and confirm"| Store["Browser IndexedDB"]
+    React --> Worker["Optimizer Web Worker"]
 ```
 
 The current source layout is:
@@ -167,9 +168,13 @@ orbit/
 │       ├── theme.ts          Theme selection and preference persistence
 │       ├── styles.css        Shared styles and light/dark theme tokens
 │       └── App.test.tsx      Theme, filtering, selection, empty and image-error flows
-├── src/domain/               Implemented scanner validation and backup format
-├── src/features/inventory/   Implemented import and personal inventory view
-├── src/storage/              Implemented IndexedDB inventory persistence
+├── src/domain/               Inventory, comparison, optimizer and speed math
+├── src/features/             Inventory/scanner, comparison, optimizer, speed UI
+├── src/storage/              Independent IndexedDB workspace records/backups
+├── src/workers/              Optimizer protocol and module Worker
+├── server/                   Loopback API, scan lifecycle, Windows helpers/pin
+├── scripts/setup-scanner.mjs Pinned engine provisioning without capture
+├── tests/                    Cross-workflow, native-adapter/API and browser QA
 ├── public/assets/            Game images, Figma SVGs, local fonts, source notices
 ├── docs/                     Product contracts, architecture, planning, checkpoints
 ├── .agents/skills/           Pinned project skills and HSR integrity guidance
@@ -188,7 +193,7 @@ Artwork is bundled locally, with attribution and the upstream license recorded i
 
 ### Feature architecture
 
-Inventory validation, its React view, and IndexedDB inventory storage are implemented. Remaining responsibilities in these layers are planned:
+The implemented layers are:
 
 | Layer | Responsibility |
 | --- | --- |
@@ -205,7 +210,7 @@ Calculations and durable inventory storage stay in the browser. Native scanning 
 
 ## Automated verification
 
-[Verify Orbit](.github/workflows/verify.yml) runs clean install, typecheck, tests and build for pull requests and main on Linux/Windows with Node 24. Official checkout/setup-node actions are pinned to verified commit SHAs, with read-only repository permission. Local Windows commands remain npm.cmd run typecheck, npm.cmd test and npm.cmd run build. These automated checks use Vitest/JSDOM and fake IndexedDB; native production-browser evidence and its limits are recorded in [VERIFICATION.md](docs/VERIFICATION.md).
+[Verify Orbit](.github/workflows/verify.yml) runs clean install, typecheck, tests and build for pull requests and main on Linux/Windows with Node 24. Official checkout/setup-node actions are pinned to verified commit SHAs, with read-only repository permission. Local Windows commands remain npm.cmd run typecheck, npm.cmd test and npm.cmd run build. Vitest/JSDOM covers the app with fake IndexedDB; Node tests cover synthetic native adapters and real loopback HTTP. Windows also parses both helpers with PowerShell 5.1. CI never installs/runs the native reader, opens UAC or captures game traffic. Production-browser evidence and its limits are recorded in [VERIFICATION.md](docs/VERIFICATION.md).
 
 Keyboard **Skip to content** focuses the current workspace without changing its route. Disclosure controls retain at least a 44px click area. These fixes came from acceptance testing, not from a claim of complete accessibility certification.
 

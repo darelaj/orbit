@@ -4,6 +4,8 @@ Sources inspected: [Reliquary export model](https://github.com/IceDynamix/reliqu
 
 ## Supported input
 
+O-09 can deliver a projected Reliquary schema-4 export directly from the integrated local runtime. It uses exactly the same browser parser, preview and atomic persistence as manual files. The native helper requires upstream's initialization marker to reject incomplete captures before forwarding; the browser still validates every record. This is a one-shot import, not continuous live synchronization. See [SCANNER.md](SCANNER.md) for the process/API boundary and pending real-game verification.
+
 O-04a supports only source `reliquary_archiver` or `HSR-Scanner`, schema version 4, and the `InitialScan` envelope. A file is limited to 20 MiB and 10,000 relics (including empty inventories). Unsupported sources/versions and duplicate `_uid` values fail the entire import with a field path. Identical items with different IDs remain separate. IDs are local to an imported snapshot, not promised stable across scans.
 
 Inspected on 2026-11-06: [Reliquary exporter source/version](https://github.com/IceDynamix/reliquary-archiver/blob/main/src/export/fribbels/exporter.rs), [stat/slot conversion](https://github.com/IceDynamix/reliquary-archiver/blob/main/src/export/fribbels/utils.rs), and [Kel-Z schema 4 example](https://github.com/kel-z/HSR-Scanner#output). Tests contain synthetic schema-derived records, not personal exports. New versions require explicit adapter review.

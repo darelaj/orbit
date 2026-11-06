@@ -21,6 +21,17 @@ Each task has a branch and at least one focused commit. Integrate through a PR, 
 | O-07 | `feat/speed-tuning` | Implemented and verified with synthetic inputs (39 tests) | O-05 | Four-member AV timeline, fixed buffs and initial advance, cycle thresholds, import SPD from compared build, boundary tests |
 | O-08 | `test/workspace-acceptance` | Complete synthetic acceptance; real-account validation pending | O-06, O-07 | Both themes and narrow viewport, keyboard flows, invalid-import rollback, persistence, worker lifecycle, no console errors, antislop delivery evidence |
 
+## O-09 integrated scanner extension
+
+| Milestone | Branch | Status and verification |
+| --- | --- | --- |
+| O-09a | feat/integrated-scanner | Complete: authorized native boundary, upstream pin/license and delivery plan |
+| O-09b | feat/integrated-scanner | Implemented; actual download/checksum, 10 synthetic Node tests, PowerShell 5.1 parsing. Real native/UAC/capture acceptance pending |
+| O-09c | feat/integrated-scanner | Implemented; 7 new component tests within 50 Vitest tests, production build/start, synthetic browser controls, both-theme/narrow checks |
+| O-09d | feat/integrated-scanner | Documentation/local verification complete; finish exact-head CI, PR merge and verified source-branch cleanup |
+
+Contract and limits: [SCANNER.md](SCANNER.md). Real game extraction/completeness, Windows cleanup and compatibility remain owner-driven acceptance. Do not infer them from setup or synthetic tests.
+
 ## O-01 acceptance
 
 - Skills are committed inside `.agents/skills` and upstream sources are pinned.

@@ -1,5 +1,15 @@
 # Verification plan
 
+## Integrated scanner verification
+
+`npm test` runs Vitest then `npm run test:scanner`. The latter uses Node's test runner on tests/server.test.mjs: wrong size/digest and failed downloads, metadata projection and malformed-output redaction, one-shot result/expiry, partial/missing/oversized export rejection, cancellation/stale IDs/single-run protection, denied permission/missing engine, shutdown drain, stale-cache cleanup and actual loopback HTTP origin/Host/token/body/path checks. On Windows, it parses both scripts with Windows PowerShell 5.1 without executing them. All native execution uses an injected synthetic adapter; CI neither downloads the engine nor requests elevation/capture.
+
+ScannerPanel.test.tsx checks lazy connection, native-result preview, cancel and failed-save retention, fractional SPD/preview provenance, unsupported schema, discard-until-exit, offline reconnect, missing/unsupported capability, status decoding, preview focus and reconnect feedback. Existing numerical and persistence tests remain independent of the scanner runtime.
+
+For manual scanner UI testing, build then run `node tests/browser/preview-scanner.mjs`. Its fake native adapter only writes a labeled synthetic export after 2.5 seconds. Add `--incomplete` to test a rejected partial result. It binds the normal loopback port, so stop other Orbit servers first. Synthetic jobs are clearly labeled; this test entry point is never imported by production start code and exposes no capture-capable test endpoint. Do not substitute a real capture for this harness in development or CI.
+
+Use `npm start` only for the idle installed/ready production check during development. Actual HSR login extraction, UAC approval/denial, normal/timeout/cancel Packet Monitor cleanup and game-version compatibility remain owner-driven acceptance checks. An installed binary, a valid hash or a synthetic browser walkthrough does not prove those checks passed.
+
 Tests focus on input preservation and calculation correctness. Run npm.cmd run typecheck, npm.cmd test and npm.cmd run build from the checkout. SESSION_STATE.md records actual runs. The pinned GitHub Actions workflow verifies clean install and these commands on Node 24, Linux and Windows; it does not claim native-browser automation.
 
 ## Import and persistence

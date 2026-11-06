@@ -38,6 +38,10 @@ Contract and limits: [SCANNER.md](SCANNER.md). Real game extraction/completeness
 
 Status: plan only, all implementation unstarted. See [DEPLOYED_COMPANION_PLAN.md](DEPLOYED_COMPANION_PLAN.md) for O-10a through O-10h: transport feasibility, authenticated pairing, Windows packaging, hosted UI connection, workspace migration, release pipeline, acceptance and authorized release. Each implementation task has its own proposed branch and verification gate. The current request authorizes documentation only; do not start code, install, capture or deploy. When implementation is requested, begin at O-10a, not installer packaging or deployment.
 
+## O-11 character build workflow proposal
+
+Status: plan only, all implementation unstarted. See [CHARACTER_BUILD_WORKFLOW_PLAN.md](CHARACTER_BUILD_WORKFLOW_PLAN.md) for O-11a through O-11h: workflow specification, character data/profiles, target-based stat/CV search, current-build assessment, simpler Comparison/Optimizer, simpler Speed Tuning and integrated acceptance. The owner confirmed: reach target SPD, then maximize CRIT DMG; surplus SPD does not take priority. This roadmap is independent of O-10. Do not start application changes until implementation is requested.
+
 ## O-01 acceptance
 
 - Skills are committed inside `.agents/skills` and upstream sources are pinned.

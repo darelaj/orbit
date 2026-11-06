@@ -1,3 +1,20 @@
+# Current O-08 checkpoint
+
+2026-11-06 (Asia/Jakarta). Branch `test/workspace-acceptance`, base `776929b41702ca95ebdcdbbca3b1033f2e6c5ea9` (PR #13 merged and source branch removed remotely/locally). [PR #14](https://github.com/darelaj/orbit/pull/14) is open. Commits: `1adcaa0` independent full-App persistence/abort/stale-terminal tests; `65c3c67` pinned Linux/Windows CI; `de8e9a9` skip-route/focus fix and 44px disclosure targets; then this verification/checkpoint and browser-audit helper. No delegation requested.
+
+All core O-01–O-08 milestones are implemented and verified within the documented synthetic/manual model. O-08 local checks: typecheck, 43 tests / 15 files, production build passed. CI run 42176422051 succeeded for de8e9a9 on both Ubuntu and Windows, including npm ci, typecheck, tests and build. Final head must be checked again before merging PR #14. Workflow uses official v6 action SHAs verified by git ls-remote, Node 24 and contents:read only; no deployment/publishing is configured.
+
+Production browser tested import/cancel/reselection/rollback, filters/dialog focus, manual profile, saved snapshots, actual Worker constraints/no-result/transfer, B-to-SPD, reload and wrong-format restore rejection. Worker cancel and input invalidation were also exercised with the 240-item synthetic pool. Two actual defects were fixed: 20px disclosure targets and Skip to content changing routes. Native keyboard focus now enters main without changing the calculation destination/hash. Matrix of four views × two themes × three widths (1440/390/320) passed scoped contrast/target/overflow checks; minima 5.03 light / 7.97 dark, console error query empty. Read VERIFICATION.md for exact outcomes and exclusions.
+
+Before manual replacement, all three backup types were exported. After UI restore, newly exported inventory/comparisons/team matched the originals under canonical JSON comparison. Original light theme and viewport restored; owner reference tabs preserved. Only synthetic prior QA fixtures/profile were used. Production preview session 35373 stopped. Screenshots/raw audit JSON are under `.cache/acceptance/`; read-only helper now lives in tests/browser/audit-ui.js. Downloaded backup contents are not committed.
+
+Next actions:
+1. Finish existing PR #14 integration, not a duplicate. Push this final docs/helper commit, verify both CI matrix jobs for its exact head, merge with expected head SHA, sync main and verify all task commits before deleting the source branch remotely/locally. Keep incremental commits and merge history.
+2. After successful integration, no original core implementation task remains. Await owner direction for real-account validation, visual revisions or a separately agreed extension. Real scanner export/stat/turn matching and owner visual approval are pending, not silently marked passed. Do not launch a scanner/capture or expand dynamic combat/profile scope without authorization.
+3. Future work starts a fresh feature branch. Preserve snapshots, separate backups, source precision and fixed-model exclusions. Keep README/domain docs/checkpoint current only when their behavior or decisions change.
+
+## Historical checkpoints below
+
 # Current O-07 checkpoint
 
 2026-11-06 (Asia/Jakarta). Branch `feat/speed-tuning`, base `78aa9f6f51f888d33279c5d96e15d5f2ede04623` (PR #12 merged, source branch removed remotely/locally). Incremental commits: `4527166` bounded AV math/tests, `e611a1a` independent team persistence/backup, `1feab4a` UI/B snapshots/navigation/edge tests, followed by this documentation checkpoint. Continue branch-per-feature, incremental commits, merge-commit PR integration and verified remote/local source-branch deletion. No delegation requested.

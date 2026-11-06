@@ -5,7 +5,7 @@ description: Preserve HSR inventory data and calculation guarantees when changin
 
 # HSR calculation integrity
 
-Read the relevant contract in `docs/IMPORT_FORMAT.md` or `docs/CALCULATIONS.md` before changing behavior. Keep formulas in pure TypeScript modules, separate from React and persistence.
+Read the relevant contract in `docs/TECHNICAL.md` (inventory/storage or calculations section) before changing behavior. Keep formulas in pure TypeScript modules, separate from React and persistence.
 
 - Full inventory requires scanner exports. Never claim UID lookup supplies unequipped relics.
 - Keep active, preview, and reroll substats separate. Preserve unrounded numeric values and attach the source precision to imports and speed outputs.

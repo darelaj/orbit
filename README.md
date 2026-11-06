@@ -2,6 +2,10 @@
 
 A local Honkai: Star Rail relic workspace for PC players. Orbit is being built to inspect an entire relic inventory, compare six-slot builds, search stat targets, and explore action-value speed tuning.
 
+## Scope
+
+Orbit focuses on HSR relic inventory, same-profile comparison, panel-stat optimization and fixed-speed tuning on PC. Calculations and durable data stay in the browser; only an explicit local scan uses the bounded native reader. It has no account login, cloud sync, telemetry, gacha/check-in, auto-salvage, game memory access or game automation. Cross-game support, whole-team allocation and combat/DPS rotations are outside the current build. Automatic character profiles, CV/target priorities and simpler workspaces are planned in O-11, not implemented.
+
 ## Current status
 
 English is the primary interface language, including scanner guidance, accessibility labels, error states, and document metadata. Familiar HSR character, relic, set, and stat names are preserved.
@@ -10,9 +14,9 @@ The React/TypeScript/Vite application follows the owner's Figma equipment design
 
 Without a saved personal inventory, the app opens with eight clearly labeled synthetic demo relics. Saved inventory restores from IndexedDB on reload. Search by name/set/main stat, filter by slot or locked/unlocked status, and sort by equipped-first or either slot direction. Equipment selection keeps the current filters; Show selected relic clears filters when the selected item is hidden. Reset filters restores the default collection/order. Exit demo opens the empty workspace; Open demo or Explore demo restores the example. Selection, filters, and sorting reset on reload; demo items are not saved as a personal inventory.
 
-Scanner inventory import and catalogue inspection are available (O-04). Manual-profile A/B build comparison is available (O-05). Relic optimization (O-06) and fixed-speed team tuning (O-07) are available. The design is documented in [DESIGN.md](DESIGN.md) and the [Figma handoff](docs/FIGMA_HANDOFF.md). See [browser verification](docs/VERIFICATION.md) and [asset sources/notices](docs/ASSETS.md).
+Scanner inventory import and catalogue inspection are available (O-04). Manual-profile A/B build comparison is available (O-05). Relic optimization (O-06) and fixed-speed team tuning (O-07) are available. The design is documented in [DESIGN.md](DESIGN.md) and the [Figma handoff](DESIGN.md#figma-implementation-reference). See [browser verification](docs/VERIFICATION.md) and [asset sources/notices](docs/SOURCES.md#asset-and-font-sources).
 
-O-08 synthetic cross-workflow acceptance is complete, with independent storage/rollback checks and scoped production-browser verification. Real-account export/stat matching and user visual approval remain unverified. See the [implementation plan](docs/IMPLEMENTATION_PLAN.md) for feature acceptance criteria and the [resume checkpoint](docs/SESSION_STATE.md) for the latest verified work.
+O-08 synthetic cross-workflow acceptance is complete, with independent storage/rollback checks and scoped production-browser verification. Real-account export/stat matching and user visual approval remain unverified. See the [implementation plan](docs/PLAN.md) for feature acceptance criteria and the [resume checkpoint](docs/SESSION_STATE.md) for the latest verified work.
 
 ## Import your inventory
 
@@ -20,13 +24,13 @@ On Windows x64, start with `npm.cmd start`, open **Scan inventory from HSR**, an
 
 When ready, choose **Review scan**, check the actual count, then **Replace inventory**. A scan does not save automatically. **Discard scan** drops its result and waits for the native process to finish its 120-second capture window; it does not force-kill capture. Closing the panel leaves the job running. Reconnect can recover the current runtime job after a reload. Unread scan results expire after five minutes. A missing/partial/unsupported export leaves your prior inventory untouched; game updates may require a reviewed scanner-engine update.
 
-Setup/checksum, synthetic process/API tests and UI import flows are verified. A real HSR capture, Windows elevation and compatibility with your game version still need an owner-driven scan.
+Setup/checksum, synthetic process/API tests and UI import flows are verified. An owner retry reached Scan received after the Windows launch fix; inventory completeness/precision, browser replacement and real capture cleanup remain pending. This does not establish compatibility with every game version.
 
 Use **Import scanner JSON or Orbit backup** to choose a Reliquary Archiver or Kel-Z HSR Scanner export (source schema 4). Check the relic count, then choose **Replace inventory**. Cancel keeps your existing collection. Validation or storage errors also leave it unchanged. Limit: 20 MiB and 10,000 relics.
 
 Search by set, main stat, owner or scanner ID; filter slot and equipment/lock/discard status. The collection uses 48-item pages. Select an item to see active, preview and reroll substats separately. Source precision is shown: OCR cannot reveal hidden SPD decimals. Known set/slot combinations show local icons and item names. Main-stat amounts are derived from a pinned catalogue and labeled in details. Character names come from the export; missing references retain their IDs with warnings. Additional filters cover set, main stat, rarity, minimum level, and equipped character. Import time is preserved in backups; legacy backups show when that time is unavailable.
 
-Use **Download backup** before clearing browser data. Re-import that file through the same picker. Inventory stays in IndexedDB in this browser profile and origin; it is not synchronized to GitHub or another device. Demo selection never replaces your saved inventory. Only supported relic fields are retained, not the scanner's account/gacha/material data. No real-account export has been tested yet.
+Use **Download backup** before clearing browser data. Re-import that file through the same picker. Inventory stays in IndexedDB in this browser profile and origin; it is not synchronized to GitHub or another device. Demo selection never replaces your saved inventory. Only supported relic fields are retained, not the scanner's account/gacha/material data. Real-account item/stat matching remains unverified.
 
 ## Compare two builds
 
@@ -67,7 +71,7 @@ Internet access is needed to clone the repository and download dependencies. No 
 
 ## Run locally on Windows
 
-`npm.cmd start` builds and serves Orbit on the same origin and checks/downloads pinned Reliquary v0.19.0 into the ignored cache on Windows x64. First launch needs access to GitHub; later launches verify the cached engine. Capture stays idle until you choose Scan inventory. `npm.cmd run scanner:setup` restores/verifies the engine without running it. See [the scanner contract and upstream MIT notice](docs/SCANNER.md). No global PowerShell policy change is needed; the helper uses a process-scoped policy. `npm.cmd run dev` and `npm.cmd run preview` remain frontend-only.
+`npm.cmd start` builds and serves Orbit on the same origin and checks/downloads pinned Reliquary v0.19.0 into the ignored cache on Windows x64. First launch needs access to GitHub; later launches verify the cached engine. Capture stays idle until you choose Scan inventory. `npm.cmd run scanner:setup` restores/verifies the engine without running it. See [the scanner contract and upstream MIT notice](docs/TECHNICAL.md#scanner). No global PowerShell policy change is needed; the helper uses a process-scoped policy. `npm.cmd run dev` and `npm.cmd run preview` remain frontend-only.
 
 Open PowerShell and clone the project:
 
@@ -195,7 +199,7 @@ orbit/
 
 The theme is stored under the versioned localStorage key orbit:theme:v1. If no saved choice exists, Orbit follows the browser's system preference. Changing hostname, port, or browser profile changes the storage origin; clearing browser data removes the saved preference.
 
-Artwork is bundled locally, with attribution and the upstream license recorded in [ASSETS.md](docs/ASSETS.md). No external font or image CDN is required at runtime.
+Artwork is bundled locally, with attribution and the upstream license recorded in [asset sources](docs/SOURCES.md#asset-and-font-sources). No external font or image CDN is required at runtime.
 
 ### Feature architecture
 
@@ -212,7 +216,7 @@ The implemented layers are:
 
 The import flow is file or integrated-scan JSON -> complete browser validation -> preview -> atomic IndexedDB persistence -> React views. Invalid input preserves the previous valid inventory. Search runs off the main thread so controls remain responsive.
 
-Calculations and durable inventory storage stay in the browser. Native scanning briefly writes an export and info-level process output under ignored .cache/scanner/runs, forwards only supported inventory/reference fields, then removes the run files. It requests no packet file or trace log. Normal cleanup errors are visible; crash leftovers older than ten minutes are cleaned on startup. No cloud sync or account login is planned. See [ARCHITECTURE.md](docs/ARCHITECTURE.md) and [SCANNER.md](docs/SCANNER.md) for boundaries and verification limits.
+Calculations and durable inventory storage stay in the browser. Native scanning briefly writes an export and info-level process output under ignored .cache/scanner/runs, forwards only supported inventory/reference fields, then removes the run files. It requests no packet file or trace log. Normal cleanup errors are visible; crash leftovers older than ten minutes are cleaned on startup. No cloud sync or account login is planned. See [technical contracts](docs/TECHNICAL.md) for boundaries and verification limits.
 
 ## Automated verification
 
@@ -224,21 +228,27 @@ Keyboard **Skip to content** focuses the current workspace without changing its 
 
 Full-inventory inputs are schema-4 JSON exports from [Reliquary Archiver](https://github.com/IceDynamix/reliquary-archiver) or [Kel-Z HSR Scanner](https://github.com/kel-z/HSR-Scanner). Orbit also manages a pinned Reliquary reader through its integrated Windows workflow. The engine reads login traffic, while Orbit validates the completed export and keeps browser persistence unchanged. No game memory reading or game automation is implemented.
 
-Enka UID lookup supplies public showcase data and cannot provide every unequipped relic. OCR exports also cannot recover hidden SPD decimals, which matters for close speed thresholds. The importer preserves provenance and precision as described in [IMPORT_FORMAT.md](docs/IMPORT_FORMAT.md).
+Enka UID lookup supplies public showcase data and cannot provide every unequipped relic. OCR exports also cannot recover hidden SPD decimals, which matters for close speed thresholds. The importer preserves provenance and precision as described in [inventory contract](docs/TECHNICAL.md#inventory-and-storage).
 
 No personal inventory, game credentials, or packet captures are included in this repository.
 
 ## Documentation and contributing
 
-The [hosted website and Windows Companion plan](docs/DEPLOYED_COMPANION_PLAN.md) describes a future deployment option. It is planning only: there is currently no Companion installer, hosted-to-local pairing or public deployment. The local scanner commands above remain the implemented workflow.
+The [hosted website and Windows Companion plan](docs/PLAN.md#o-10-hosted-website-and-windows-companion) describes a future deployment option. It is planning only: there is currently no Companion installer, hosted-to-local pairing or public deployment. The local scanner commands above remain the implemented workflow.
 
-Start with the [documentation map](docs/README.md). The main references are:
+Read only the document and section needed for the task:
 
-- [AGENTS.md](AGENTS.md): repository workflow, skills, invariants, and verification.
-- [DESIGN.md](DESIGN.md): owner-selected HSR equipment inspiration and two-theme design.
-- [Product scope](docs/PRODUCT.md) and [implementation plan](docs/IMPLEMENTATION_PLAN.md).
-- [Architecture](docs/ARCHITECTURE.md), [import contract](docs/IMPORT_FORMAT.md), and [calculation contract](docs/CALCULATIONS.md).
-- [Testing](docs/TESTING.md), [skill provenance](docs/SKILLS.md), and [resume checkpoint](docs/SESSION_STATE.md).
+| Document | Purpose |
+| --- | --- |
+| [AGENTS.md](AGENTS.md) | AI workflow, relevant skills and verification rules |
+| [DESIGN.md](DESIGN.md) | HSR/Figma direction, both themes and source-frame decisions |
+| [docs/PLAN.md](docs/PLAN.md) | Implemented milestone summary and the unstarted O-10/O-11 roadmaps |
+| [docs/TECHNICAL.md](docs/TECHNICAL.md) | Architecture, imports/storage, math/search, scanner and test contracts |
+| [docs/SOURCES.md](docs/SOURCES.md) | Asset/font/catalogue/scanner sources, skill pins and notices |
+| [docs/VERIFICATION.md](docs/VERIFICATION.md) | Evidence summary, pending acceptance and historical Git references |
+| [docs/SESSION_STATE.md](docs/SESSION_STATE.md) | Short current handoff; replace rather than append history |
+
+Historical reports remain in Git. Keep one maintained location per subject; link to its section rather than adding another Markdown guide or copying the same contract. Skills and their upstream resources remain separate.
 
 Use a branch per coherent task and focused commits. Integrate through a PR after the relevant checks pass, verify the merge, then delete the source branch remotely and locally. Preserve task history in the commits and PR.
 

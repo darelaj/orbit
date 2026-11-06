@@ -72,7 +72,7 @@ export default function App() {
         <section className="preparation-panel" aria-label="Prepare your inventory"><ScannerGuide /></section>
       </div> : null}
     </main>
-    <footer className="app-footer"><span>Orbit / Local relic workspace</span><div><a href="https://github.com/darelaj/orbit" target="_blank" rel="noreferrer">Source Orbit</a><a href="https://github.com/darelaj/orbit/blob/main/docs/ASSETS.md" target="_blank" rel="noreferrer">Asset &amp; font credits</a></div></footer>
+    <footer className="app-footer"><span>Orbit / Local relic workspace</span><div><a href="https://github.com/darelaj/orbit" target="_blank" rel="noreferrer">Source Orbit</a><a href="https://github.com/darelaj/orbit/blob/main/docs/SOURCES.md#asset-and-font-sources" target="_blank" rel="noreferrer">Asset &amp; font credits</a></div></footer>
     <dialog ref={guide} className="guide-dialog" aria-labelledby="guide-heading"><div className="dialog-header"><h2 id="guide-heading">Scanner guide</h2><button onClick={() => guide.current?.close()} aria-label="Close guide">Close</button></div><ScannerGuide /></dialog>
     <dialog ref={detail} className="detail-dialog" aria-label="Selected relic details"><div className="dialog-header"><button onClick={() => detail.current?.close()}>Back to collection</button><span className="demo-label">Synthetic demo</span></div><RelicDetails relic={selected} position={selectedPosition} /></dialog>
   </div>;

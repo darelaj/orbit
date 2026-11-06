@@ -1,6 +1,6 @@
 # O-09 integrated scanner verification (current)
 
-2026-11-06. Final frontend suite: 50 tests in 16 Vitest files passed. Native-boundary suite: 10 Node tests passed on Windows, including PowerShell 5.1 syntax parsing without script execution. Production build (with strict typecheck), pinned engine setup and the actual `npm.cmd start` command succeeded. Later native-helper cleanup/redaction changes passed the affected Node suite again. There is no new npm dependency or lockfile change.
+2026-11-06. Final frontend suite: 50 tests in 16 Vitest files passed. Native-boundary suite: 10 Node tests passed on Windows, including PowerShell 5.1 syntax parsing without script execution. Production build (with strict typecheck), pinned engine setup and the actual `npm.cmd start` command succeeded. Later native-helper cleanup/redaction changes passed the affected Node suite again. Final source review also identified upstream's crashlog/Enter prompt: stdin now receives EOF, crash results are rejected and their artifacts cleaned. Synthetic crash cleanup and helper syntax are checked; the native crash path has not run. There is no new npm dependency or lockfile change.
 
 ## Executed checks
 

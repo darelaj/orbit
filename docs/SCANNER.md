@@ -16,6 +16,8 @@ Pin both URL and digest in code. Setup downloads the engine into ignored `.cache
 
 The retained upstream [MIT notice](../server/RELIQUARY-LICENSE.txt) accompanies the integration. `npm start` builds the app, reserves its loopback origin, verifies/provisions the engine on Windows x64, then enables scanner controls. `npm run scanner:setup` only provisions/verifies. Both helpers use a process-scoped execution-policy option; no global Windows policy changes.
 
+The pinned upstream panic handler writes crashlog.txt and waits for Enter even in headless mode. The helper supplies an empty redirected stdin so it receives EOF, rejects any crash log as a failed result and removes that file with other run artifacts. Synthetic tests cover crash-result rejection/cleanup; the real native panic path remains unexecuted.
+
 ## Runtime boundary
 
 The Node local runtime serves the built React app and a small same-origin scanner API on `http://127.0.0.1:4173`, retaining the existing IndexedDB origin. It remains an ordinary user process. A Scan request starts a fixed PowerShell helper that requests Windows elevation for only the native scan. The elevated helper verifies the engine digest again, disables self-update and streaming, and runs a bounded, one-shot headless capture. No shell command, executable path, port or output filename comes from HTTP input.

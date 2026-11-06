@@ -8,6 +8,7 @@ $statusPath = Join-Path $run 'status.json'
 $output = Join-Path $run 'output.json'
 $stdout = Join-Path $run 'stdout.txt'
 $stderr = Join-Path $run 'stderr.txt'
+$nativeInputPath = Join-Path $run 'stdin.txt'
 function Write-State([string]$state) {
     $temporary = Join-Path $run 'status.tmp'
     [IO.File]::WriteAllText($temporary, ('{"state":"' + $state + '"}'), [Text.UTF8Encoding]::new($false))
@@ -25,8 +26,10 @@ try {
     if ((Get-FileHash -LiteralPath $engine -Algorithm SHA256).Hash.ToLowerInvariant() -ne $manifest.sha256 -or (Get-Item -LiteralPath $engine).Length -ne $manifest.bytes) { throw 'Checksum mismatch' }
     $env:NO_SELF_UPDATE = '1'
     $env:RUST_LOG = 'reliquary_archiver=info'
+    # EOF prevents the upstream panic handler from waiting for an invisible Enter prompt.
+    [IO.File]::WriteAllText($nativeInputPath, '')
     Write-State 'starting'
-    $child = Start-Process -FilePath $engine -WindowStyle Hidden -WorkingDirectory $run -ArgumentList @('--headless', '--no-update', '--exit-after-capture', '--timeout', '120', ('"' + $output + '"')) -RedirectStandardOutput $stdout -RedirectStandardError $stderr -PassThru
+    $child = Start-Process -FilePath $engine -WindowStyle Hidden -WorkingDirectory $run -ArgumentList @('--headless', '--no-update', '--exit-after-capture', '--timeout', '120', ('"' + $output + '"')) -RedirectStandardInput $nativeInputPath -RedirectStandardOutput $stdout -RedirectStandardError $stderr -PassThru
     $listening = $false
     while (-not $child.HasExited) {
         if (-not $listening -and (Test-Path -LiteralPath $stdout) -and (Get-Item -LiteralPath $stdout).Length -le 1048576) {
@@ -40,7 +43,7 @@ try {
     $text = ''
     if ((Get-Item -LiteralPath $stdout).Length -le 1048576) { $text = Get-Content -LiteralPath $stdout -Raw }
     # The upstream CLI can export partial data on timeout. Require its initialization marker.
-    if ($child.ExitCode -eq 0 -and $text -match 'finished initialization' -and (Test-Path -LiteralPath $output)) { Write-State 'complete' }
+    if ($child.ExitCode -eq 0 -and $text -match 'finished initialization' -and (Test-Path -LiteralPath $output) -and -not (Test-Path -LiteralPath (Join-Path $run 'crashlog.txt'))) { Write-State 'complete' }
     else { Write-State 'incomplete' }
 } catch { Write-State 'failed' }
 finally {

@@ -75,10 +75,11 @@ test('successful one-shot result expires, uses job identity and removes all run 
   assert.equal((await scanner.status()).job.state, 'expired');
 });
 test('partial, malformed, empty and oversized output never become a ready scan', async t => {
-  for (const kind of ['partial', 'malformed', 'missing', 'oversized']) {
+  for (const kind of ['partial', 'malformed', 'missing', 'oversized', 'crash']) {
     const scanner = await makeScanner(t, { launch: async (_, directory) => {
       await output(directory, kind === 'partial' ? 'incomplete' : 'complete');
       if (kind === 'malformed') await writeFile(join(directory, 'output.json'), '{');
+      if (kind === 'crash') { await writeFile(join(directory, 'crashlog.txt'), 'private synthetic crash details'); await writeFile(join(directory, 'stdin.txt'), ''); }
       if (kind === 'missing') await rm(join(directory, 'output.json'));
       if (kind === 'oversized') { const file = await open(join(directory, 'output.json'), 'w'); await file.truncate(MAX_EXPORT_BYTES + 1); await file.close(); }
     } });

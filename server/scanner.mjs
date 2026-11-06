@@ -7,7 +7,7 @@ import { ENGINE, enginePath, verifyEngine } from './engine.mjs';
 export const MAX_EXPORT_BYTES = 20 * 1024 * 1024;
 export const RESULT_TTL = 5 * 60 * 1000;
 const busyStates = new Set(['permission', 'starting', 'capturing', 'discarding']);
-const files = ['output.json', 'status.json', 'status.tmp', 'stdout.txt', 'stderr.txt'];
+const files = ['output.json', 'status.json', 'status.tmp', 'stdout.txt', 'stderr.txt', 'stdin.txt', 'crashlog.txt'];
 const messages = {
   permission: 'Approve the Windows Administrator request to start the scanner.',
   starting: 'Starting the scanner. Stay on the HSR Click to Start screen.',
@@ -104,6 +104,8 @@ export class Scanner {
       await mkdir(job.directory, { recursive: false });
       if (!job.discard) await this.launch(this.root, job.directory);
       if (!job.discard) {
+        const crashed = await stat(join(job.directory, 'crashlog.txt')).then(() => true, error => { if (error.code === 'ENOENT') return false; throw error; });
+        if (crashed) throw new Error('Scanner stopped unexpectedly. Return to Click to Start and retry, or use JSON import.');
         const state = JSON.parse(await readFile(join(job.directory, 'status.json'), 'utf8'));
         if (state.state !== 'complete') throw new Error(state.state === 'occupied' ? 'Another Orbit scan is active. Wait for it to finish.' : 'No complete inventory received. Return to Click to Start and retry. The game version may need a scanner update.');
         if ((await stat(join(job.directory, 'output.json'))).size > MAX_EXPORT_BYTES) throw new Error('Scanner output exceeds the 20 MiB import limit.');

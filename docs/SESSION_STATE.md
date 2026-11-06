@@ -1,4 +1,14 @@
-# Current O-08 checkpoint
+# Current O-09 checkpoint
+
+2026-11-06. Owner selected an integrated local scanner controlled from Orbit. Branch `feat/integrated-scanner`, based on clean synchronized main `0f890adec144db5ca01a90bfe4d24125397b3beb`. PR #14 is merged; its final head 648f8b2 passed both CI matrix jobs in run 42177844143. Its source branch was deleted remotely/locally. The old O-08 next-action list below is historical.
+
+O-09a records the new authorized scope and plan in SCANNER.md, AGENTS.md, PRODUCT.md and IMPLEMENTATION_PLAN.md. Reliquary v0.19.0 pktmon x64 release URL, 12,294,144-byte size and SHA-256 were read from official GitHub metadata. Pinned source confirms schema 4 and required Administrator privilege. Decision: ordinary-user Node server, elevated one-shot native helper only on Scan; browser validation/IndexedDB remain authoritative. No scanner has been installed or executed, no personal capture performed, no running service started.
+
+Next: implement O-09b setup/runtime/helper and synthetic tests, commit independently, then O-09c UI/import integration and tests, then O-09d docs/browser/CI/PR. Read SCANNER.md before implementing. Do not mark capture/UAC/real inventory compatibility verified from mocks. Preserve incremental commits, feature branch and merge-commit PR cleanup workflow. No delegation requested. Skills: existing Karpathy, HSR integrity, antislop DURING, UI/copywriting/React; accepted design remains unchanged.
+
+## Historical checkpoints below
+
+# O-08 checkpoint (historical)
 
 2026-11-06 (Asia/Jakarta). Branch `test/workspace-acceptance`, base `776929b41702ca95ebdcdbbca3b1033f2e6c5ea9` (PR #13 merged and source branch removed remotely/locally). [PR #14](https://github.com/darelaj/orbit/pull/14) is open. Commits: `1adcaa0` independent full-App persistence/abort/stale-terminal tests; `65c3c67` pinned Linux/Windows CI; `de8e9a9` skip-route/focus fix and 44px disclosure targets; then this verification/checkpoint and browser-audit helper. No delegation requested.
 

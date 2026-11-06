@@ -77,4 +77,6 @@ Record a control-by-control browser walkthrough in `docs/VERIFICATION.md`. Inclu
 
 ## Deferred scope
 
-Direct packet capture, scanner binaries, cloud sync, account login, Enka integration, gacha, auto-salvage, whole-team relic allocation, and character-specific combat/DPS rotations are deferred. Add them only after an explicit scope change. Scanner output is the first full-inventory boundary.
+The owner authorized integrated Windows extraction on 2026-11-06. O-09 on `feat/integrated-scanner` follows [SCANNER.md](SCANNER.md): O-09a decision/plan, O-09b pinned engine and constrained local runtime with synthetic tests, O-09c scanner UI and atomic import preview, O-09d verification/documentation/PR. Each completed milestone receives a focused commit. This extends extraction only; calculation scope stays unchanged. Real capture acceptance remains pending an owner-driven scan.
+
+Cloud sync, account login, Enka integration, gacha, auto-salvage, whole-team relic allocation, and character-specific combat/DPS rotations remain deferred.

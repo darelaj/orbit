@@ -15,7 +15,7 @@ English is the primary application language, including interface copy, accessibi
 
 ## Full inventory boundary
 
-Reliquary Archiver or Kel-Z HSR Scanner performs extraction from the game. Orbit accepts its resulting JSON. This first version does not install or run a scanner, capture network traffic, read game memory, or automate the game. It does not obtain the full inventory from a UID.
+Manual import accepts Reliquary Archiver or Kel-Z HSR Scanner JSON. The owner has now authorized an integrated local Windows scanner (O-09); [SCANNER.md](SCANNER.md) records its implementation plan and verification limits. The browser retains validation, calculations and durable storage; an Orbit-managed native component performs extraction. Game memory reading and game automation remain excluded. A UID does not provide full inventory.
 
 The owner has not supplied a real inventory export. Schema-derived synthetic fixtures enable development. Real-account acceptance remains a separate unverified check until an export is imported.
 

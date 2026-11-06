@@ -1,3 +1,38 @@
+# O-08 production acceptance (current)
+
+Executed 2026-11-06 (Asia/Jakarta). Local typecheck, 43 tests in 15 files and production build passed. Native browser checks used `npm.cmd run preview` against `dist`, including the separately emitted optimizer Worker. [CI run 42176422051](https://github.com/darelaj/orbit/actions/runs/42176422051) passed clean install/typecheck/tests/build on both Linux and Windows for runtime head `de8e9a9`; the final documentation head must also pass before merge. Workflow action SHAs were resolved from the official v6 tags, not inferred from search text. No package or lockfile upgrade was needed.
+
+## Cross-workflow results
+
+| Control / scenario | Observable outcome and evidence |
+| --- | --- |
+| Valid import, cancel and same-file reselection | Cancel retained 240 existing synthetic relics; reselect/confirm imported all 7 fixture relics |
+| Unsupported schema | Version 99 produced an explicit error; the 7-item inventory stayed available |
+| Main-stat filter/reset | CRIT Rate filter returned 1/7; reset restored the collection |
+| Mobile relic detail | Escape closed native detail dialog and focus returned to compare_alt's card |
+| Profile and saved comparison | Initialized equipped A/B, entered manual base/Light Cone values, saved Acceptance flow |
+| Actual module Worker | Exact search applied SPD 130–132, 4-piece Musketeer, scanner-ID exclusion and ATK/CRIT index; one legal result had SPD 131.032, score/index 1455.910 |
+| No-result recovery | SPD 1000–1200 returned no feasible computable build; restoring 130–132 recovered a result |
+| Transfer/save/reload | Applying result retained A's compare_2 and put compare_alt in B; saving/reload/loading retained the optimized B |
+| B to team | Copying B preserved OCR provenance; explicit team save survived reload independently |
+| Wrong backup formats | Inventory file rejected by comparison restore; comparison file rejected by team restore; prior state stayed available |
+| Worker cancellation/invalidation | Production sampled search started on the 240-item pool, cancelled without application; editing SPD during a new run returned idle controls with no stale result |
+| Keyboard skip navigation | Initially reproduced a bug that returned calculation views to Inventory. After fix, Enter focuses main and preserves #comparison, #optimizer or #speed |
+| Disclosure controls | Initially measured 20px targets. After fix, active summaries were at least 44px with native semantics retained |
+| Prior-data recovery | Exported all three backup types before replacement. Restored through UI, exported again, canonicalized JSON and verified inventory/comparisons/team all matched the originals. Only synthetic QA data was used |
+
+The integration test uses the real App/storage modules with independent fake IndexedDB factories and a controlled Worker message adapter running the real solver. Native browser checks cover the actual production Worker/file pickers/focus behavior. A separate test aborts writes in each store and verifies every prior store remains readable; this is automated fault injection, not a claim that browser storage quota was exhausted manually. Worker tests cover late completion/error/progress after cancellation, restart and revision changes. Existing feature tests retain demo/theme/fallback, math, import, persistence and timeline coverage. Unchanged scanner-guide interactions were not separately re-walked in O-08; earlier feature reports remain their browser evidence.
+
+## UI matrix and limits
+
+All four workspaces were audited in light/dark at 1440x1000, 390x844 and 320x800: 24 cases with no document overflow, no active target below 44px and no failures in the scoped text-pair check. Minimum measured contrast was 5.03:1 light and 7.97:1 dark. Relevant manual correction/eligibility disclosures were opened. Focus/keyboard, image/pseudo-element compositing and semantic interaction still require human judgment; this computed solid-background check is not full WCAG or assistive-technology certification. Results and raw measurements are ignored artifacts under `.cache/acceptance/audit-results.json`; the reproducible read-only snippet is `tests/browser/audit-ui.js`.
+
+Console query returned no error entries. Screenshots: `.cache/acceptance/desktop-dark.jpg`, `mobile-light.jpg`. Original light preference and temporary viewport were restored; reference tabs preserved. Production preview session `35373` stopped after QA. Initial backup files are in Downloads as orbit-inventory (1).json, orbit-comparisons (1).json and orbit-speed-team (1).json; they are not committed. Browser data was restored, not erased.
+
+Scoped antislop gate: established Figma/HSR identity retained, no new visual assets or invented data claims, meaningful chart geometry, explicit manual/precision/model limits, working primary actions and accurate failure/recovery feedback. Two observed accessibility/navigation defects were fixed and rechecked. All initial core milestones now have synthetic acceptance evidence. Real-account export accuracy, in-game stat/turn matching, native browsers outside this Chromium environment and owner visual approval remain pending. No performance score or complete accessibility certification is claimed.
+
+## Historical feature reports
+
 # O-07 speed-tuning verification (current)
 
 2026-11-06. Final typecheck, 39 tests across 14 files and production build passed. New numerical tests cover character-base SPD percentage scaling, initial-only advance, actions at 150/250 AV, member-order ties, the unrounded 133.333… threshold, invalid values, interval underflow and an exact 2,000-action cap. Storage tests retain fractional SPD/provenance across round trips and preserve saved data after invalid writes. UI tests cover copy-B reset/provenance, no automatic relinking, manual-label changes after edits, save failure/retry, saved restoration, transient invalid-input handling, reset and pagination.

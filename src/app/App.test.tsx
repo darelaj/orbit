@@ -6,6 +6,18 @@ import { GameImage } from './Equipment';
 
 afterEach(() => { cleanup(); localStorage.clear(); history.replaceState(null, '', '/'); });
 
+test('keyboard skip link preserves the current calculation workspace', async () => {
+  const user=userEvent.setup();render(<App/>);
+  for(const destination of ['Comparison','Optimizer','Speed tuning']){
+    await user.click(screen.getByRole('link',{name:destination}));
+    screen.getByRole('link',{name:'Skip to content'}).focus();
+    await user.keyboard('{Enter}');fireEvent(window,new Event('hashchange'));
+    expect(document.activeElement).toBe(document.getElementById('main'));
+    expect(location.hash).toBe(destination==='Comparison'?'#comparison':destination==='Optimizer'?'#optimizer':'#speed');
+    expect(screen.getByRole('heading',{level:1,name:destination==='Comparison'?'Build comparison':destination==='Optimizer'?'Relic optimizer':'Speed tuning'})).toBeTruthy();
+  }
+});
+
 test('comparison navigation preserves unsaved manual profile across views', async () => {
   const user=userEvent.setup();
   render(<App />);

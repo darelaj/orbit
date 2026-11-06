@@ -1,6 +1,6 @@
 # Verification plan
 
-Tests focus on input preservation and calculation correctness. The framework setup will define executable commands; SESSION_STATE.md records commands actually run.
+Tests focus on input preservation and calculation correctness. Run npm.cmd run typecheck, npm.cmd test and npm.cmd run build from the checkout. SESSION_STATE.md records actual runs. The pinned GitHub Actions workflow verifies clean install and these commands on Node 24, Linux and Windows; it does not claim native-browser automation.
 
 ## Import and persistence
 
@@ -36,3 +36,13 @@ Exercise both requested themes at desktop and a narrow viewport, then record eac
 Run typecheck, unit/integration tests, and a production build before feature integration. Do not claim manual interactions from a passing build. Do not invent performance scores; benchmarks are recorded only if measured.
 
 The antislop delivery gate must include evidence for its hard gates, purpose decisions, liveliness dials, and craftsmanship checks. Keep the detailed report in VERIFICATION.md and link it from the final delivery.
+
+## Cross-workflow acceptance suite
+
+`tests/workspace.acceptance.test.tsx` renders the real App, parses synthetic schema-derived exports and uses real storage modules against a fresh fake IndexedDB factory per test. It traverses import, comparison, optimizer result transfer, B-to-team copying, save/reload and independent inventory replacement. Its Worker is a controlled message adapter using the real search engine; actual module-Worker behavior is exercised separately in the production browser. A second independent fixture forces transaction aborts in each store and confirms all old values remain readable. Tests do not depend on one another's data.
+
+`src/features/optimizer/runner.test.ts` covers cancel, restart, import revision, stale progress/terminal/error messages and terminal resource release. App navigation regressions cover keyboard skip focus without route changes across all calculation destinations. A native production-browser walkthrough still checks file choosers/downloads, actual Worker chunks, dialog focus/Escape, both themes and responsive layouts.
+
+`tests/browser/audit-ui.js` is a browser-only, read-only inspection snippet, not a CLI/Vitest test. Read its text through the approved browser automation runtime and evaluate it with the documented read-only DOM API on a rendered view. It reports overflow, active target bounds and solid-background computed text contrast; disabled controls are exempt, and checkbox/radio labels count as their effective target. It excludes hidden/closed-detail content. It cannot certify image/pseudo-element compositing, every browser, assistive technology or the full WCAG standard. Open relevant disclosures and inspect screenshots as well as numeric output. It does not read browser storage or mutate the page.
+
+Before destructive test replacement, export all three supported backup types through the UI. Restore them after manual QA and compare canonicalized JSON output to the originals, rather than assuming that visually similar rows prove recovery. Keep personal exports and downloaded backups out of Git; only synthetic fixtures and verification code belong in the repository.

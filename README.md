@@ -12,7 +12,7 @@ Without a saved personal inventory, the app opens with eight clearly labeled syn
 
 Scanner inventory import and catalogue inspection are available (O-04). Manual-profile A/B build comparison is available (O-05). Relic optimization (O-06) and fixed-speed team tuning (O-07) are available. The design is documented in [DESIGN.md](DESIGN.md) and the [Figma handoff](docs/FIGMA_HANDOFF.md). See [browser verification](docs/VERIFICATION.md) and [asset sources/notices](docs/ASSETS.md).
 
-See the [implementation plan](docs/IMPLEMENTATION_PLAN.md) for feature acceptance criteria and the [resume checkpoint](docs/SESSION_STATE.md) for the latest verified work.
+O-08 synthetic cross-workflow acceptance is complete, with independent storage/rollback checks and scoped production-browser verification. Real-account export/stat matching and user visual approval remain unverified. See the [implementation plan](docs/IMPLEMENTATION_PLAN.md) for feature acceptance criteria and the [resume checkpoint](docs/SESSION_STATE.md) for the latest verified work.
 
 ## Import your inventory
 
@@ -190,6 +190,12 @@ Inventory validation, its React view, and IndexedDB inventory storage are implem
 The implemented import flow is scanner JSON -> complete validation -> normalized inventory -> atomic local persistence -> React views. Invalid input must preserve the previous valid inventory. Search will run off the main thread so controls remain responsive.
 
 Personal inventory is processed locally in the browser. No cloud sync or account login is planned. See [ARCHITECTURE.md](docs/ARCHITECTURE.md) for module boundaries, worker messages, persistence, and game-data requirements.
+
+## Automated verification
+
+[Verify Orbit](.github/workflows/verify.yml) runs clean install, typecheck, tests and build for pull requests and main on Linux/Windows with Node 24. Official checkout/setup-node actions are pinned to verified commit SHAs, with read-only repository permission. Local Windows commands remain npm.cmd run typecheck, npm.cmd test and npm.cmd run build. These automated checks use Vitest/JSDOM and fake IndexedDB; native production-browser evidence and its limits are recorded in [VERIFICATION.md](docs/VERIFICATION.md).
+
+Keyboard **Skip to content** focuses the current workspace without changing its route. Disclosure controls retain at least a 44px click area. These fixes came from acceptance testing, not from a claim of complete accessibility certification.
 
 ## Inventory source
 

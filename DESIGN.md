@@ -1,6 +1,6 @@
 # Orbit design brief
 
-Status: O-03b implements the owner's Figma reference with the approved review revisions. The earlier O-03a layout is superseded. The synthetic demo remains separate from O-04a personal inventory import. Imported items use the same panel/grid/theme language with catalogue-derived main stats and sourced local set/slot icons; unknown sets keep textual identification; no unrelated artwork is substituted. Manual-profile calculation and A/B comparison are implemented in O-05; optimization is implemented in O-06 and the fixed-speed timeline is implemented in O-07. See docs/FIGMA_HANDOFF.md for source frames/deviations and docs/VERIFICATION.md for executed checks.
+Status: O-03b implements the owner's Figma reference with the approved review revisions. The earlier O-03a layout is superseded. The synthetic demo remains separate from O-04a personal inventory import. Imported items use the same panel/grid/theme language with catalogue-derived main stats and sourced local set/slot icons; unknown sets keep textual identification; no unrelated artwork is substituted. Manual-profile calculation and A/B comparison are implemented in O-05; optimization is implemented in O-06 and the fixed-speed timeline is implemented in O-07. See the Figma implementation reference below for source frames/deviations and docs/VERIFICATION.md for executed checks.
 
 ## Decisions from the owner
 
@@ -52,7 +52,7 @@ Use selected-character artwork as a contained visual anchor. Show art for the ch
 | Main accent | Muted gold #CFB47B | Dark gold #80612B | Primary action, equipment annotations, selected framing |
 | Structural color | Ice blue #9CCBDD | Deep blue #285F75 | Slot context and timeline guides, used sparingly |
 
-These tokens are not an accessibility certification. Scoped text-pair checks are recorded in VERIFICATION.md. Neutrals plus gold and one cool focus color form the palette. Timeline actors also need names/lane numbers rather than extra hues alone.
+These tokens are not an accessibility certification. Scoped text-pair checks are recorded in docs/VERIFICATION.md. Neutrals plus gold and one cool focus color form the palette. Timeline actors also need names/lane numbers rather than extra hues alone.
 
 Avoid neon cyan, purple gradients, glowing background orbs, and starfield wallpaper. A quiet image fade may protect reading contrast, with a defined boundary and purpose. It must not turn every panel into glass.
 
@@ -155,7 +155,7 @@ All fields have visible labels, controls at least 44px hit targets, logical keyb
 
 ## Implementation and review
 
-Keep visual changes separate from importer/math tasks and use the current task branch recorded in SESSION_STATE.md. Source frames and deliberate Figma deviations belong in FIGMA_HANDOFF.md.
+Keep visual changes separate from importer/math tasks and use the current task branch recorded in docs/SESSION_STATE.md. Source frames and deliberate Figma deviations belong in the Figma implementation reference below.
 
 Before UI delivery, record a scoped antislop gate and control walkthrough linked from docs/VERIFICATION.md. Verify both themes, wide/narrow layouts, keyboard operation, image failure, and the implemented workflows. Import, comparison, cancellation, and timeline acceptance belong to their respective implementation tasks. Passing checks does not imply owner approval of the visual result.
 
@@ -165,3 +165,54 @@ O-05 follows the shared equipment palette and six-slot layout with a collapsible
 O-06 reuses the shared calculation-profile shell and declared-character artwork. A dedicated Optimizer navigation destination exposes search settings, explicit coverage/budget/provenance, bounded result lists with six visual slots, and transfer to B. Mobile navigation wraps rather than hiding destinations. Search errors, cancelled state, non-exhaustive no-result state and unavailable retained filters have distinct text. Results/settings are not silently saved.
 
 O-07 uses a collapsible four-member editor above a data-driven AV chart with numbered/named lanes, turn markers and meaningful cycle boundaries. Numeric cycle counts and a paginated event ledger accompany the visual. The chart retains readable text via a 1000px internal width; mobile scrolling is contained in focusable regions rather than overflowing the document. Threshold precision/assumptions are visible beside results. No invented portraits or external visualization dependency is introduced.
+
+## Figma implementation reference
+
+The owner supplied [this Orbit file](https://www.figma.com/design/pVMHEP3S3rp9vMRIlfoeUp/Untitled?node-id=2-2698), requested a review first, then authorized implementation with that review's revisions on 2026-11-06. The Figma canvas was not edited. This document describes the code translation, not changes to the design file.
+
+The owner subsequently requested English as the primary application language in O-03c. English copy, accessibility names, and metadata supersede Indonesian labels in the reference; the layout and assets remain the same.
+
+### Source frames
+
+| Frame | Node | Role |
+| --- | --- | --- |
+| Desktop dark | 2:2698 | Primary composition, typography, colors, cards, inspector |
+| Desktop light | 2:3063 | Light tokens and SVG icon variants |
+| Mobile inventory | 2:3428 | Narrow-screen hierarchy and single-column collection |
+| Mobile detail | 2:3743 | Full-height detail presentation |
+| Empty inventory / guide | 2:3796 | Honest demo entry and scanner preparation |
+| No results | 2:3852 | Useful recovery rather than an empty collection |
+| Asset failure | 2:3928 | Missing imagery must preserve item identity/stats |
+| Native components | 2:5417 | State reference; malformed fixed widths are not implementation constraints |
+
+High-fidelity get_design_context responses and screenshots were read for the screen references. Existing React components, native controls, and CSS tokens were reused and adapted; no Tailwind, UI framework, state library, or icon package was installed. No Code Connect mapping was supplied by the contexts.
+
+### Approved revisions and implementation decisions
+
+| Review finding | Code behavior |
+| --- | --- |
+| Character/slot context pushes inventory below the fold | Horizontal banner reduced from 228px to 128px desktop / 88px mobile; compact selectors below it. At 1440x1000, cards start around 526px rather than the reference's 764px. |
+| Mobile cards too tall | Single-column 227px cards with two-column active substats, compared with the reference's 354px cards. At 390x844 the first card starts around 589px and ends around 816px; the complete eight-item page is about 2578px instead of 3933px. |
+| Reset/exit/menu behavior incomplete | Visible Reset filters and Exit demo, native slot/status/sort selects, both empty-state entry actions, no-results recovery, and selected-hidden recovery. |
+| Equipment and filter roles ambiguous | Equipment selectors choose the equipped example without changing query/filter/sort. A hidden selection is explicitly labeled; Show selected relic resets filters. Position in the inspector follows visible sorted results, otherwise Outside results. |
+| Repeated explanations occupy the inspector | One collection demo label; source/precision is a native disclosure in detail, credits are in the footer. No score/DPS/future feature navigation is invented. |
+| Component sizing copied at 1720px | Responsive CSS grid/minmax and content sizing, no fixed 1720px slot or inspector widths. Actual Figma component definitions are unchanged. |
+| Light selected-surface text | Secondary text darkened from #646970 to #60656C; original pairing measured about 4.38:1 and corrected pairing about 4.65:1. Main gold pairing remains about 4.54:1. |
+
+These are deliberate owner-authorized deviations from the reference image. The remaining visual target is the Figma palette, Rajdhani/Inter/IBM Plex Mono typography, contained Acheron crop, slot order, four-column desktop card rhythm, and persistent inspector. The eight numeric fixtures follow the Figma example, remain synthetic, and are not calculation inputs.
+
+### Component and asset mapping
+
+| Figma element | Implementation |
+| --- | --- |
+| Navigation / wordmark / theme | App.tsx header, original theme preference key, theme-specific 18px Figma SVG |
+| Character context and equipment | Workspace.tsx CharacterEquipment; existing 1308.png and six relic images |
+| Search/filter/sort | Workspace.tsx InventoryFilters; native search/select/button controls |
+| Relic card | Equipment.tsx RelicCard; stable demo IDs and fixed stat ordering |
+| Selected relic / mobile detail | Equipment.tsx RelicDetails; desktop inspector and one native dialog with one return action |
+| Source/precision | Native details/summary, collapsed by default |
+| Empty inventory and preparation | Reused GameImage and ScannerGuide; import remains clearly pending |
+
+Every game-image reference exported from desktop Figma matched its existing local PNG SHA-256 exactly, so those files were reused without duplication. All ten light/dark SVG exports are kept verbatim under public/assets/figma. Their 13px, 16px, and 18px root geometry is preserved at callsites. Game images remain square and data-driven; revised card/context sizes do not distort them. Font files, notices and provenance are recorded in [SOURCES](docs/SOURCES.md#asset-and-font-sources).
+
+This handoff records the O-03b demo translation only. Later inventory, manual-profile comparison, optimization and speed features are documented in README/TECHNICAL; the demo mapping is not their implementation contract. See [verification and historical reports](docs/VERIFICATION.md).

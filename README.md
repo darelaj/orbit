@@ -224,6 +224,8 @@ No personal inventory, game credentials, or packet captures are included in this
 
 ## Documentation and contributing
 
+The [hosted website and Windows Companion plan](docs/DEPLOYED_COMPANION_PLAN.md) describes a future deployment option. It is planning only: there is currently no Companion installer, hosted-to-local pairing or public deployment. The local scanner commands above remain the implemented workflow.
+
 Start with the [documentation map](docs/README.md). The main references are:
 
 - [AGENTS.md](AGENTS.md): repository workflow, skills, invariants, and verification.

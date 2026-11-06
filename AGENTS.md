@@ -8,6 +8,8 @@ The owner requires React + TypeScript + Vite, working light and dark themes, a n
 
 Implement the task requested in the current conversation. Keep unfinished project work in the plan; a documentation request does not authorize unrelated UI or calculation changes. Do not treat a planned feature as implemented.
 
+The owner requested a plan only for a hosted website plus Windows Companion on 2026-11-06. docs/DEPLOYED_COMPANION_PLAN.md records that proposal; it does not authorize implementation, hosting deployment, installer distribution or changing the current same-origin scanner boundary. Wait for an implementation request before starting O-10 code.
+
 Personal inventory validation, calculations and persistence belong in the browser. On 2026-11-06 the owner chose an integrated local Windows scanner controlled from Orbit, without a separately operated scanner application. This authorizes implementing the managed scanner boundary in docs/SCANNER.md. Native extraction and a temporary local export are allowed for that workflow; the server must not become the durable inventory store. Cloud hosting, telemetry, account login, game memory access, gacha features, auto-salvage, and whole-team allocation remain outside scope. Do not run a personal capture as a development check; real-game scanning starts only from the owner's explicit Scan action.
 
 The earlier prototype at ../relic-lab is unfinished reference material outside this repository. Preserve it. Do not copy its engine, data snapshot, or visual design without inspecting provenance, correctness, and applicability.
@@ -33,6 +35,7 @@ Use this map instead of duplicating full specifications here:
 | docs/VERIFICATION.md | Actual UI walkthrough, scoped delivery gate, and verification limits |
 | docs/ASSETS.md | Artwork/icon provenance, source pins, attribution, and bundled notices |
 | docs/SCANNER.md | Integrated Windows scanner, pinned engine, privilege boundary, lifecycle, local API and acceptance limits |
+| docs/DEPLOYED_COMPANION_PLAN.md | Planning-only hosted website/Windows Companion proposal, feasibility gates, pairing, packaging, migration and release tasks |
 
 Current owner instructions take precedence over older project decisions. The source code establishes what exists; the plan establishes what remains. If a document and code disagree, investigate and correct the affected document or implementation within the task's scope. Do not silently choose whichever interpretation is easier.
 

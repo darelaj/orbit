@@ -1,5 +1,7 @@
 # Integrated local scanner
 
+The future hosted-site/Windows Companion proposal lives in [DEPLOYED_COMPANION_PLAN.md](DEPLOYED_COMPANION_PLAN.md). The owner requested planning only; this document's implemented same-origin runtime remains unchanged.
+
 Owner decision, 2026-11-06: keep Orbit in the browser and integrate a Windows scanner into the project. The owner should not have to operate a separate scanner application or find an exported JSON manually. A browser alone cannot inspect the game's complete inventory.
 
 ## Implementation plan

@@ -23,14 +23,20 @@ Each task has a branch and at least one focused commit. Integrate through a PR, 
 
 ## O-09 integrated scanner extension
 
+O-09 integration completed through [PR #15](https://github.com/darelaj/orbit/pull/15), merged as 7c20c76; exact-head CI passed on both OS jobs and the source branch was deleted after ancestry verification. Real native/game acceptance below remains pending.
+
 | Milestone | Branch | Status and verification |
 | --- | --- | --- |
 | O-09a | feat/integrated-scanner | Complete: authorized native boundary, upstream pin/license and delivery plan |
 | O-09b | feat/integrated-scanner | Implemented; actual download/checksum, 10 synthetic Node tests, PowerShell 5.1 parsing. Real native/UAC/capture acceptance pending |
 | O-09c | feat/integrated-scanner | Implemented; 7 new component tests within 50 Vitest tests, production build/start, synthetic browser controls, both-theme/narrow checks |
-| O-09d | feat/integrated-scanner | Documentation/local verification complete; finish exact-head CI, PR merge and verified source-branch cleanup |
+| O-09d | feat/integrated-scanner | Complete integration through PR #15: documentation/local checks, exact-head CI, merge and verified source-branch cleanup |
 
 Contract and limits: [SCANNER.md](SCANNER.md). Real game extraction/completeness, Windows cleanup and compatibility remain owner-driven acceptance. Do not infer them from setup or synthetic tests.
+
+## O-10 hosted website and Companion proposal
+
+Status: plan only, all implementation unstarted. See [DEPLOYED_COMPANION_PLAN.md](DEPLOYED_COMPANION_PLAN.md) for O-10a through O-10h: transport feasibility, authenticated pairing, Windows packaging, hosted UI connection, workspace migration, release pipeline, acceptance and authorized release. Each implementation task has its own proposed branch and verification gate. The current request authorizes documentation only; do not start code, install, capture or deploy. When implementation is requested, begin at O-10a, not installer packaging or deployment.
 
 ## O-01 acceptance
 

@@ -3,6 +3,7 @@
 | Document | Purpose |
 | --- | --- |
 | [SESSION_STATE.md](SESSION_STATE.md) | Resume the work: current branch, verification, blockers, next action |
+| [ENGINEERING_RULES.md](ENGINEERING_RULES.md) | Technical guardrails; read only the implementation/data/math/search/speed/UI section affected by the task |
 | [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md) | Ordered tasks, dependencies, acceptance criteria, branch and commit boundaries |
 | [PRODUCT.md](PRODUCT.md) | User goals, accepted scope, exclusions |
 | [ARCHITECTURE.md](ARCHITECTURE.md) | Framework, modules, persistence, worker boundary |
@@ -19,3 +20,5 @@
 | [../DESIGN.md](../DESIGN.md) | Product direction, two themes, hierarchy and interaction decisions |
 
 Documentation must distinguish decisions, implementation, and evidence. Update the affected domain document when its behavior changes. Keep the session checkpoint concise enough that a fresh agent can resume without rereading the chat.
+
+The current checkpoint contains active state only. Historical checkpoints remain in [the session archive](archive/SESSION_HISTORY_2026-11-07.md) and Git history; do not load them during routine resumes. AGENTS.md owns task-scoped reading and verification policy. A small documentation change does not require an application build or a browser audit.

@@ -1,0 +1,23 @@
+.speed-workspace { margin: 24px 0; overflow-wrap: anywhere; }
+.speed-workspace p { max-width: 100ch; line-height: 1.6; }
+.speed-workspace label { display: grid; gap: 8px; min-width: 0; }
+.speed-toolbar { display: flex; flex-wrap: wrap; gap: 12px; align-items: end; margin: 16px 0; }
+.speed-toolbar label { flex: 1 1 160px; }
+.speed-controls { border: 1px solid var(--line); padding: 16px; border-radius: 6px; min-width: 0; }
+.speed-members { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 16px; }
+.speed-members > section { padding: 16px; border: 1px solid var(--line); border-radius: 6px; }
+.speed-fields { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px; margin-top: 12px; }
+.speed-chart,.speed-table { max-width: 100%; overflow-x: auto; margin: 20px 0; }
+.speed-chart svg { width: 100%; min-width: 1000px; display: block; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; }
+.speed-chart text { fill: var(--text); font-size: 13px; }
+.speed-table table { width: 100%; min-width: 480px; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+.speed-table th,.speed-table td { padding: 8px; border-bottom: 1px solid var(--line); text-align: right; }
+.speed-table th:first-child { text-align: left; }
+.speed-workspace button { min-height: 44px; }
+@media(max-width:650px) { .speed-members { grid-template-columns: 1fr; } .speed-controls { padding: 12px; } .speed-members > section { padding: 12px; } }
+
+.speed-input-panel > summary { min-height: 44px; padding: 12px 0; cursor: pointer; }
+
+.speed-threshold > label { max-width: 220px; }
+
+.speed-table thead th,.speed-table td { white-space: nowrap; }

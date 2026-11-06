@@ -18,7 +18,7 @@ Each task has a branch and at least one focused commit. Integrate through a PR, 
 | O-04b | `feat/inventory-catalogue` | Implemented and verified (17 tests) | O-04a | Versioned main-stat constants and set/slot artwork mapping, character/light-cone reference validation, richer filters, import-time metadata, main/substat compatibility checks and large-inventory acceptance. Pinned catalogue, local icons, reference warnings, timestamp-preserving backups and 10,000-item pagination/filter test delivered. Missing owners remain literal IDs because filtered exports may omit characters. Real-account validation remains pending. |
 | O-05 | `feat/build-comparison` | Implemented and verified with a manual profile (24 tests) | O-04 | Same-character A/B six-slot loadouts, documented stat calculation, manual corrections, set information, saved local builds, measured deltas |
 | O-06 | `feat/relic-optimizer` | Implemented and verified with synthetic data (31 tests) | O-05 | Worker search, objective/constraints, cancellation, exact-vs-heuristic disclosure, result comparison, bounded resource use |
-| O-07 | `feat/speed-tuning` | Not started | O-05 | Four-member AV timeline, fixed buffs and initial advance, cycle thresholds, import SPD from compared build, boundary tests |
+| O-07 | `feat/speed-tuning` | Implemented and verified with synthetic inputs (39 tests) | O-05 | Four-member AV timeline, fixed buffs and initial advance, cycle thresholds, import SPD from compared build, boundary tests |
 | O-08 | `test/workspace-acceptance` | Not started | O-06, O-07 | Both themes and narrow viewport, keyboard flows, invalid-import rollback, persistence, worker lifecycle, no console errors, antislop delivery evidence |
 
 ## O-01 acceptance

@@ -90,6 +90,12 @@ Exact means exhaustive coverage of the eligible pool under modeled mechanics. Fi
 
 Current inventory normalization retains character and Light Cone identity references; calculations use a manual profile. Selecting a character alone cannot initialize accurate progression or passive stats.
 
+The owned-character workflow belongs to O-11b/O-11c, not the separate leaderboard project. Read the roster supplied by the scanner, including characters without equipped relics; do not infer ownership from relic locations alone. One supported scan/import should supply relics, characters and Light Cones together. Show roster completeness as unknown when the source omits or filters characters; never claim every owned character was captured from references alone.
+
+Pinned Reliquary v0.19.0 defines character path, level, ascension, Eidolon, skills, Trace flags, optional memosprite and ability version, plus Light Cone level/ascension/superimposition. See its [export model](https://github.com/IceDynamix/reliquary-archiver/blob/v0.19.0/src/export/fribbels/models.rs) and [conversion code](https://github.com/IceDynamix/reliquary-archiver/blob/v0.19.0/src/export/fribbels/converters.rs). Some base-character conversion values are placeholders until path data is resolved; verify the completed export and Trace mapping before using them as real progression. The schema alone does not establish capture completeness or game compatibility.
+
+Intended flow: scan/import roster and inventory → select an owned character → resolve its supported static profile and equipped Light Cone from pinned constants → choose objective/targets/sets → search eligible six-slot combinations → compare with equipped relics. The character's actual progression is the default; hypothetical levels or Light Cones require an explicit override. This requires no Enka UID or leaderboard account. Exactness remains limited to the eligible pool and modeled objective, not universal combat performance.
+
 Inspect pinned scanner/export contracts first. Define a versioned contract for available character level/ascension, form/path or enhancement identity, Eidolon, unlocked minor Traces, and equipped Light Cone identity/level/ascension/superimposition. Retain only fields actually supplied and validated. Resolve supported numeric progression from pinned catalogue data, not names or descriptions. Do not retain unrelated account data.
 
 Both the native server projection and browser adapter need these fields. Old normalized inventories/backups cannot recover discarded values: show **Profile incomplete**, permit explicit manual completion, or request rescan/reimport. Preserve legacy files and failed-import rollback through versioned migrations.
@@ -117,8 +123,8 @@ Each row gets its own feature branch from its merged dependency, after an implem
 | Task / proposed branch | Depends on | Deliverable and acceptance |
 | --- | --- | --- |
 | O-11a `docs/build-workflow-spec` | This plan | Finalize basic/advanced wireflows, English labels, CV and target contracts in DESIGN/TECHNICAL. Review the SPD example, incomplete/no-result states and current/candidate journey before UI code. |
-| O-11b `feat/character-profile-data` | O-11a | Validate available progression fields; extend server projection, import types and storage/backup migration. Legacy files still import, missing data stays explicit, invalid records never overwrite storage. |
-| O-11c `feat/character-stat-profiles` | O-11b | Add pinned stat resolver and verified fixtures; connect selection to shared stats. Cover missing/unsupported forms, manual overrides, profile identity and actual calculation coverage. |
+| O-11b `feat/character-profile-data` | O-11a | Retain the supplied owned roster, including characters with no equipped relics, plus validated progression and Light Cone data. Extend server projection, import types and storage/backup migration. Test roster omission/filtering, placeholder/path resolution and legacy files; missing data stays explicit, invalid records never overwrite storage. |
+| O-11c `feat/character-stat-profiles` | O-11b | Add pinned stat resolver and verified fixtures; select an owned character to initialize shared stats using actual progression and its equipped Light Cone. Cover missing/unsupported forms, Trace mappings, explicit hypothetical/manual overrides, profile identity and calculation coverage; no leaderboard dependency. |
 | O-11d `feat/target-stat-optimizer` | O-11a | Add CV/stat objectives, minimums, target saturation and legal sets to domain/worker. Match independent brute force; cover thresholds, infeasibility, ties and coverage claims. Measure before pruning; manual/synthetic profiles work until O-11c. |
 | O-11e `feat/current-build-assessment` | O-11c, O-11d | Add equipment completeness, target gaps and same-profile candidate deltas. Distinguish exact optimum, best found and no search. Missing profile/equipment stays visible; no universal grade. |
 | O-11f `feat/simple-build-workflow` | O-11e | Connect character-first review, simplified Comparison/Optimizer and explicit snapshot save. Preserve filters, cancellation, stale handling and saved builds. Verify basic/advanced flows in both themes, narrow layout and keyboard use. |
@@ -136,6 +142,24 @@ UI acceptance must demonstrate choosing a character, understanding deficiencies,
 Run affected checks per milestone and required full suite/build on each final application feature head; inspect Windows/Linux PR CI. Documentation-only work needs links/diff/whitespace checks, not runtime tests. Real scans stay owner-initiated; develop with synthetic fixtures and exclude personal exports from commits.
 
 Keep this roadmap and a short SESSION_STATE handoff with task/branch, merged dependencies, commits/checks, limits and next action. Update domain docs when contracts change. Verify each PR's commits in synchronized main before deleting its source branch. Leave O-10 deployment and unrelated deferred work untouched.
+
+## Separate leaderboard project (deferred)
+
+Owner decision, 2026-11-07: an Akasha/Seeleland-style HSR leaderboard is a separate project from the current Orbit app and O-11. This section records the boundary only; no new repository, service, database or implementation is authorized. O-11 assesses personal builds against targets and the user's inventory, not a community percentile.
+
+- Keep leaderboard UI, backend, participant database, ranking categories and release lifecycle separate. Orbit inventory and optimizer remain usable offline without participation or an account.
+- Accept user-submitted public showcase UIDs through reviewed Enka/MiHoMo access. Respect provider rules, cache/TTL and rate limits; no UID enumeration or mass database filling. Verify access/permission before using Seeleland data or rankings; no API availability is assumed.
+- Define each category's character/form, progression/Light Cone assumptions, team/scenario, SPD constraints, scoring version and data timestamp. Separate stat rankings from modeled performance. Reuse a reviewed calculation package only if useful; do not duplicate an unverified scoring engine or force shared infrastructure.
+- A public ranking requires a shared participant dataset. Display the category's sample size, ties and freshness; a percentile applies to that dataset, not all HSR players. Specify per-UID/build deduplication, refresh/replacement and deletion before collecting submissions. Treat local scanner JSON as untrusted input if ever accepted for public competition.
+
+| Separate milestone | Deliverable, after a specific implementation request |
+| --- | --- |
+| LB-01 | Decide project/repository boundary, data-provider access and submission rules; choose one character/category for an initial benchmark. |
+| LB-02 | Implement independently verified, versioned scoring and category fixtures; disclose excluded mechanics before any ranking claims. |
+| LB-03 | Build the participant store, validated submission/refresh pipeline, caching and reproducible rank/percentile computation. |
+| LB-04 | Build a separate leaderboard UI and test ranking, ties, stale data, dataset size and owner acceptance before release. |
+
+This track does not block or expand O-11. Stabilize and obtain owner acceptance of Orbit's agreed core features first; schedule this separate project explicitly afterward. O-10 remains Orbit's last priority under its readiness gate below. Neither a leaderboard backend nor its release is implicitly authorized by O-10.
 
 ## O-10 hosted website and Windows Companion
 

@@ -82,4 +82,3 @@ Both themes are required and must work equally. The supplied Figma palette/type 
 - Respect reduced motion. No endless pulses, particles, counting animations, or disruptive movement of numeric results.
 - Provide real empty, loading, error, cancelled, and no-result states. Demo content is clearly synthetic.
 - English is the primary product language. Use English for interface copy, accessibility names, image fallbacks, errors, scanner guidance, and document metadata; keep familiar HSR character/set/stat names. Set the document language to en. Code identifiers and developer docs also use consistent English. Follow the user's language for conversation unless asked otherwise.
-

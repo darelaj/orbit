@@ -10,6 +10,8 @@ Use React and strict TypeScript with Vite for a client-side local application. T
 
 ## Proposed structure
 
+O-09 adds `features/inventory/scanner-api.ts` for unknown-response validation and `ScannerPanel.tsx` for lazy connection, polling, start/discard/review/reconnect. It rejects stale poll responses across commands and aborts requests on unmount. Review validates scan JSON with the existing domain parser before supplying InventoryWorkspace's pending import. The same explicit replacement transaction remains authoritative; scan completion does not save automatically. The Node runtime/helper lives under `server/`, with engine-only setup under `scripts/`.
+
 ```text
 src/
   app/                 shell, theme, workspace state

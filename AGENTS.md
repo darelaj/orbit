@@ -116,16 +116,19 @@ Current commands:
 | Purpose | Command |
 | --- | --- |
 | Reproduce dependencies | npm ci |
+| Local app with integrated scanner | npm start |
+| Verify/download scanner without capture | npm run scanner:setup |
 | Local development | npm run dev |
 | Type checking | npm run typecheck |
 | Unit/component tests | npm test |
+| Synthetic native-process/API tests only | npm run test:scanner |
 | Watch tests during development | npm run test:watch |
 | Production build | npm run build |
 | Preview the built app | npm run preview |
 
 On Windows PowerShell, use npm.cmd if execution policy blocks npm.ps1. Run from the repository root. Read the Node requirement from package.json.
 
-Development and preview bind to 127.0.0.1:4173 and cannot occupy the port together. Keep a consistent origin because browser storage belongs to hostname, port, and browser profile. Do not expose the server on 0.0.0.0 or move inventory processing to a server as an incidental workaround.
+Development, preview and the scanner runtime bind to 127.0.0.1:4173 and cannot occupy the port together. Keep a consistent origin because browser storage belongs to hostname, port, and browser profile. Do not expose the server on 0.0.0.0. The native helper's temporary export boundary is documented in SCANNER.md; validation, calculations and durable inventory persistence stay in the browser. Runtime tests use injected synthetic process adapters and must never launch a native capture or Windows elevation.
 
 A running service recorded in SESSION_STATE.md may be stale in a new session. Check it before reuse. Record newly started services and how to stop them. Never kill an unrelated process merely to free the port.
 

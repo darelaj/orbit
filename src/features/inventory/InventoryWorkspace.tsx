@@ -1,4 +1,5 @@
 import ComparisonWorkspace from '../comparison/ComparisonWorkspace';
+import ScannerPanel from './ScannerPanel';
 import { catalogueItem, formatMainStat } from '../../domain/catalogue';
 import { GameImage } from '../../app/Equipment';
 import { useEffect, useRef, useState } from 'react';
@@ -22,6 +23,8 @@ export default function InventoryWorkspace({ visible, onInventory, comparisonVis
   const [busy, setBusy] = useState(true);
   const [error, setError] = useState('');
   const [pending, setPending] = useState<Inventory | null>(null);
+  const [scannerOpened, setScannerOpened] = useState(false);
+  const [scanBusy, setScanBusy] = useState(false);
   const [query, setQuery] = useState('');
   const [slot, setSlot] = useState('');
   const [status, setStatus] = useState('');
@@ -30,6 +33,8 @@ export default function InventoryWorkspace({ visible, onInventory, comparisonVis
   function resetExtra() { setExtra({ set: '', main: '', rarity: '', level: '', owner: '' }); }
   const [selected, setSelected] = useState('');
   const detail = useRef<HTMLDialogElement>(null);
+  const preview = useRef<HTMLDivElement>(null);
+  const focusPreview = useRef(false);
   const onInventoryRef = useRef(onInventory);
   onInventoryRef.current = onInventory;
   useEffect(() => {
@@ -39,6 +44,7 @@ export default function InventoryWorkspace({ visible, onInventory, comparisonVis
       .finally(() => { if (active) setBusy(false); });
     return () => { active = false; };
   }, []);
+  useEffect(() => { if (pending && focusPreview.current) { preview.current?.focus(); focusPreview.current = false; } }, [pending]);
   async function read(file: File | undefined) {
     if (!file) return;
     setBusy(true); setError(''); setPending(null);
@@ -71,10 +77,11 @@ export default function InventoryWorkspace({ visible, onInventory, comparisonVis
   const currentPage = Math.min(page, pages - 1);
   const chosen = inventory?.relics.find(r => r.id === selected);
   return <section className="import-workspace" aria-label="Personal inventory">
-    <div className="import-toolbar"><label>Import scanner JSON or Orbit backup<input type="file" accept=".json,application/json" disabled={busy} onChange={event => { void read(event.target.files?.[0]); event.target.value = ''; }} /></label><button disabled={!inventory || busy} onClick={backup}>Download backup</button></div>
+    <details className="scanner-panel" onToggle={event => { if (event.currentTarget.open) setScannerOpened(true); }}><summary>Scan inventory from HSR</summary>{scannerOpened && <ScannerPanel disabled={busy || pending !== null} onBusy={setScanBusy} onPreview={value => { focusPreview.current = true; setError(''); setPending(value); }} />}</details>
+    <div className="import-toolbar"><label>Import scanner JSON or Orbit backup<input type="file" accept=".json,application/json" disabled={busy || scanBusy} onChange={event => { void read(event.target.files?.[0]); event.target.value = ''; }} /></label><button disabled={!inventory || busy} onClick={backup}>Download backup</button></div>
     {busy && <p role="status">Reading local inventory…</p>}
     {error && <p role="alert">{error}</p>}
-    {pending && <div className="notice"><p>{pending.relics.length} relics from {pending.source}. Import replaces your saved inventory, including when this file is empty. Demo data is kept separate.</p><button disabled={busy} onClick={() => void commit()}>Replace inventory</button><button disabled={busy} onClick={() => setPending(null)}>Cancel import</button></div>}
+    {pending && <div className="notice" ref={preview} tabIndex={-1}><p>{pending.relics.length} {pending.relics.length === 1 ? 'relic' : 'relics'} from {pending.source}. Import replaces your saved inventory, including when this file is empty. Demo data is kept separate.</p><button disabled={busy} onClick={() => void commit()}>Replace inventory</button><button disabled={busy} onClick={() => setPending(null)}>Cancel import</button></div>}
     <div hidden={!comparisonVisible && !optimizerVisible && !speedVisible}><ComparisonWorkspace speedVisible={speedVisible} optimizerVisible={optimizerVisible} inventory={inventory} /></div>
     {visible && inventory && <>
       <p>Imported {inventory.importedAt ? new Date(inventory.importedAt).toLocaleString() : 'time unavailable (legacy backup)'} · {inventory.source} · Schema {inventory.version} · {inventory.precision === 'ocr' ? 'OCR: hidden SPD decimals unavailable' : 'Packet-derived values: imported precision retained'}</p>

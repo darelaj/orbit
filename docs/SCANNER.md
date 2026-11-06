@@ -14,6 +14,8 @@ Release metadata read from GitHub on 2026-11-06:
 
 Pin both URL and digest in code. Setup downloads the engine into ignored `.cache/`, verifies size and digest before publication, and never executes it. No automatic latest-version update. Changing the pin requires source/schema review and a focused commit.
 
+The retained upstream [MIT notice](../server/RELIQUARY-LICENSE.txt) accompanies the integration. `npm start` builds the app, reserves its loopback origin, verifies/provisions the engine on Windows x64, then enables scanner controls. `npm run scanner:setup` only provisions/verifies. Both helpers use a process-scoped execution-policy option; no global Windows policy changes.
+
 ## Runtime boundary
 
 The Node local runtime serves the built React app and a small same-origin scanner API on `http://127.0.0.1:4173`, retaining the existing IndexedDB origin. It remains an ordinary user process. A Scan request starts a fixed PowerShell helper that requests Windows elevation for only the native scan. The elevated helper verifies the engine digest again, disables self-update and streaming, and runs a bounded, one-shot headless capture. No shell command, executable path, port or output filename comes from HTTP input.

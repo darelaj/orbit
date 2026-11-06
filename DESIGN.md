@@ -90,6 +90,8 @@ Show the actual result count. Supported filters include slot, set, main stat, le
 
 First run gives a real JSON import action and scanner instructions. A synthetic demo is explicitly labeled; it never resembles an invented personal account or UID.
 
+O-09 adds a collapsed **Scan inventory from HSR** panel above the existing import toolbar. It reuses the opaque surface, 6px panel radius, Rajdhani/Inter hierarchy and gold primary action because scanning is an inventory acquisition action, not another destination. Its disclosure keeps preparation text away from relic inspection. Show one textual native-job state, real errors and a Review scan action; use no simulated percentages, decorative terminal, new artwork or recording pulse. Polling can continue while the panel is collapsed; explain that collapsing does not stop capture. Keep the existing ENERGY 2 / RHYTHM 2 / MOTION 2 dials and stable numeric content. Scan preview shares the existing explicit replacement controls.
+
 ## Build comparison
 
 Primary decision: what changes when switching from A to B?

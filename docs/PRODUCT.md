@@ -6,7 +6,7 @@ English is the primary application language, including interface copy, accessibi
 
 ## Core workflows
 
-1. Export the account using a supported scanner, import its JSON, and inspect equipped and unequipped relics together.
+1. Scan through Orbit's integrated Windows reader, or import a supported scanner JSON, and inspect equipped and unequipped relics together after confirming replacement.
 2. Filter by slot, set, main stat, level, owner, and lock/discard state; inspect a relic's active and preview stats separately.
 3. Select a character, verify or correct the calculation profile, and compare six-slot loadouts A and B.
 4. Choose an objective and constraints, run a bounded search, and send a result to comparison.

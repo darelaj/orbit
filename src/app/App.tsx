@@ -11,7 +11,7 @@ export default function App() {
   const [demo, setDemo] = useState(true);
   const [hasInventory, setHasInventory] = useState(false);
   const [view, setView] = useState<'inventory'|'comparison'|'optimizer'|'speed'>(() => location.hash === '#speed' ? 'speed' : location.hash === '#optimizer' ? 'optimizer' : location.hash === '#comparison' ? 'comparison' : 'inventory');
-  useEffect(() => { const syncView = () => setView(location.hash === '#speed' ? 'speed' : location.hash === '#optimizer' ? 'optimizer' : location.hash === '#comparison' ? 'comparison' : 'inventory'); window.addEventListener('hashchange', syncView); return () => window.removeEventListener('hashchange', syncView); }, []);
+  useEffect(() => { const syncView = () => { if (location.hash === '#main') return; setView(location.hash === '#speed' ? 'speed' : location.hash === '#optimizer' ? 'optimizer' : location.hash === '#comparison' ? 'comparison' : 'inventory'); }; window.addEventListener('hashchange', syncView); return () => window.removeEventListener('hashchange', syncView); }, []);
   const [slot, setSlot] = useState<Slot | 'all'>('all');
   const [query, setQuery] = useState('');
   const [lockFilter, setLockFilter] = useState<LockFilter>('all');
@@ -46,7 +46,7 @@ export default function App() {
   function toggleDemo() { setView('inventory'); location.hash = 'inventory'; setDemo(!demo); resetFilters(); setSelectedId('demo-body-01'); }
 
   return <div className="app">
-    <a className="skip-link" href="#main">Skip to content</a>
+    <a className="skip-link" href="#main" onClick={event => { event.preventDefault(); document.getElementById('main')?.focus(); }}>Skip to content</a>
     <header className="app-header">
       <a className="wordmark" href="#inventory" aria-label="Orbit, relic inventory">ORBIT</a>
       <nav className="main-nav" aria-label="Workspace"><a href="#inventory" onClick={() => setView('inventory')} aria-current={view === 'inventory' ? 'page' : undefined}>Inventory</a><a href="#comparison" onClick={() => setView('comparison')} aria-current={view === 'comparison' ? 'page' : undefined}>Comparison</a><a href="#optimizer" onClick={() => setView('optimizer')} aria-current={view === 'optimizer' ? 'page' : undefined}>Optimizer</a><a href="#speed" onClick={() => setView('speed')} aria-current={view === 'speed' ? 'page' : undefined}>Speed tuning</a><button onClick={() => guide.current?.showModal()}>Scanner guide</button></nav>

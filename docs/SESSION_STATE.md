@@ -1,4 +1,22 @@
-# Current O-08 checkpoint
+# Current O-09 checkpoint
+
+2026-11-06. Owner selected an integrated local scanner controlled from Orbit. Implementation branch `feat/integrated-scanner`, based on main `0f890adec144db5ca01a90bfe4d24125397b3beb` (PR #14 merged, both exact-head CI jobs passed in run 42177844143, its source branch deleted). Check actual branch/PR refs before resuming; the O-08 integration instructions below are historical.
+
+Focused commits: fddc6e3 scope/plan; 1c1e654 pinned setup/runtime/API/helpers; aed0a08 bounded checksum/console isolation/PowerShell parser test; f69ad7b scanner UI/import preview/component tests; 9c137e0 malformed-export redaction; afe6b6a wait for native completion even after status-file failure; dfc1b10 verification/docs; then native crash-prompt/cleanup handling. No delegation or new npm dependency. Existing React/Figma/HSR identity, Karpathy/HSR integrity and antislop DURING remain active.
+
+O-09a/b/c implementation and local synthetic acceptance complete. Ordinary-user Node runtime serves dist and authenticated same-origin scanner endpoints on 127.0.0.1:4173. Pinned Reliquary v0.19.0 pktmon x64 engine is downloaded into ignored cache and hash-verified; the elevated helper alone performs one-shot extraction, on an owner's Scan action. Native helper requires the initialization marker, disables updates/streaming, uses a mutex, waits before release and leaves no routine trace/packet file. The runtime projects required fields, cleans temporary run files and expires results. Browser schema validation, preview and atomic IndexedDB replacement remain authoritative; calculations/storage scope stays unchanged.
+
+Final local checks: 50 Vitest tests / 16 files plus 10 Node tests pass, production build including strict typecheck passes. Actual scanner:setup downloaded/verified 12,294,144 bytes against official SHA-256; actual npm start built/served and reached Scanner ready. Subsequent native redaction/cleanup changes passed the affected Node suite. Neither the native executable nor a UAC/capture workflow has run.
+
+Production-browser checks: real runtime idle/ready/reconnect; synthetic adapter start/discard/drain, collapsed active panel, review/focus/cancel retaining all 240 prior synthetic items, partial-output rejection, frontend-only guidance and reconnect. Six panel audits (dark/light × 1440/390/320) pass scoped contrast/target/overflow checks, minima 4.91 light / 7.97 dark; final production dark desktop passes again; console error query empty. Screenshots/raw audit under .cache/scanner-qa. No browser replacement was confirmed, so inventory/comparison/team storage stayed untouched. Light theme and #speed restored, viewport reset, reference tabs preserved and tab 5 retained. All owned servers stopped, including final npm start session 9078; port 4173 verified free.
+
+PR #15 is open at https://github.com/darelaj/orbit/pull/15. Its first CI run 42226644943 passed both OS jobs for dfc1b10. Final source review identified upstream's panic handler waiting for Enter/writing crashlog.txt. The helper now supplies EOF; worker and manager reject crash artifacts, and cleanup removes crashlog/stdin. Synthetic crash rejection/cleanup and PowerShell parsing cover the change; no native crash was executed.
+
+Next: finish O-09d PR integration if not already merged. Push the final crash-handling commit, verify both CI matrix jobs on that exact head, merge PR #15 with expected SHA and a merge commit, sync main and verify every task commit before deleting the source branch remotely/locally. If already merged, do not recreate it. Native HSR login extraction, UAC approval/denial, Packet Monitor cleanup on normal/timeout/discard/shutdown, game compatibility and real inventory completeness remain owner-driven acceptance, explicitly pending. Do not mark them passed from mocks. Read SCANNER.md and VERIFICATION.md for the boundary. Future implementation starts a new feature branch; use tests/browser/preview-scanner.mjs for synthetic clicks, never the real Scan button in development.
+
+## Historical checkpoints below
+
+# O-08 checkpoint (historical)
 
 2026-11-06 (Asia/Jakarta). Branch `test/workspace-acceptance`, base `776929b41702ca95ebdcdbbca3b1033f2e6c5ea9` (PR #13 merged and source branch removed remotely/locally). [PR #14](https://github.com/darelaj/orbit/pull/14) is open. Commits: `1adcaa0` independent full-App persistence/abort/stale-terminal tests; `65c3c67` pinned Linux/Windows CI; `de8e9a9` skip-route/focus fix and 44px disclosure targets; then this verification/checkpoint and browser-audit helper. No delegation requested.
 

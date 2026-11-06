@@ -4,11 +4,11 @@
 
 Orbit is a local Honkai: Star Rail web application for a PC player. Its intended workflows are complete relic inventory inspection, six-slot build comparison, relic optimization, and action-value speed tuning.
 
-The owner requires React + TypeScript + Vite, working light and dark themes, a new branch per feature, focused commits per task, pull requests for integration, and documentation that survives context loss. After a PR is successfully merged and verified, delete its source branch remotely and locally. Full inventory comes from scanner exports. Enka UID lookup only supplies public showcase data.
+The owner requires React + TypeScript + Vite, working light and dark themes, a new branch per feature, focused commits per task, pull requests for integration, and documentation that survives context loss. After a PR is successfully merged and verified, delete its source branch remotely and locally. Full inventory comes from scanner data. Enka UID lookup only supplies public showcase data.
 
 Implement the task requested in the current conversation. Keep unfinished project work in the plan; a documentation request does not authorize unrelated UI or calculation changes. Do not treat a planned feature as implemented.
 
-Personal inventory processing and persistence belong in the browser. Cloud hosting, telemetry, account login, direct packet capture, game memory access, scanner execution, gacha features, auto-salvage, and whole-team allocation are outside the initial scope unless the owner changes it. Do not introduce these because a reference application supports them.
+Personal inventory validation, calculations and persistence belong in the browser. On 2026-11-06 the owner chose an integrated local Windows scanner controlled from Orbit, without a separately operated scanner application. This authorizes implementing the managed scanner boundary in docs/SCANNER.md. Native extraction and a temporary local export are allowed for that workflow; the server must not become the durable inventory store. Cloud hosting, telemetry, account login, game memory access, gacha features, auto-salvage, and whole-team allocation remain outside scope. Do not run a personal capture as a development check; real-game scanning starts only from the owner's explicit Scan action.
 
 The earlier prototype at ../relic-lab is unfinished reference material outside this repository. Preserve it. Do not copy its engine, data snapshot, or visual design without inspecting provenance, correctness, and applicability.
 
@@ -32,6 +32,7 @@ Use this map instead of duplicating full specifications here:
 | docs/RESEARCH.md | Dated research and source links, not proof that an integration is currently working |
 | docs/VERIFICATION.md | Actual UI walkthrough, scoped delivery gate, and verification limits |
 | docs/ASSETS.md | Artwork/icon provenance, source pins, attribution, and bundled notices |
+| docs/SCANNER.md | Integrated Windows scanner, pinned engine, privilege boundary, lifecycle, local API and acceptance limits |
 
 Current owner instructions take precedence over older project decisions. The source code establishes what exists; the plan establishes what remains. If a document and code disagree, investigate and correct the affected document or implementation within the task's scope. Do not silently choose whichever interpretation is easier.
 
@@ -115,16 +116,19 @@ Current commands:
 | Purpose | Command |
 | --- | --- |
 | Reproduce dependencies | npm ci |
+| Local app with integrated scanner | npm start |
+| Verify/download scanner without capture | npm run scanner:setup |
 | Local development | npm run dev |
 | Type checking | npm run typecheck |
 | Unit/component tests | npm test |
+| Synthetic native-process/API tests only | npm run test:scanner |
 | Watch tests during development | npm run test:watch |
 | Production build | npm run build |
 | Preview the built app | npm run preview |
 
 On Windows PowerShell, use npm.cmd if execution policy blocks npm.ps1. Run from the repository root. Read the Node requirement from package.json.
 
-Development and preview bind to 127.0.0.1:4173 and cannot occupy the port together. Keep a consistent origin because browser storage belongs to hostname, port, and browser profile. Do not expose the server on 0.0.0.0 or move inventory processing to a server as an incidental workaround.
+Development, preview and the scanner runtime bind to 127.0.0.1:4173 and cannot occupy the port together. Keep a consistent origin because browser storage belongs to hostname, port, and browser profile. Do not expose the server on 0.0.0.0. The native helper's temporary export boundary is documented in SCANNER.md; validation, calculations and durable inventory persistence stay in the browser. Runtime tests use injected synthetic process adapters and must never launch a native capture or Windows elevation.
 
 A running service recorded in SESSION_STATE.md may be stale in a new session. Check it before reuse. Record newly started services and how to stop them. Never kill an unrelated process merely to free the port.
 

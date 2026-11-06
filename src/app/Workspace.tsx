@@ -40,10 +40,11 @@ export function InventoryFilters(props: FiltersProps) {
 
 export function ScannerGuide() {
   return <div className="scanner-guide">
-    <h2>From scanner to local file</h2>
-    <p>For your full inventory, including stored relics, export a JSON file using a PC scanner. An Enka UID only provides public showcase data.</p>
+    <h2>Read your full inventory</h2>
+    <p>Run Orbit with npm.cmd start, then open Scan inventory from HSR above. Orbit manages the Windows reader and offers a preview before replacement. Start on the game's Click to Start screen; only the reader requests Administrator permission.</p>
+    <p>You can also import a JSON export from the scanners below. An Enka UID only provides public showcase data.</p>
     <div className="scanner-links"><a href="https://github.com/IceDynamix/reliquary-archiver" target="_blank" rel="noreferrer"><strong>Reliquary Archiver</strong><span>Inventory export instructions</span></a><a href="https://github.com/kel-z/HSR-Scanner" target="_blank" rel="noreferrer"><strong>Kel-Z HSR Scanner</strong><span>PC scanner instructions</span></a></div>
-    <p className="guide-limitation">Import a schema 4 Reliquary Archiver or Kel-Z JSON file using the inventory file picker. Review the count before replacing your inventory. Files stay in this browser; download a backup before clearing browser data.</p>
+    <p className="guide-limitation">Import a schema 4 Reliquary Archiver or Kel-Z JSON file using the inventory file picker. Review the count before replacing your inventory. Normalized inventory stays in this browser. Integrated scanning briefly creates a local export, then removes it. Download a backup before clearing browser data.</p>
     <p className="fineprint">OCR exports do not include hidden SPD decimals. Build comparison uses a manual profile. The optimizer uses that same profile. Speed tuning uses a fixed-speed, initial-advance-only AV model.</p>
   </div>;
 }

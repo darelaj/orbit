@@ -6,7 +6,7 @@ English is the primary application language, including interface copy, accessibi
 
 ## Core workflows
 
-1. Export the account using a supported scanner, import its JSON, and inspect equipped and unequipped relics together.
+1. Scan through Orbit's integrated Windows reader, or import a supported scanner JSON, and inspect equipped and unequipped relics together after confirming replacement.
 2. Filter by slot, set, main stat, level, owner, and lock/discard state; inspect a relic's active and preview stats separately.
 3. Select a character, verify or correct the calculation profile, and compare six-slot loadouts A and B.
 4. Choose an objective and constraints, run a bounded search, and send a result to comparison.
@@ -15,7 +15,7 @@ English is the primary application language, including interface copy, accessibi
 
 ## Full inventory boundary
 
-Reliquary Archiver or Kel-Z HSR Scanner performs extraction from the game. Orbit accepts its resulting JSON. This first version does not install or run a scanner, capture network traffic, read game memory, or automate the game. It does not obtain the full inventory from a UID.
+Manual import accepts Reliquary Archiver or Kel-Z HSR Scanner JSON. The owner has now authorized an integrated local Windows scanner (O-09); [SCANNER.md](SCANNER.md) records its implementation plan and verification limits. The browser retains validation, calculations and durable storage; an Orbit-managed native component performs extraction. Game memory reading and game automation remain excluded. A UID does not provide full inventory.
 
 The owner has not supplied a real inventory export. Schema-derived synthetic fixtures enable development. Real-account acceptance remains a separate unverified check until an export is imported.
 

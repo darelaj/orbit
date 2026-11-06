@@ -16,6 +16,12 @@ O-08 synthetic cross-workflow acceptance is complete, with independent storage/r
 
 ## Import your inventory
 
+On Windows x64, start with `npm.cmd start`, open **Scan inventory from HSR**, and follow the preparation text. Stay on the game's **Click to Start** screen, choose **Scan inventory**, approve the Windows Administrator request, then enter HSR when the scanner is listening. Orbit manages Reliquary internally; you do not need to launch a separate scanner or locate a JSON file. The ordinary web server stays under your normal user.
+
+When ready, choose **Review scan**, check the actual count, then **Replace inventory**. A scan does not save automatically. **Discard scan** drops its result and waits for the native process to finish its 120-second capture window; it does not force-kill capture. Closing the panel leaves the job running. Reconnect can recover the current runtime job after a reload. Unread scan results expire after five minutes. A missing/partial/unsupported export leaves your prior inventory untouched; game updates may require a reviewed scanner-engine update.
+
+Setup/checksum, synthetic process/API tests and UI import flows are verified. A real HSR capture, Windows elevation and compatibility with your game version still need an owner-driven scan.
+
 Use **Import scanner JSON or Orbit backup** to choose a Reliquary Archiver or Kel-Z HSR Scanner export (source schema 4). Check the relic count, then choose **Replace inventory**. Cancel keeps your existing collection. Validation or storage errors also leave it unchanged. Limit: 20 MiB and 10,000 relics.
 
 Search by set, main stat, owner or scanner ID; filter slot and equipment/lock/discard status. The collection uses 48-item pages. Select an item to see active, preview and reroll substats separately. Source precision is shown: OCR cannot reveal hidden SPD decimals. Known set/slot combinations show local icons and item names. Main-stat amounts are derived from a pinned catalogue and labeled in details. Character names come from the export; missing references retain their IDs with warnings. Additional filters cover set, main stat, rarity, minimum level, and equipped character. Import time is preserved in backups; legacy backups show when that time is unavailable.
@@ -61,18 +67,20 @@ Internet access is needed to clone the repository and download dependencies. No 
 
 ## Run locally on Windows
 
+`npm.cmd start` builds and serves Orbit on the same origin and checks/downloads pinned Reliquary v0.19.0 into the ignored cache on Windows x64. First launch needs access to GitHub; later launches verify the cached engine. Capture stays idle until you choose Scan inventory. `npm.cmd run scanner:setup` restores/verifies the engine without running it. See [the scanner contract and upstream MIT notice](docs/SCANNER.md). No global PowerShell policy change is needed; the helper uses a process-scoped policy. `npm.cmd run dev` and `npm.cmd run preview` remain frontend-only.
+
 Open PowerShell and clone the project:
 
 ```powershell
 git clone https://github.com/darelaj/orbit.git
 cd orbit
 npm.cmd ci
-npm.cmd run dev
+npm.cmd start
 ```
 
-For an existing checkout, run commands from its repository root. If dependencies are already installed and unchanged, start with npm.cmd run dev; npm.cmd ci is not needed on every launch. Stop any running Orbit dev/preview/test-watch process before reinstalling dependencies. On other shells/platforms, use npm in place of npm.cmd.
+For an existing checkout, run commands from its repository root. If dependencies are already installed and unchanged, start with npm.cmd start; npm.cmd ci is not needed on every launch. Stop any running Orbit dev/preview/runtime/test-watch process before reinstalling dependencies. On other shells/platforms, use npm in place of npm.cmd. Integrated capture requires Windows x64 and its Packet Monitor; manual JSON import works elsewhere.
 
-Open [http://127.0.0.1:4173](http://127.0.0.1:4173). The dev server provides hot module replacement while source files change. Keep the terminal running; press Ctrl+C in that terminal to stop it.
+Open [http://127.0.0.1:4173](http://127.0.0.1:4173). Keep the terminal running. Ctrl+C closes the runtime and drains an active scan before exit; close a pending Windows permission prompt if necessary. For UI development, use npm.cmd run dev instead to get hot module replacement; it displays scanner-runtime guidance rather than launching capture. Stop one server before starting another.
 
 The scripts deliberately bind to loopback and use a fixed port. If port 4173 is occupied, stop the existing Orbit dev/preview process or choose a different port explicitly. Do not terminate an unrelated process to free the port.
 
@@ -117,9 +125,12 @@ Open [http://127.0.0.1:4173](http://127.0.0.1:4173) again. Development and previ
 | Command | Purpose |
 | --- | --- |
 | npm.cmd ci | Install the exact dependency versions from package-lock.json |
+| npm.cmd start | Build and run the local web app with integrated scanner support |
+| npm.cmd run scanner:setup | Download/verify the pinned Windows engine without running capture |
 | npm.cmd run dev | Start the loopback-only Vite development server |
 | npm.cmd run typecheck | Run strict TypeScript checks without emitting files |
-| npm.cmd test | Run the Vitest unit/component suite once |
+| npm.cmd test | Run Vitest plus the synthetic Node scanner/API suite |
+| npm.cmd run test:scanner | Run only the synthetic Node scanner/API suite |
 | npm.cmd run test:watch | Run tests in watch mode during development |
 | npm.cmd run build | Type-check and build the production bundle |
 | npm.cmd run preview | Serve the existing production build locally |
@@ -130,15 +141,16 @@ Use npm.cmd in Windows PowerShell when script execution policy blocks npm.ps1. A
 
 ### Implemented foundation
 
-Orbit is a client-side React application served by Vite. React holds transient demo filters and selected-item identity; the filtered list is derived during rendering. Native dialogs provide scanner guidance and item details on smaller screens. There is no application backend, account system, or inventory database yet.
+Orbit uses React + TypeScript, built by Vite. The local Node runtime serves the production app and manages one native scan; Vite dev/preview are frontend-only alternatives. React owns interaction state, pure domain modules own calculations and validation, a module Worker runs relic search, and IndexedDB stores inventory, comparison snapshots and team settings. No account system or remote database is required.
 
 ```mermaid
 flowchart LR
-    Vite["Vite on 127.0.0.1:4173"] --> React["React app in the browser"]
-    React --> Theme["Theme selection"]
-    Theme --> Storage["Browser localStorage"]
-    React --> Styles["Shared light/dark CSS tokens"]
-    React --> Demo["Synthetic equipment fixtures + local artwork"]
+    React["React browser UI"] -->|"Same-origin scan controls"| Runtime["Node on 127.0.0.1:4173"]
+    Runtime -->|"Elevated one-shot helper"| Native["Pinned Reliquary reader"]
+    Native -->|"Temporary export"| Runtime
+    Runtime -->|"Required fields only"| React
+    React -->|"Validate and confirm"| Store["Browser IndexedDB"]
+    React --> Worker["Optimizer Web Worker"]
 ```
 
 The current source layout is:
@@ -156,9 +168,13 @@ orbit/
 │       ├── theme.ts          Theme selection and preference persistence
 │       ├── styles.css        Shared styles and light/dark theme tokens
 │       └── App.test.tsx      Theme, filtering, selection, empty and image-error flows
-├── src/domain/               Implemented scanner validation and backup format
-├── src/features/inventory/   Implemented import and personal inventory view
-├── src/storage/              Implemented IndexedDB inventory persistence
+├── src/domain/               Inventory, comparison, optimizer and speed math
+├── src/features/             Inventory/scanner, comparison, optimizer, speed UI
+├── src/storage/              Independent IndexedDB workspace records/backups
+├── src/workers/              Optimizer protocol and module Worker
+├── server/                   Loopback API, scan lifecycle, Windows helpers/pin
+├── scripts/setup-scanner.mjs Pinned engine provisioning without capture
+├── tests/                    Cross-workflow, native-adapter/API and browser QA
 ├── public/assets/            Game images, Figma SVGs, local fonts, source notices
 ├── docs/                     Product contracts, architecture, planning, checkpoints
 ├── .agents/skills/           Pinned project skills and HSR integrity guidance
@@ -177,29 +193,30 @@ Artwork is bundled locally, with attribution and the upstream license recorded i
 
 ### Feature architecture
 
-Inventory validation, its React view, and IndexedDB inventory storage are implemented. Remaining responsibilities in these layers are planned:
+The implemented layers are:
 
 | Layer | Responsibility |
 | --- | --- |
 | React feature views | Inventory filters/details, A/B loadouts, optimizer controls/results, team timeline |
+| Node runtime and native helper | Same-origin scanner controls, pinned engine, one elevated scan, temporary export projection/cleanup; no durable server inventory |
 | Pure TypeScript domain modules | Implemented export validation/normalization; implemented manual-profile build calculations; implemented bounded optimizer; implemented bounded action-value math |
 | Module Web Worker | Implemented bounded optimization with progress, cancellation, and stale-result protection |
 | Versioned IndexedDB records | Implemented inventory, comparison/profile snapshots and speed-team configuration |
 | Game-data catalogue | Explicitly sourced/versioned constants with visible handling of unknown records |
 
-The implemented import flow is scanner JSON -> complete validation -> normalized inventory -> atomic local persistence -> React views. Invalid input must preserve the previous valid inventory. Search will run off the main thread so controls remain responsive.
+The import flow is file or integrated-scan JSON -> complete browser validation -> preview -> atomic IndexedDB persistence -> React views. Invalid input preserves the previous valid inventory. Search runs off the main thread so controls remain responsive.
 
-Personal inventory is processed locally in the browser. No cloud sync or account login is planned. See [ARCHITECTURE.md](docs/ARCHITECTURE.md) for module boundaries, worker messages, persistence, and game-data requirements.
+Calculations and durable inventory storage stay in the browser. Native scanning briefly writes an export and info-level process output under ignored .cache/scanner/runs, forwards only supported inventory/reference fields, then removes the run files. It requests no packet file or trace log. Normal cleanup errors are visible; crash leftovers older than ten minutes are cleaned on startup. No cloud sync or account login is planned. See [ARCHITECTURE.md](docs/ARCHITECTURE.md) and [SCANNER.md](docs/SCANNER.md) for boundaries and verification limits.
 
 ## Automated verification
 
-[Verify Orbit](.github/workflows/verify.yml) runs clean install, typecheck, tests and build for pull requests and main on Linux/Windows with Node 24. Official checkout/setup-node actions are pinned to verified commit SHAs, with read-only repository permission. Local Windows commands remain npm.cmd run typecheck, npm.cmd test and npm.cmd run build. These automated checks use Vitest/JSDOM and fake IndexedDB; native production-browser evidence and its limits are recorded in [VERIFICATION.md](docs/VERIFICATION.md).
+[Verify Orbit](.github/workflows/verify.yml) runs clean install, typecheck, tests and build for pull requests and main on Linux/Windows with Node 24. Official checkout/setup-node actions are pinned to verified commit SHAs, with read-only repository permission. Local Windows commands remain npm.cmd run typecheck, npm.cmd test and npm.cmd run build. Vitest/JSDOM covers the app with fake IndexedDB; Node tests cover synthetic native adapters and real loopback HTTP. Windows also parses both helpers with PowerShell 5.1. CI never installs/runs the native reader, opens UAC or captures game traffic. Production-browser evidence and its limits are recorded in [VERIFICATION.md](docs/VERIFICATION.md).
 
 Keyboard **Skip to content** focuses the current workspace without changing its route. Disclosure controls retain at least a 44px click area. These fixes came from acceptance testing, not from a claim of complete accessibility certification.
 
 ## Inventory source
 
-The intended full-inventory inputs are JSON exports from [Reliquary Archiver](https://github.com/IceDynamix/reliquary-archiver) or [Kel-Z HSR Scanner](https://github.com/kel-z/HSR-Scanner). Extraction happens in those tools; Orbit accepts schema 4 files locally but does not scan the game.
+Full-inventory inputs are schema-4 JSON exports from [Reliquary Archiver](https://github.com/IceDynamix/reliquary-archiver) or [Kel-Z HSR Scanner](https://github.com/kel-z/HSR-Scanner). Orbit also manages a pinned Reliquary reader through its integrated Windows workflow. The engine reads login traffic, while Orbit validates the completed export and keeps browser persistence unchanged. No game memory reading or game automation is implemented.
 
 Enka UID lookup supplies public showcase data and cannot provide every unequipped relic. OCR exports also cannot recover hidden SPD decimals, which matters for close speed thresholds. The importer preserves provenance and precision as described in [IMPORT_FORMAT.md](docs/IMPORT_FORMAT.md).
 

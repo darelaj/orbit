@@ -68,7 +68,7 @@ export default function App() {
         </div>
         <aside className="detail-panel" aria-label="Selected relic"><RelicDetails relic={selected} position={selectedPosition} /></aside>
       </div> : !hasInventory ? <div className="empty-workspace">
-        <section className="empty-demo" aria-labelledby="empty-heading"><div className="empty-art" aria-hidden="true">{['117_0.png','117_2.png','117_3.png'].map(file => <GameImage key={file} file={file} alt="" />)}</div><h2 id="empty-heading">Start with the demo</h2><p>Explore Acheron's equipment with eight synthetic relics. The demo is not connected to a game account.</p><button className="primary" onClick={toggleDemo}>Explore demo</button><p className="fineprint">Import a scanner JSON above to open your own inventory.</p></section>
+        <section className="empty-demo" aria-labelledby="empty-heading"><div className="empty-art" aria-hidden="true">{['117_0.png','117_2.png','117_3.png'].map(file => <GameImage key={file} file={file} alt="" />)}</div><h2 id="empty-heading">Start with the demo</h2><p>Explore Acheron's equipment with eight synthetic relics. The demo is not connected to a game account.</p><button className="primary" onClick={toggleDemo}>Explore demo</button><p className="fineprint">Scan from HSR or import a scanner JSON above to open your own inventory.</p></section>
         <section className="preparation-panel" aria-label="Prepare your inventory"><ScannerGuide /></section>
       </div> : null}
     </main>

@@ -1,4 +1,95 @@
-# O-08 production acceptance (current)
+# O-09 integrated scanner verification (current)
+
+2026-11-06. Final frontend suite: 50 tests in 16 Vitest files passed. Native-boundary suite: 10 Node tests passed on Windows, including PowerShell 5.1 syntax parsing without script execution. Production build (with strict typecheck), pinned engine setup and the actual `npm.cmd start` command succeeded. Later native-helper cleanup/redaction changes passed the affected Node suite again. Final source review also identified upstream's crashlog/Enter prompt: stdin now receives EOF, crash results are rejected and their artifacts cleaned. Synthetic crash cleanup and helper syntax are checked; the native crash path has not run. There is no new npm dependency or lockfile change.
+
+## Executed checks
+
+| Scenario | Observed result |
+| --- | --- |
+| Official engine setup | Downloaded the pinned v0.19.0 Packet Monitor x64 asset; verified 12,294,144 bytes and SHA-256 from official release metadata. The executable was never run |
+| Production startup | npm start built the app, served the existing 127.0.0.1:4173 origin, verified the cache and displayed Scanner ready in the browser. No native job started |
+| Synthetic start/discard | Browser showed listening, then discarding; another scan stayed unavailable until the fake native operation completed. Node tests also verify single-run exclusion and shutdown drain |
+| Collapsed active panel | Closing the disclosure kept the synthetic scan active and file import disabled; reopening offered Review scan after completion |
+| Review/cancel | Synthetic 1-item result passed browser validation, focused the shared confirmation region and left the prior 240-item inventory available. Cancel import retained all 240 items |
+| Persistence failure/retry | Automated component test rejected save, retained the prior inventory, then retried successfully with fractional SPD 2.032 and inactive preview ATK 16.9 preserved. This was fault injection, not a manually exhausted browser quota |
+| Partial output | Separate --incomplete harness produced an explicit no-complete-inventory error, no Review scan result and no change to the 240-item inventory |
+| Bad output and expiry | Node tests reject partial/missing/malformed/oversized exports and unknown source/schema; test expiry, stale IDs and metadata projection. Malformed JSON errors omit raw export contents |
+| Local API | Actual loopback HTTP tests reject foreign Host/Origin, missing custom/session headers, request bodies and traversal. Result reads require the current job ID/token; no CORS grant is emitted |
+| Frontend-only mode | Vite preview exposed runtime-unavailable guidance and Reconnect scanner; manual import remained available |
+| Reconnect and keyboard | Reconnect reached the real idle runtime. A reviewed notice cannot mask another job's state. Enter collapsed/reopened the disclosure; review moved focus to its confirmation region |
+| Existing workspace | No browser replacement was confirmed. Original inventory/comparison/team records stayed untouched; light theme and #speed destination were restored, temporary viewport reset and reference tabs preserved |
+
+The browser used the production bundle. Scan/discard/review buttons were exercised only against tests/browser/preview-scanner.mjs, which cannot invoke the native engine or elevation. Real production runtime checks stopped at installed/ready. No HSR process, personal export, UAC prompt or capture was used. The normal runtime, two synthetic harness runs and Vite preview were all stopped; port 4173 was verified free.
+
+## Visual checks and antislop delivery gate
+
+Open scanner panel: dark/light at 1440x1000, 390x844 and 320x800, six cases with no document overflow, no active target below 44px and no scoped computed text-contrast failure. Minimum measured contrast: 4.91 light, 7.97 dark. Final production dark desktop audit passed again. This solid-background DOM check excludes image/pseudo-element compositing, disabled-control contrast and assistive-technology certification. Console error query returned no entries. Evidence is ignored under `.cache/scanner-qa/`: desktop-dark.jpg, mobile-light.jpg and audit-results.json. No screenshot contains a personal account export; shown relics are prior synthetic QA inventory.
+
+Gate scope is the new scanner UI and its integration; unchanged workspace evidence remains below. Native game extraction is a pending acceptance check, not a tested design claim.
+
+| Gate item | Status and evidence |
+| --- | --- |
+| R-02 copy | PASS: new English copy contains no em dash; commands and game labels retain literal meaning |
+| R-03 responsiveness | PASS: six widths/themes have no overflow; screenshots inspected |
+| R-17 statistics | PASS: counts come from validated exports; no fabricated rate or accuracy metric |
+| R-18 testimonials | PASS: none added |
+| R-23 assets | PASS: no artwork, logo, avatar or navigation destination added |
+| R-24 navigation | PASS: existing working workspace navigation retained |
+| R-25 contrast | PASS within declared scope: no failures in six text-pair audits |
+| R-26 controls | PASS: start/discard/review/reconnect and preview cancel exercised with the synthetic adapter; production start/ready verified separately |
+| R-27 states | PASS: idle, connecting, offline, active, discarded, partial error and preview have actionable feedback; unsupported/missing capabilities covered by components |
+| R-28 FAQ | PASS: none added |
+| R-32 keyboard | PASS: native disclosure works with Enter and preview receives focus; 44px targets retained |
+| R-33 source edits | PASS: React/CSS source edited directly; no external UI patch generator |
+| R-34 themes | PASS: existing tokens retained and both modes audited |
+| R-35 execution | PASS: actual build/start plus scoped control walkthrough recorded above |
+| R-36 claims | PASS: real capture/UAC/game compatibility explicitly pending; no security certification or performance score |
+| R-37 direction | PASS: accepted DESIGN.md HSR equipment language and ENERGY/RHYTHM/MOTION 2/2/2 used before implementation |
+| R-38 fabricated content | PASS: synthetic harness is labeled, isolated from production entry point and used only for QA |
+| R-39 semantics | PASS: native details/summary/buttons, visible state text, inherited focus/disabled/hover styles; no new animation |
+| R-40 media/performance | PASS: no media or third-party page script added, no unmeasured performance claim |
+| R-01 visual effects | PASS: opaque existing surfaces; no new gradient/glow |
+| R-04 icons | PASS: no new decorative icons |
+| R-06 typography | PASS: existing brand fonts; inline code identifies actual commands |
+| R-07 patterns | PASS: no background pattern added |
+| R-08 arrows | PASS: no decorative button arrows |
+| R-09 badges | PASS: native job status is plain text, no promotional capsule |
+| R-10 glass | PASS: none added |
+| R-12 elevation | PASS: no new shadow/elevated surface |
+| R-13 glow/status | PASS: state uses actual job text, no pulsing indicator |
+| R-14 cards | PASS: one task disclosure, no repeated feature cards |
+| R-19 motion | PASS: no new animation; inherited short control transitions respect reduced motion |
+| R-22 illustrations | PASS: none added |
+| Liveliness dials | PASS: 2/2/2 matches the existing workspace and short control interactions |
+| Focal point | PASS: Scan inventory is the panel's gold primary action; Review scan appears only with a result |
+| Whitespace | PASS: collapsed disclosure removes preparation text from item inspection |
+| Deliberate accent | PASS: existing gold primary button, quiet secondary actions |
+| Identity motif | PASS: inherited equipment workspace, typography and six-slot inventory remain visible |
+| Design read | PASS: declared before UI generation and recorded in DESIGN.md |
+| C-1 intent | PASS: each panel/surface/type/spacing choice has a stated reason in DESIGN.md |
+| C-2 completeness | PASS: every new action has a real handler and tested failure path |
+| C-3 content | PASS: scanner preparation/status/review serves inventory acquisition |
+| C-4 resilience | PASS within declared scope: both themes, narrow widths, keyboard, offline and error paths checked |
+| C-5 evidence | PASS: synthetic versus real-runtime checks and native acceptance limits are explicit |
+| R-05 composition | PASS: task disclosure inside the existing equipment view, no dashboard template |
+| R-11 radius | PASS: existing 6px panel / 4px control scale |
+| R-15 actions | PASS: Scan inventory, Discard scan, Review scan and Reconnect scanner name their actions |
+| R-16 language | PASS: no marketing claims added |
+| R-20 identity | PASS: scanner belongs to the accepted HSR equipment workspace |
+| R-21 themes | PASS: existing owner-required light/dark modes preserved |
+| R-29 palette | PASS: existing neutrals/gold tokens only |
+| R-30 originality | PASS: no unrelated product template introduced |
+| R-31 reasons | PASS: panel position, disclosure, type and accent rationale recorded in DESIGN.md |
+| Comment hygiene | PASS: new comments explain protocol, privacy or cleanup constraints; no decorative/narrative comments |
+| Copy integrity | PASS: no invented metrics, identities or verification; status reflects the current job |
+
+## Pending owner acceptance
+
+Use the real integrated workflow once: approve/deny Windows elevation, enter HSR after listening, compare the scanned count/equipped/unequipped/locked/discarded items and SPD precision against the game, then confirm replacement only if correct. Also observe normal/timeout/discard/shutdown Packet Monitor cleanup on the owner's Windows version. These checks have not run. Upstream game-version compatibility, real inventory completeness, real stat/turn matching and owner visual approval remain pending.
+
+## Historical verification
+
+# O-08 production acceptance (historical)
 
 Executed 2026-11-06 (Asia/Jakarta). Local typecheck, 43 tests in 15 files and production build passed. Native browser checks used `npm.cmd run preview` against `dist`, including the separately emitted optimizer Worker. [CI run 42176422051](https://github.com/darelaj/orbit/actions/runs/42176422051) passed clean install/typecheck/tests/build on both Linux and Windows for runtime head `de8e9a9`; the final documentation head must also pass before merge. Workflow action SHAs were resolved from the official v6 tags, not inferred from search text. No package or lockfile upgrade was needed.
 

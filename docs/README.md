@@ -7,6 +7,7 @@
 | [PRODUCT.md](PRODUCT.md) | User goals, accepted scope, exclusions |
 | [ARCHITECTURE.md](ARCHITECTURE.md) | Framework, modules, persistence, worker boundary |
 | [IMPORT_FORMAT.md](IMPORT_FORMAT.md) | Supported exports, precision, validation, update semantics |
+| [SCANNER.md](SCANNER.md) | Integrated Windows reader, engine pin, local API, lifecycle and verification limits |
 | [CALCULATIONS.md](CALCULATIONS.md) | Stat formulas, search guarantees, speed assumptions |
 | [TESTING.md](TESTING.md) | Meaningful checks and browser verification |
 | [VERIFICATION.md](VERIFICATION.md) | Executed UI walkthrough, evidence, and antislop delivery gate |

@@ -28,3 +28,9 @@ test('invalid input and excessive output are rejected before rendering a partial
   team.members[0].panelSPD=NaN;expect(()=>simulateSpeed(team)).toThrow('finite');
   team.members=team.members.map(m=>({...m,panelSPD:1000000}));expect(()=>simulateSpeed(team)).toThrow('2,000');
 });
+test('the exact 2,000-action limit is accepted and numeric underflow is rejected',()=>{
+  const team=defaultTeam();team.cycles=2;team.members=team.members.map(m=>({...m,panelSPD:20000}));
+  expect(simulateSpeed(team).events).toHaveLength(2000);
+  team.members[0].panelSPD=20040;expect(()=>simulateSpeed(team)).toThrow('2,000');
+  team.members[0].panelSPD=Number.MIN_VALUE;expect(()=>simulateSpeed(team)).toThrow('numeric range');
+});

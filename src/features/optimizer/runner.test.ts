@@ -24,7 +24,7 @@ test('late terminal/error events cannot replace a newer run and failures release
   const input={profile:emptyProfile,relics:[],options:defaultOptions};
   runner.start(input,1);const old=workers[0];const request=old.request!;
   runner.start(input,2);
-  old.onmessage?.(new MessageEvent<SearchResponse>('message',{data:{kind:'complete',runId:request.runId,revision:request.revision,report:{results:[],total:'1',evaluated:1,feasible:0,invalid:0,invalidReasons:[],exhaustive:true,counts:[1,1,1,1,1,1]}}}));
+  old.onmessage?.(new MessageEvent<SearchResponse>('message',{data:{kind:'complete',runId:request.runId,revision:request.revision,report:{results:[],total:'1',evaluated:1,feasible:0,invalid:0,invalidReasons:[],exhaustive:true,counts:[1,1,1,1,1,1],rejected:0,missedBounds:[]}}}));
   old.onerror?.(new ErrorEvent('error'));expect(messages).toEqual([]);
   workers[1].onerror?.(new ErrorEvent('error'));
   expect(workers[1].terminated).toBe(true);expect(messages).toHaveLength(1);expect(messages[0].kind).toBe('error');

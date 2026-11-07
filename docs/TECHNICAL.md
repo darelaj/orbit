@@ -89,6 +89,30 @@ Each run owns a cloned profile/options snapshot and a new module Worker. Protoco
 
 Apply copies a result to comparison B and navigates there, keeping A stable; mixed snapshot/current-inventory precision becomes unknown conservatively. Explicitly save the comparison to persist it.
 
+## O-11a objectives and target contract
+
+Future contract specified 2026-11-07; not implemented by O-11a. Current search behavior above remains authoritative until O-11d. UI behavior is specified in [DESIGN](../DESIGN.md#o-11a-character-workflow-specification). This section finalizes the objective semantics previously proposed in PLAN; O-11b/c data/profile work and O-11d implementation remain unstarted.
+
+Supported future objectives: HP, ATK, DEF, SPD, CRIT Rate, CRIT DMG, Break Effect, Build CV and the existing separately named ATK/CRIT index. Use final computed static totals under one selected character/profile version, with units inherited from Calculations. Do not score descriptions or pretend these are simulated damage. Build CV is `2 * CRIT Rate + CRIT DMG` in percentage points, including modeled baseline/profile, main stats, active substats and static set bonuses exactly once. It is not relic-substat-only CV. Preview/reroll values never contribute. Raw CV does not cap CRIT Rate; flag excess above 100% as potentially wasted, and do not confuse it with the clamped ATK/CRIT index.
+
+Three goal modes share one feasibility predicate: maximize Build CV; maximize one supported stat/index; or satisfy selected minimums then maximize one supported objective. Target mode expresses SPD-first as **a hard minimum**, not unlimited lexicographic SPD ranking or a weighted sum. Once feasible, rank solely by the selected objective; there is no secondary reward for surplus SPD. Other minimums, such as CRIT DMG, remain hard constraints. Explicit maximum constraints are inclusive. Empty targets mean absent, never zero; require at least one minimum in target mode, finite valid inputs, consistent min/max ranges and no duplicate stat constraints. Negative thresholds and min > max are invalid. Max-stat/CV modes may also retain explicit Advanced bounds.
+
+Reference acceptance case, synthetic profile with minimum SPD 134 and objective CRIT DMG:
+
+| Candidate | SPD | CRIT DMG | Expected result |
+| --- | --- | --- | --- |
+| A | 133.9 | 230% | Infeasible; display rounding cannot change it. |
+| B | 134 | 210% | First: meets minimum and has higher objective than C. |
+| C | 145 | 190% | Second: surplus SPD has no ranking reward. |
+
+Adding minimum CRIT DMG 220% makes all three infeasible; never select A as a relaxed fallback. At equal objective values, sort by stable six-slot relic-ID tuple, not extra SPD. Compare unrounded values, without hidden target tolerance. Synthetic CV checks: CRIT Rate 70%, CRIT DMG 140% gives 280 CV; CRIT Rate 110%, CRIT DMG 140% gives raw 360 CV plus the excess-CRIT warning. These examples are test expectations, not character recommendations.
+
+Every candidate must have a valid complete static profile, one eligible unique relic per slot and satisfy all chosen set/main-stat/ownership/lock/discard/exclusion constraints. Cavern requirements occupy only its four slots: a four-piece set, one two-piece requirement or two different two-piece sets. Planar requirements occupy its two slots; at most one two-piece requirement. Reject contradictory/unknown requirements with actionable errors. No requirement is implied by Any sets. Borrowing is opt-in under future defaults. Missing current equipment can coexist with a valid six-slot candidate; a current-build quality delta must state that its reference is partial.
+
+Search reports bind inventory revision, character/form/profile/catalogue version, goal and pool snapshot to the run. Keep numerical objective separate from feasibility. Exact search refuses excess work before enumeration; quick search keeps its limited-coverage label. Reuse bounded results, cancellation and stale protection; no silent transition from exact to quick. An exhaustive run with excluded unsupported calculations reports those exclusions and cannot claim a universal pool optimum. No-result limited search is inconclusive; no-result exhaustive search means no *computable* feasible build under disclosed assumptions. Neither status relaxes constraints or changes storage.
+
+O-11d tests must independently verify the table, simultaneous bounds, CV units/overflow and profile contributions, legal Cavern/Planar partitions, tie ordering, invalid/missing targets, active-versus-preview values, exact-versus-reference brute force, limited no-result claims, caps/cancel/staleness. O-11e assessment and O-11f UI consume these same totals/constraints, not a separate quality formula. There is no community percentile, character recommendation preset or damage/rotation model in this contract.
+
 ## Speed
 
 `domain/speed.ts` uses exactly four named members with fixed speed/buffs and one initial action advance:

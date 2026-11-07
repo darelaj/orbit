@@ -21,11 +21,11 @@ PRs #16–#18 were merged before this documentation work; main baseline is `96a7
 
 The application serves HSR PC relic inventory, comparison, stat search and fixed-speed tuning. Full inventory requires a scanner export, not UID showcase lookup. Keep local processing, no credentials, explicit replacement and separate backups. ZZZ/Endfield, gacha/check-in, cloud sync, social features, auto-salvage, game modification/memory access, whole-team relic allocation and combat/DPS rotations remain outside this implementation.
 
-Each coherent task gets a branch and focused milestone commits. Merge dependencies first; verify exact-head CI and commits in synchronized main before deleting that PR's source branch. No delegation has been requested. O-10 and O-11 below are both unstarted proposals, not one authorization to implement everything. Owner priority decision, 2026-11-07: finish O-11 and stabilize the agreed local feature set first. O-10 is the last priority, after the core features are reliable and the owner confirms they meet expectations. Milestone numbers are identifiers, not execution order. The next implementation entry point, when requested, is O-11a.
+Each coherent task gets a branch and focused milestone commits. Merge dependencies first; verify exact-head CI and commits in synchronized main before deleting that PR's source branch. No delegation has been requested. O-10 and O-11 below are both unstarted proposals, not one authorization to implement everything. Owner priority decision, 2026-11-07: finish O-11 and stabilize the agreed local feature set first. O-10 is the last priority, after the core features are reliable and the owner confirms they meet expectations. Milestone numbers are identifiers, not execution order. O-11a specification is complete; the next implementation entry point, when requested, is O-11b.
 
 ## O-11 character build workflow
 
-Status: planning only. Requested 2026-11-07; application changes are not authorized yet. This is O-11, independent of the unimplemented O-10 hosted Companion proposal.
+Status: O-11a specification completed 2026-11-07 in [DESIGN](../DESIGN.md#o-11a-character-workflow-specification) and [TECHNICAL](TECHNICAL.md#o-11a-objectives-and-target-contract). O-11b–h remain unstarted; no O-11 application code has been implemented. This is O-11, independent of the unimplemented O-10 hosted Companion proposal.
 
 ### Outcome and confirmed decisions
 
@@ -38,7 +38,7 @@ Orbit should answer three questions: How is my character built now? Which relic 
 - Simplify Comparison, Optimizer and Speed Tuning without hiding calculation limits or removing inventory protections.
 - Keep React/TypeScript, English copy, both themes and the accepted HSR/Figma equipment identity. Change workflow and hierarchy, not the brand direction.
 
-The remaining details are proposed implementation contracts. Character-specific recommended targets and universal build grades are not established by this plan.
+The O-11a specification finalizes the workflow and objective contract below for implementation; later tasks must not claim the UI or calculations already exist. Character-specific recommended targets and universal build grades are not established by this plan.
 
 ### User journey and screen hierarchy
 
@@ -67,7 +67,7 @@ Keep exact/limited status, missing data and materially excluded mechanics near t
 The worker already enumerates small spaces exactly and samples larger spaces in limited mode. Extend its options, constraints and scoring rather than replacing the engine.
 
 - **Maximum stat:** choose a supported computed stat, including CRIT Rate, CRIT DMG, SPD, HP, ATK, DEF or Break Effect. Publish the actual supported list; do not imply damage simulation.
-- **Maximum CV:** proposed **Build CV = 2 × computed CRIT Rate + computed CRIT DMG**, in percentage points and under the same static profile as displayed totals. Include modeled main stats and active substats; exclude previews and speculative upgrades. Any later relic-only CV needs a separate definition and label.
+- **Maximum CV:** **Build CV = 2 × computed CRIT Rate + computed CRIT DMG**, in percentage points and under the same static profile as displayed totals. Include modeled main stats and active substats; exclude previews and speculative upgrades. Any later relic-only CV needs a separate definition and label.
 - **Targets then maximize:** apply all hard minimums first, then rank feasible builds by the chosen objective. SPD receives no further reward after its target when CRIT DMG is the objective. Preserve optional maximum SPD for turn-order constraints.
 - Support multiple minimum constraints in the domain, exposing only the user's chosen goals in basic controls. Avoid free-form formulas, arbitrary weights and long priority forms.
 - Compare full-precision values and round only for display. Resolve equal scores deterministically using stable relic identities.
@@ -122,7 +122,7 @@ Each row gets its own feature branch from its merged dependency, after an implem
 
 | Task / proposed branch | Depends on | Deliverable and acceptance |
 | --- | --- | --- |
-| O-11a `docs/build-workflow-spec` | This plan | Finalize basic/advanced wireflows, English labels, CV and target contracts in DESIGN/TECHNICAL. Review the SPD example, incomplete/no-result states and current/candidate journey before UI code. |
+| O-11a `docs/build-workflow-spec` | This plan | Specification complete: DESIGN defines wireflows, basic/advanced controls, English labels and recovery; TECHNICAL defines CV/targets, legality and independent numerical acceptance cases. Document review only; runtime/owner UI acceptance remains pending O-11f–h. |
 | O-11b `feat/character-profile-data` | O-11a | Retain the supplied owned roster, including characters with no equipped relics, plus validated progression and Light Cone data. Extend server projection, import types and storage/backup migration. Test roster omission/filtering, placeholder/path resolution and legacy files; missing data stays explicit, invalid records never overwrite storage. |
 | O-11c `feat/character-stat-profiles` | O-11b | Add pinned stat resolver and verified fixtures; select an owned character to initialize shared stats using actual progression and its equipped Light Cone. Cover missing/unsupported forms, Trace mappings, explicit hypothetical/manual overrides, profile identity and calculation coverage; no leaderboard dependency. |
 | O-11d `feat/target-stat-optimizer` | O-11a | Add CV/stat objectives, minimums, target saturation and legal sets to domain/worker. Match independent brute force; cover thresholds, infeasibility, ties and coverage claims. Measure before pruning; manual/synthetic profiles work until O-11c. |

@@ -122,6 +122,64 @@ Keep a numeric event list alongside/below the visual. Use matching names and ord
 
 Place fixed-speed/buff/initial-advance assumptions near controls. Carry the source precision from build comparison and show OCR uncertainty near boundary-sensitive results.
 
+## O-11a character workflow specification
+
+Specification completed 2026-11-07 for O-11b–h implementation. These are future interaction contracts, not implemented screens or owner visual acceptance. Preserve the Figma palette/type, ENERGY 2 / RHYTHM 2 / MOTION 2, local sourced artwork and both themes. This section supersedes the dense control presentation above for the future workspaces; current app behavior remains documented in README. No new assets, navigation destinations or Figma edits are required by this task.
+
+### Shared context and wireflows
+
+Use existing Inventory, Comparison, Optimizer and Speed tuning destinations. Place a compact **Character** picker and actual level/form/Light Cone summary above Comparison and Optimizer. Show the supplied owned roster, searchable by name, including characters without equipped relics; indicate unavailable progression without hiding them. Actual progression is the default. Unknown roster completeness is labeled **Roster completeness unknown**. Speed tuning retains its independent team context.
+
+| Step / destination | Wide composition and primary action | Narrow composition |
+| --- | --- | --- |
+| Choose character / Comparison | Compact character context; six equipped slots on the left, key stats and target status on the right. **Find upgrades** opens Optimizer with the same character and valid goal. | Context, key stats, slots and details in reading order; artwork never displaces the primary action. |
+| Set goal / Optimizer | Compact goal/sets/scope controls beside wide results. **Find builds** starts a validated run; **Cancel search** replaces it during work. | Controls above results. Advanced stays collapsed; progress/cancel remains reachable. |
+| Inspect result / Optimizer | Six relic cells, goal value, target status and changes from current equipment. **Compare build** opens Comparison and supplies Candidate. | Compact result rows; selected relic details use the existing accessible dialog pattern. |
+| Review / Comparison | Stable Current build, Candidate and Change columns; changed slots alongside selected-item details. **Save candidate** persists an explicit named snapshot. | Key deltas first, then slot choices; full tables scroll only inside a labeled region. |
+| Check order / Speed tuning | Explicitly **Use candidate SPD**, choose a member, confirm replacement; named lanes, turn order and cycles lead. | Named members and cycle counts before the scrollable chart; event details are disclosed. |
+
+Keep visible measurements aligned and stable. Show SPD, objective stat/CV and selected minimum stats first, without duplicating rows; **All stats** reveals the remainder. Current equipment and candidate each retain their own six-slot source values under the same profile. Profiles with missing slots can show marked partial totals; search still requires a valid complete numeric profile and eligible candidates for all slots.
+
+An optimizer result never changes the equipped reference or game equipment. If the user explicitly chooses **Use candidate as reference**, relabel that column **Reference build** and display its snapshot origin. **Restore current equipment** returns to the imported loadout. A saved/restored snapshot is labeled **Saved build**, not current game state. Character/profile, inventory revision and catalogue changes invalidate old search results. Character switches with edited drafts offer **Save draft**, **Discard changes**, **Cancel**; failed save prevents the switch. Persist both loadouts/profile in the existing comparison snapshot contract, without silently rebinding old snapshots after reimport.
+
+### Basic controls and English labels
+
+No preselected character recommendations, invented target values or role grades. Example placeholders are visibly examples. Remember a valid goal per character during the session; switching character must not silently carry another character's targets. A first-time user selects the goal explicitly before search.
+
+| Control | Basic behavior | Advanced / details |
+| --- | --- | --- |
+| **Goal** | **Maximize CV**, **Maximize a stat**, **Reach targets, then maximize**. Stat mode exposes **Stat**; target mode shows **Minimum SPD** and **Then maximize**, with **Add minimum** for another chosen stat. No weights or formula editor. | Supported objectives, units, calculation breakdown and optional maximum constraints. A redundant target/objective pair can be simplified to stat mode while preserving its minimum. |
+| **Required sets** | **Any sets** initially. Optional Cavern choice: four-piece or two distinct two-piece sets; optional two-piece Planar requirement. Each can be cleared independently. | Per-slot main-stat filters and explicit relic exclusions. Preserve valid two-piece-only requirements; never require an unwanted second set. |
+| **Relic pool** | Unequipped plus this character's relics by default. **Borrow from other characters** is opt-in. Show eligible count, owner impact, and active lock/discard choices before search. | Locked included and discarded excluded initially; explicit overrides. Preserve user exclusions; never widen the pool silently. |
+| **Search** | **Exact search** initially. Show current scope, real progress and cancel. If above the work limit, offer **Narrow relic pool** or **Use quick search**, requiring an explicit choice. | Budget/filter controls; **Quick search** means limited deterministic sampling, not guaranteed best. Technical combination counts and invalid examples remain inspectable. |
+| **Profile** | Actual character/Light Cone context, **Profile incomplete** when required inputs are unknown, **Review profile** recovery. Show excluded-mechanics summary beside results. | Manual corrections and **Hypothetical profile** overrides, visibly marked. Verified unequipped Light Cone contributes no base; unknown equipment is not assumed absent. |
+
+Basic settings stay short: one goal, selected targets, optional sets and inventory scope. Hide numeric work budgets, raw IDs and correction grids until needed. Keep coverage, missing data and materially excluded effects visible. Refer to [O-11 calculation contract](docs/TECHNICAL.md#o-11a-objectives-and-target-contract) for authoritative CV/constraints semantics rather than restating formulas in UI copy.
+
+### Assessment, results and recovery
+
+Current-build assessment uses **Targets met**, **Below target**, **No targets selected** or **Profile incomplete**. Show actual versus required value and gap, not a universal score or community percentile. CV is a selectable metric, not a judgment for every role. Search results use **Best in this relic pool** only for exhaustive supported calculations, otherwise **Best found**; both expose mechanics limitations. If invalid calculations were excluded, do not claim an unqualified optimum across that pool.
+
+| State | Required visible response / recovery |
+| --- | --- |
+| No inventory / no roster | **Import inventory** or existing scanner entry. If relics exist without roster, explain that references cannot reconstruct ownership; offer reimport/rescan or explicit manual profile. |
+| Missing progression/profile | **Profile incomplete — review missing inputs**; allow browsing and review but block ranked search until required numeric inputs are resolved. Unsupported effects remain separately disclosed even with a complete static profile. |
+| Empty equipped slots | Label each missing slot and partial current totals. Search can proceed with a valid profile and complete candidate pool; report filled slots, without fabricating a current full-build delta. |
+| Invalid targets / missing candidate slot | Explain the specific field or slot; keep current equipment/saved data unchanged. **Find builds** stays unavailable with a reason. |
+| Target missed near rounding boundary | Show the deciding precision, e.g. **Below target: 133.9 < 134 SPD**. Rounded display cannot convert a failure into success. |
+| No feasible exact result | **No build meets these targets in this relic pool**; show active constraints and excluded/invalid counts. Offer explicit edits, never automatic relaxation. |
+| No feasible quick result | **No matching build found in this search**; disclose incomplete coverage and offer exact search if feasible or explicit filter/target edits. |
+| Searching / cancelled / stale | Show progress and cancel; cancellation preserves saved data. Mark stale output unavailable for apply/save and explain which input changed; do not present an unfinished run as best. |
+| Save/storage failure | Explain failure and retain the candidate/draft and prior saved values. Only report success after durable write; preserve failed-initial-read protection. |
+
+For Speed tuning, lead with named members, effective SPD, cycle count, turn order and per-cycle actions. **Speed details** reveals base/panel values, fixed percentage/flat buffs, initial advance and the numeric ledger. Define AV once as action distance divided by effective SPD. Keep fixed-speed/initial-advance-only scope visible. Candidate transfer requires a complete valid build, copies full precision and provenance, resets additional buffs/advance, and changes nothing until a member is explicitly selected and confirmed. It neither saves the team nor creates a live link. **Save team** stays explicit; missing members retain honest empty inputs until valid rather than invented character stats.
+
+### Specification acceptance and later UI gate
+
+The document walkthrough is: select an owned character → review actual/partial equipment → choose target SPD and maximize CRIT DMG → review sets/pool → exact or explicitly quick search → inspect target attainment and changed pieces → compare/save → explicitly transfer SPD to a team member. None of those basic steps requires Advanced. Verify the numerical example and no-result distinctions in TECHNICAL before coding.
+
+Purpose review: artwork identifies the character; six-slot geometry connects equipment/results; key deltas answer the user's question; disclosures reduce competing controls without hiding correctness. No new decorative metrics, grades, gradients or motion are introduced. English labels, both themes, 44px targets, keyboard/focus/Escape, reduced motion and bounded local scrolling remain required. This is a specification review only: browser behavior, contrast and owner usability acceptance are pending O-11f–h and must not be marked passed here.
+
 ## Motion
 
 - Relic selection: surface/frame transition around 120-160ms.

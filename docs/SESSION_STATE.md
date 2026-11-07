@@ -8,4 +8,4 @@ Final code: 70 Vitest tests in 21 files, 18 Node backend tests and production bu
 
 Current visible Optimizer still uses legacy stat/index choices and SPD bounds. New CV/target controls and simpler workspaces await O-11f. Next only on owner request: O-11e current-build assessment, then O-11f-h. The three-character baseline subset, static-model exclusions and pending real inventory/roster/stat/native-cleanup acceptance remain. Separate leaderboard stays deferred; hosted Companion O-10 remains last priority.
 
-Two focused local commits belong to this task; no push/PR/merge was requested. At handoff inspect git status/log for the integration commit ID. No owned services are running.
+Implementation commits are `8cedf28` and `e54cdff`. The owner has authorized push, PR and merge. Branch is pushed; this integration checkpoint must pass exact-head Windows/Linux CI before merge. On resume inspect actual PR/ref state, synchronize main, verify both implementation commits are ancestors, and only then delete this feature branch remotely and locally. Skip completed steps. No owned services are running.

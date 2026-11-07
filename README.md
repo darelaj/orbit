@@ -4,7 +4,7 @@ A local Honkai: Star Rail relic workspace for PC players. Orbit is being built t
 
 ## Scope
 
-Orbit focuses on HSR relic inventory, same-profile comparison, panel-stat optimization and fixed-speed tuning on PC. Calculations and durable data stay in the browser; only an explicit local scan uses the bounded native reader. It has no account login, cloud sync, telemetry, gacha/check-in, auto-salvage, game memory access or game automation. Cross-game support, whole-team allocation and combat/DPS rotations are outside the current build. Initial baseline catalogue profiles are available for three reviewed characters; expanded coverage, CV/target priorities and simpler workspaces remain planned in O-11.
+Orbit focuses on HSR relic inventory, same-profile comparison, panel-stat optimization and fixed-speed tuning on PC. Calculations and durable data stay in the browser; only an explicit local scan uses the bounded native reader. It has no account login, cloud sync, telemetry, gacha/check-in, auto-salvage, game memory access or game automation. Cross-game support, whole-team allocation and combat/DPS rotations are outside the current build. Initial baseline catalogue profiles are available for three reviewed characters. The engine supports CV/stat objectives and hard targets; their UI controls, expanded character coverage and simpler workspaces remain planned in O-11.
 
 ## Current status
 
@@ -45,6 +45,8 @@ Save up to 20 named comparison snapshots locally. The same name replaces that sa
 ## Optimize relics
 
 Open **Optimizer**, then load a saved comparison profile or fill the shared manual profile. An imported inventory with at least one eligible relic in every slot is required. Choose ATK/HP/DEF/SPD/Break Effect or the explicitly labeled ATK/CRIT index (not DPS). Set an evaluation budget, optional inclusive SPD bounds, and candidate filters. Locked and equipped relics are included by default; discarded relics are excluded. Advanced controls include scanner-ID exclusions, main stat per slot and up to three minimum set-piece requirements.
+
+O-11d adds engine/Worker support for Build CV (`2 × CRIT Rate + CRIT DMG`), CRIT objectives and simultaneous stat minimums/maximums. A target such as SPD ≥134 is mandatory before ranking by CRIT DMG; extra SPD earns no ranking bonus. These new controls are not yet exposed in the current UI; that integration is scheduled for O-11f.
 
 **Exact** enumerates the entire filtered pool only when it fits the budget; otherwise it rejects the run with the required count. **Limited sampling** evaluates evenly spaced mixed-radix combinations in scanner order, up to the budget. It can miss feasible/better builds and makes no global optimality claim. Reports show candidate counts, exact total combinations, evaluated/feasible/invalid counts, coverage and the best ten computable results. Invalid calculations have visible example reasons. No-result sampling does not prove infeasibility.
 

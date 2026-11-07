@@ -45,8 +45,9 @@ export function resolveCharacterProfile(inventory: Inventory, owner: string, opt
       }
     }
     const notes = ['Pinned baseline kit model explicitly selected; imported ability version is retained, not interpreted. Enhanced kits may differ.', 'Only baseline stats and unlocked minor Trace properties are included. Major Trace effects, Eidolon bonuses, Light Cone passives, combat buffs and conversions are excluded.'];
+    if (!['equipped', 'none'].includes(options.lightCone) && !options.lightCone.startsWith('owned:')) throw new Error('Choose an equipped, owned or explicit No Light Cone option.');
     const equipped = inventory.lightCones.filter(c => c.location === owner);
-    const cone = options.lightCone === 'equipped' ? equipped.length === 1 ? equipped[0] : undefined : inventory.lightCones.find(c => c.uid === options.lightCone);
+    const cone = options.lightCone === 'none' ? undefined : options.lightCone === 'equipped' ? equipped.length === 1 ? equipped[0] : undefined : inventory.lightCones.find(c => c.uid === options.lightCone.slice(6));
     if (options.lightCone !== 'none') {
       if (!cone) throw new Error('Equipped Light Cone is missing or ambiguous. Choose an owned Light Cone or explicitly select No Light Cone.');
       const coneData = cones[cone.id];

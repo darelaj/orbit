@@ -68,9 +68,9 @@ test('missing/unsupported/unresolved data never becomes a zero-filled automatic 
   expect(resolveCharacterProfile(inventory(), '1308', { ...options, baselineKit: false }).issues[0]).toContain('Confirm');
   const inv = inventory(); inv.lightCones.push({ ...inv.lightCones[0], uid: 'duplicate-owner' });
   expect(resolveCharacterProfile(inv, '1308', { ...options, lightCone: 'equipped' }).issues[0]).toContain('ambiguous');
-  expect(resolveCharacterProfile(inv, '1308', { ...options, lightCone: 'arrows' }).profile).not.toBeNull();
+  expect(resolveCharacterProfile(inv, '1308', { ...options, lightCone: 'owned:arrows' }).profile).not.toBeNull();
   inv.lightCones[0].level = undefined;
-  expect(resolveCharacterProfile(inv, '1308', { ...options, lightCone: 'arrows' }).profile).toBeNull();
+  expect(resolveCharacterProfile(inv, '1308', { ...options, lightCone: 'owned:arrows' }).profile).toBeNull();
 });
 
 test('snapshot identity preserves profile source and explicit edits, while legacy snapshots still decode', () => {

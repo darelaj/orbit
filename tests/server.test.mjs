@@ -265,6 +265,11 @@ test('real loopback HTTP rejects foreign origins/hosts, unauthenticated commands
   assert.equal((await call('/api/scanner/session', { headers: { ...headers, Origin: 'https://evil.test' } })).status, 403);
   const response = await call('/api/scanner/session', { headers });
   assert.equal(response.headers.get('Access-Control-Allow-Origin'), null);
+  const policy=response.headers.get('Content-Security-Policy');
+  const artwork=JSON.parse(await readFile(new URL('../src/data/character-art.json',import.meta.url),'utf8'));
+  assert.ok(policy.includes(`img-src 'self' data: blob: https://raw.githubusercontent.com/Mar-7th/StarRailRes/${artwork.pin}/image/character_portrait/;`));
+  assert.ok(policy.includes("connect-src 'self';"));
+  assert.ok(!policy.includes('img-src *'));
   const { token } = await response.json(); assert.equal(token.length, 64);
   assert.equal((await call('/api/scanner/status', { headers })).status, 401);
   assert.equal((await call('/api/scanner/status', { headers: { ...headers, 'X-Orbit-Session': 'é'.repeat(64) } })).status, 401);

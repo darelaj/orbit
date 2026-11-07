@@ -7,6 +7,8 @@ import {catalogueItem,formatMainStat} from '../../domain/catalogue';
 import {decodeComparisons,encodeComparisons,loadComparisons,saveComparisons} from '../../storage/comparison';
 import {GameImage} from '../../app/Equipment';
 import {resolveCharacterProfile} from '../../domain/character-profiles';
+import {CharacterArtwork} from '../../app/CharacterArtwork';
+import {characterArtwork} from '../../domain/character-art';
 import './comparison.css';
 
 export default function ComparisonWorkspace({inventory,optimizerVisible=false,speedVisible=false}:{inventory:Inventory|null;optimizerVisible?:boolean;speedVisible?:boolean}) {
@@ -28,13 +30,15 @@ export default function ComparisonWorkspace({inventory,optimizerVisible=false,sp
   useEffect(()=>{let active=true;loadComparisons().then(value=>{if(active){setSaved(value);setStorageReady(true);}}).catch(e=>{if(active)setError(e instanceof Error?e.message:'Could not load saved comparisons.');}).finally(()=>{if(active)setBusy(false);});return()=>{active=false;};},[]);
   function result(loadout:Loadout) {try{return {value:calculateBuild(profile,loadout),error:''};}catch(e){return {value:null,error:e instanceof Error?e.message:'Invalid profile.'};}}
   const resultA=result(a); const resultB=result(b);
+  const profileCharacterId=profile.origin?.characterId??profile.characterId;
+  const characterName=profileCharacterId?(characterArtwork(profileCharacterId)?.name??inventory?.characters.find(c=>c.id===profileCharacterId)?.name??`Character ${profileCharacterId}`):'';
   const candidates=inventory?.relics.filter(r=>r.slot===slot && `${r.id} ${r.setName} ${r.mainStat} ${catalogueItem(r)?.name??''}`.toLowerCase().includes(search.toLowerCase()))??[];
   const pages=Math.max(1,Math.ceil(candidates.length/24)); const currentPage=Math.min(page,pages-1);
   function initialize() {
     if(!inventory)return;
     try {
       const loadout=equippedLoadout(inventory.relics,owner);
-      let nextProfile:BuildProfile={...structuredClone(emptyProfile),name:inventory.characters.find(c=>c.id===owner)?.name??`Character ${owner}`};
+      let nextProfile:BuildProfile={...structuredClone(emptyProfile),characterId:owner,name:inventory.characters.find(c=>c.id===owner)?.name??`Character ${owner}`};
       if(baselineKit){const resolved=resolveCharacterProfile(inventory,owner,{baselineKit,lightCone:coneChoice});if(!resolved.profile)throw new Error(resolved.issues.join(' '));nextProfile=resolved.profile;}
       const pair:Comparison={name:'',profile:nextProfile,a:structuredClone(loadout),b:structuredClone(loadout),precision:inventory.precision};
       if(profile.name || Object.keys(a).length || Object.keys(b).length){setPendingInit(pair);setMessage('Initializing another profile replaces the current unsaved profile and both drafts. Save a snapshot first if needed.');setError('');}
@@ -59,7 +63,7 @@ export default function ComparisonWorkspace({inventory,optimizerVisible=false,sp
   function slotsFor(loadout:Loadout,editable:boolean){return <div className="comparison-slots">{inventorySlots.map(s=>{const relic=loadout[s];const item=relic&&catalogueItem(relic);return <div key={s} className={s===slot&&editable?'comparison-slot selected':'comparison-slot'}><strong>{s}</strong>{item&&<GameImage key={item.icon} file={`relic/${item.icon}`} alt="" />}<span>{relic?item?.name??relic.setName:'Empty slot'}</span>{relic&&<small>{relic.mainStat} {formatMainStat(relic)} · ID {relic.id}</small>}{editable&&<div><button onClick={()=>{setSlot(s);setPage(0);}}>Choose {s}</button><button disabled={!relic} onClick={()=>{const next={...b};delete next[s];setB(next);}} aria-label={`Clear B ${s}`}>Clear</button></div>}</div>;})}</div>;}
   const speedSource=resultB.value && inventorySlots.every(slot=>!!b[slot]) ? {name:profile.name,baseSPD:profile.base.SPD,panelSPD:resultB.value.totals.SPD,precision} : null;
   return <><div hidden={speedVisible}><section className="comparison-workspace" id={optimizerVisible?'optimizer':'comparison'} aria-labelledby="comparison-heading">
-    <h2 id="comparison-heading">{optimizerVisible?'Calculation profile':'Build comparison'}</h2>{profile.name === 'Acheron' && <div className="character-banner comparison-context"><div className="character-art"><GameImage file="1308.png" alt="Acheron artwork for the selected profile" character /></div><div className="character-identity"><p className="eyebrow">{profile.origin?profile.origin.mode==='edited'?'Edited catalogue profile':'Baseline catalogue profile':'Manual calculation profile'}</p><h3>Acheron</h3><p>Shared profile · Reference A / Candidate B</p></div></div>}
+    <h2 id="comparison-heading">{optimizerVisible?'Calculation profile':'Build comparison'}</h2>{profileCharacterId && <div className="character-banner comparison-context"><div className={profileCharacterId==='1308'?'character-art':'character-art character-art-contained'}><CharacterArtwork id={profileCharacterId} alt={`${characterName} artwork for the selected profile`} /></div><div className="character-identity"><p className="eyebrow">{profile.origin?profile.origin.mode==='edited'?'Edited catalogue profile':'Baseline catalogue profile':'Manual calculation profile'}</p><h3>{characterName}</h3><p>Shared profile · Reference A / Candidate B</p></div></div>}
     <p>{optimizerVisible?'Search complete six-slot builds using this shared calculation profile.':'One shared character profile, two loadouts. A stays fixed while you edit B.'}</p><details><summary>Calculation scope and excluded effects</summary><p>Set effects include catalogue static properties only. Catalogue profiles include mapped minor Traces only. Conditional bonuses, major Trace effects, Eidolons, Light Cone passives, combat buffs and damage simulation are excluded. Enter known permanent additions under manual corrections. Empty slots produce partial totals. Zero profile inputs mean no contribution.</p></details>
     <p>Precision: {precision==='ocr'?'OCR: hidden SPD decimals unavailable':precision==='packet'?'Packet-derived relic values':'Not established; select from an imported inventory'}. Saved snapshots retain relic values across inventory replacement.</p>
     {error&&<p role="alert">{error}</p>}{message&&<p role="status">{message}</p>}

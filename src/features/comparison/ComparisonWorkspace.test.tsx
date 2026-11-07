@@ -39,6 +39,7 @@ test('catalogue initialization includes unequipped roster, marks manual edits an
   await user.click(screen.getByRole('button',{name:'Initialize A and B'}));
   await user.click(screen.getByRole('button',{name:'Replace drafts'}));
   expect(screen.getByLabelText('Character/profile name')).toHaveProperty('value','March 7th');
+  expect(screen.getByRole('img',{name:'March 7th artwork for the selected profile'}).getAttribute('src')).toContain('/1001.png');
   expect(screen.getByLabelText('Character base SPD')).toHaveProperty('value','101');
   await user.click(screen.getByRole('button',{name:'Load Automatic fixture'}));
   expect(screen.getByLabelText('Character base SPD')).toHaveProperty('value','105');
@@ -49,6 +50,20 @@ test('catalogue initialization includes unequipped roster, marks manual edits an
   expect(screen.queryByRole('button',{name:'Replace drafts'})).toBeNull();
   expect(screen.getByLabelText('Use pinned baseline kit')).toHaveProperty('checked',false);
   expect(screen.getByLabelText('Character base SPD')).toHaveProperty('value','105');
+});
+
+test('manual roster initialization retains portrait identity despite custom profile names',async()=>{
+  vi.mocked(loadComparisons).mockResolvedValue([]);
+  const inventory=parseInventory(JSON.stringify(characterFixture));
+  const user=userEvent.setup();render(<ComparisonWorkspace inventory={inventory}/>);
+  await user.selectOptions(screen.getByLabelText('Initialize from imported character'),'8007');
+  await user.click(screen.getByRole('button',{name:'Initialize A and B'}));
+  const artwork=screen.getAllByRole('img').find(image=>image.getAttribute('src')?.endsWith('/8007.png'));
+  expect(artwork).toBeTruthy();
+  await user.clear(screen.getByLabelText('Character/profile name'));
+  await user.type(screen.getByLabelText('Character/profile name'),'Custom nickname');
+  expect(artwork?.getAttribute('src')).toContain('/8007.png');
+  expect(screen.queryByRole('img',{name:'Acheron artwork for the selected profile'})).toBeNull();
 });
 
 test('unsupported imported form remains selectable without inventing catalogue totals',async()=>{

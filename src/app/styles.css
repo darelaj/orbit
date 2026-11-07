@@ -297,3 +297,6 @@ dialog::backdrop { background: #080d17b3; }
   .card-substats { gap: 0 12px; }
 }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
+
+.character-art.character-art-contained { top: 0; right: 4px; width: min(40%, 400px); height: 100%; }
+.character-art-contained .image-fallback { padding: 0; align-items: center; justify-content: center; }

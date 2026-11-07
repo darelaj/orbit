@@ -6,7 +6,7 @@ This is the maintained provenance record for assets, constants, scanner integrat
 
 The HSR equipment demo uses actual game artwork from the community-maintained [Mar-7th/StarRailRes](https://github.com/Mar-7th/StarRailRes) repository, pinned to commit `dbe8cdfcfb0bf657b9fe1cf92d5537f118ccb487` (retrieved 2026-11-06).
 
-Files are served locally from public/assets/hsr; no external image/font CDN is contacted at runtime.
+The bundled relic/demo files below remain served locally from public/assets/hsr. Character portraits now use the remote URLs described under Remote character portraits; fonts remain local.
 
 | Local file | Upstream path at the pinned commit | Use |
 | --- | --- | --- |
@@ -55,9 +55,15 @@ All three families use SIL Open Font License 1.1. Copyright/license files are pr
 
 ### O-04b inventory catalogue
 
-`scripts/fetch-catalogue.mjs` reproducibly retrieves data at the same pinned StarRailRes commit above. `src/data/relic-main-affixes.json` retains its main-affix groups; `src/data/relic-catalogue.json` projects English item names and icon filenames keyed by set ID and slot. The 192 distinct icons from `icon/relic/` are bundled under `public/assets/hsr/relic/`. The existing upstream license and HoYoverse attribution apply. No runtime remote asset requests are introduced. Unknown set/slot records remain importable with an explicit artwork fallback.
+`scripts/fetch-catalogue.mjs` reproducibly retrieves data at the same pinned StarRailRes commit above. `src/data/relic-main-affixes.json` retains its main-affix groups; `src/data/relic-catalogue.json` projects English item names and icon filenames keyed by set ID and slot. The 192 distinct icons from `icon/relic/` are bundled under `public/assets/hsr/relic/`. The existing upstream license and HoYoverse attribution apply. Relic catalogue artwork introduces no remote runtime requests; character portraits are handled separately below. Unknown set/slot records remain importable with an explicit artwork fallback.
 
-O-05 additionally bundles index_new/en/relic_sets.json at the same StarRailRes pin, using scripts/fetch-sets.mjs. Existing upstream license/attribution apply. Acheron's existing portrait is reused for an explicitly declared Acheron manual profile; no new artwork or runtime CDN was introduced.
+O-05 additionally bundles index_new/en/relic_sets.json at the same StarRailRes pin, using scripts/fetch-sets.mjs. Existing upstream license/attribution apply. That milestone reused Acheron's local portrait; the current character renderer uses ID-based remote portraits as documented below. The old bundled file remains a legacy asset.
+
+## Remote character portraits
+
+The character portrait renderer now maps all 98 entries in the pinned `index_new/en/characters.json` to the source-provided portrait path, including separate Trailblazer forms. `node scripts/fetch-character-art.mjs` regenerates local name/path metadata only (`src/data/character-art.json`); it downloads no images. The source's {NICKNAME} placeholders become public Trailblazer/Path labels, using Path metadata rather than account nicknames. Browser URLs use `https://raw.githubusercontent.com/Mar-7th/StarRailRes/dbe8cdfcfb0bf657b9fe1cf92d5537f118ccb487/image/character_portrait/...`. All 98 URLs returned successful image headers and `Access-Control-Allow-Origin: *` in a HEAD-only check on 2026-11-08. This covers that catalogue snapshot, not future characters or alternate skins absent from it; update the pin/metadata deliberately for new coverage.
+
+Images are requested on display, using anonymous CORS and no referrer. Requests contain a public portrait path, not UID, inventory or profile text; the CDN still sees normal request/network information such as IP and the requested image. Runtime CSP allows only this pinned portrait directory in img-src, while connect-src remains self. Unknown IDs/offline/blocked or failed images show a named fallback without affecting calculations; changing character resets image failure state. No automatic fallback sends data to another provider. Game artwork attribution and the existing StarRailRes notice above still apply; no new binary asset or API account is introduced. Relic icons, fonts and Figma icons remain local, including existing legacy files.
 
 ## Character profile catalogue
 

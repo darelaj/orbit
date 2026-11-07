@@ -2,6 +2,9 @@ import { createServer } from 'node:http';
 import { randomBytes, timingSafeEqual } from 'node:crypto';
 import { readFile, realpath } from 'node:fs/promises';
 import { resolve, sep, extname } from 'node:path';
+import artwork from '../src/data/character-art.json' with { type: 'json' };
+
+const portraitSource = `https://raw.githubusercontent.com/Mar-7th/StarRailRes/${artwork.pin}/image/character_portrait/`;
 
 export function createOrbitServer({ scanner, dist }) {
   const token = randomBytes(32).toString('hex');
@@ -10,7 +13,7 @@ export function createOrbitServer({ scanner, dist }) {
     res.setHeader('Cache-Control', 'no-store');
     res.setHeader('X-Content-Type-Options', 'nosniff');
     res.setHeader('Cross-Origin-Resource-Policy', 'same-origin');
-    res.setHeader('Content-Security-Policy', "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'");
+    res.setHeader('Content-Security-Policy', `default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: ${portraitSource}; connect-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'`);
     const json = (code, value) => { res.writeHead(code, { 'Content-Type': 'application/json' }); res.end(JSON.stringify(value)); };
     const expectedHost = `127.0.0.1:${server.address()?.port}`;
     const origin = `http://${expectedHost}`;

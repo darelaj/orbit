@@ -19,7 +19,7 @@ function profileFrom(value:unknown):BuildProfile {
   validateProfile(manual); return manual;
 }
 function snapshot(loadout:Loadout,precision:Comparison['precision']):string {
-  const inventory:Inventory={source:precision==='packet'?'reliquary_archiver':'HSR-Scanner',version:4,precision:precision==='packet'?'packet':'ocr',relics:Object.values(loadout),importedAt:null,characters:[],lightCones:[]};
+  const inventory:Inventory={source:precision==='packet'?'reliquary_archiver':'HSR-Scanner',version:4,precision:precision==='packet'?'packet':'ocr',relics:Object.values(loadout),importedAt:null,characters:[],lightCones:[],roster:{source:'omitted',completeness:'unknown'},lightConeSource:'omitted'};
   return backupInventory(inventory);
 }
 function loadoutFrom(value:unknown):Loadout {

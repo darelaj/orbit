@@ -6,11 +6,21 @@ export type InventoryRelic = {
   rarity: number; level: number; mainStat: string; substats: Stat[];
   preview: Stat[]; reroll: Stat[]; location: string; locked: boolean; discarded: boolean;
 };
+export type CharacterSkills = Partial<Record<'basic' | 'skill' | 'ult' | 'talent' | 'elation', number>>;
+export type CharacterTraces = Partial<Record<'ability_1' | 'ability_2' | 'ability_3' | 'special' | `stat_${1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10}`, boolean>>;
+export type CharacterProgression = {
+  path?: string; level?: number; ascension?: number; eidolon?: number; ability_version?: number;
+  skills?: CharacterSkills; traces?: CharacterTraces; memosprite?: Partial<Record<'skill' | 'talent', number>>;
+};
+export type InventoryCharacter = { id: string; name: string; progression?: CharacterProgression };
+export type InventoryLightCone = { id: string; name: string; uid: string; location: string; level?: number; ascension?: number; superimposition?: number };
+export type RosterInfo = { source: 'supplied' | 'omitted' | 'legacy-backup'; completeness: 'unknown' };
 export type Inventory = {
   source: 'reliquary_archiver' | 'HSR-Scanner'; version: 4;
   precision: 'packet' | 'ocr'; relics: InventoryRelic[];
-  importedAt: string | null; characters: { id: string; name: string }[];
-  lightCones: { id: string; name: string; uid: string; location: string }[];
+  importedAt: string | null; characters: InventoryCharacter[]; lightCones: InventoryLightCone[];
+  roster: RosterInfo;
+  lightConeSource: RosterInfo['source'];
 };
 export const MAX_BYTES = 20 * 1024 * 1024;
 export const MAX_RELICS = 10000;
@@ -49,15 +59,57 @@ function stats(value: unknown, path: string): Stat[] {
     return { key, value: r.value };
   });
 }
+const skillFields = ['basic', 'skill', 'ult', 'talent', 'elation'] as const;
+const traceFields = ['ability_1', 'ability_2', 'ability_3', 'special', 'stat_1', 'stat_2', 'stat_3', 'stat_4', 'stat_5', 'stat_6', 'stat_7', 'stat_8', 'stat_9', 'stat_10'] as const;
+function nestedFields<K extends string, V>(value: unknown, path: string, keys: readonly K[], parse: (value: unknown, path: string) => V): Partial<Record<K, V>> {
+  const raw = record(value, path); const result: Partial<Record<K, V>> = {};
+  for (const key of keys) if (raw[key] !== undefined) result[key] = parse(raw[key], `${path}.${key}`);
+  return result;
+}
+function progression(value: Record<string, unknown>, path: string): CharacterProgression | undefined {
+  const result: CharacterProgression = {};
+  if (value.path !== undefined) result.path = string(value.path, `${path}.path`);
+  for (const [key, max] of [['level', 80], ['ascension', 6], ['eidolon', 6], ['ability_version', 1000000]] as const) {
+    if (value[key] !== undefined) result[key] = integer(value[key], `${path}.${key}`, 0, max);
+  }
+  const skillLevel = (raw: unknown, p: string) => integer(raw, p, 0, 100);
+  if (value.skills !== undefined) result.skills = nestedFields(value.skills, `${path}.skills`, skillFields, skillLevel);
+  if (value.traces !== undefined) result.traces = nestedFields(value.traces, `${path}.traces`, traceFields, boolean);
+  if (value.memosprite !== undefined) result.memosprite = nestedFields(value.memosprite, `${path}.memosprite`, ['skill', 'talent'], skillLevel);
+  return Object.keys(result).length ? result : undefined;
+}
+
+// Presence is not proof that the upstream path/Trace mapping has been verified.
+export function characterDataStatus(character: InventoryCharacter): 'missing' | 'partial' | 'unverified' {
+  const p = character.progression;
+  if (!p) return 'missing';
+  if (!p.path || !p.level || p.ascension === undefined || p.eidolon === undefined || p.ability_version === undefined ||
+    skillFields.filter(k => k !== 'elation').some(k => p.skills?.[k] === undefined) ||
+    traceFields.some(k => p.traces?.[k] === undefined)) return 'partial';
+  return 'unverified';
+}
 export function parseInventory(text: string): Inventory {
   if (new TextEncoder().encode(text).length > MAX_BYTES) return fail('File', 'maximum size is 20 MiB');
   let raw: unknown;
   try { raw = JSON.parse(text); } catch { return fail('File', 'invalid JSON'); }
   let root = record(raw, 'File');
   let importedAt: string | null = new Date().toISOString();
+  let savedRoster: RosterInfo | undefined;
+  let savedConeSource: RosterInfo['source'] | undefined;
   if (root.event === 'InitialScan') root = record(root.data, 'data');
   if (root.format === 'orbit-inventory') {
-    if (root.schemaVersion !== 1) return fail('Backup', 'unsupported schema version');
+    if (root.schemaVersion !== 1 && root.schemaVersion !== 2) return fail('Backup', 'unsupported schema version');
+    if (root.schemaVersion === 1) {
+      savedRoster = { source: 'legacy-backup', completeness: 'unknown' };
+      savedConeSource = 'legacy-backup';
+    }
+    else {
+      const roster = record(root.roster, 'roster');
+      if ((roster.source !== 'supplied' && roster.source !== 'omitted' && roster.source !== 'legacy-backup') || roster.completeness !== 'unknown') return fail('roster', 'unsupported roster provenance');
+      savedRoster = { source: roster.source, completeness: 'unknown' };
+      if (root.lightConeSource !== 'supplied' && root.lightConeSource !== 'omitted' && root.lightConeSource !== 'legacy-backup') return fail('lightConeSource', 'unsupported reference provenance');
+      savedConeSource = root.lightConeSource;
+    }
     importedAt = null;
     if (root.importedAt !== undefined && root.importedAt !== null) {
       importedAt = string(root.importedAt, 'importedAt');
@@ -89,8 +141,10 @@ export function parseInventory(text: string): Inventory {
       reroll: stats(r.reroll_substats ?? [], `${p}.reroll_substats`), location: string(r.location, `${p}.location`, true),
       locked: boolean(r.lock, `${p}.lock`), discarded: boolean(r.discard, `${p}.discard`) };
   });
-  function references(key: string) {
-    const values = root[key] ?? [];
+  function references(key: 'characters'): InventoryCharacter[];
+  function references(key: 'light_cones'): InventoryLightCone[];
+  function references(key: 'characters' | 'light_cones'): (InventoryCharacter | InventoryLightCone)[] {
+    const values = root[key] === undefined ? [] : root[key];
     if (!Array.isArray(values) || values.length > MAX_RELICS) return fail(key, 'expected at most 10,000 records');
     const seen = new Set<string>();
     return values.map((raw, i) => {
@@ -99,11 +153,22 @@ export function parseInventory(text: string): Inventory {
       const uid = key === 'characters' ? id : string(r._uid, `${p}._uid`);
       if (seen.has(uid)) return fail(p, 'duplicate reference ID');
       seen.add(uid);
-      return { id, name, uid, location: key === 'characters' ? '' : string(r.location, `${p}.location`, true) };
+      if (key === 'characters') return { id, name, progression: progression(r, p) };
+      const cone: InventoryLightCone = { id, name, uid, location: string(r.location, `${p}.location`, true) };
+      for (const [field, min, max] of [['level', 1, 80], ['ascension', 0, 6], ['superimposition', 1, 5]] as const) {
+        if (r[field] !== undefined) cone[field] = integer(r[field], `${p}.${field}`, min, max);
+      }
+      return cone;
     });
   }
+  const roster: RosterInfo = savedRoster ?? { source: root.characters === undefined ? 'omitted' : 'supplied', completeness: 'unknown' };
+  const characters = references('characters');
+  const lightCones = references('light_cones');
+  const lightConeSource = savedConeSource ?? (root.light_cones === undefined ? 'omitted' : 'supplied');
+  if (roster.source === 'omitted' && characters.length) return fail('roster', 'omitted roster cannot contain characters');
+  if (lightConeSource === 'omitted' && lightCones.length) return fail('lightConeSource', 'omitted references cannot contain Light Cones');
   return { source: root.source, version: 4, precision: root.source === 'HSR-Scanner' ? 'ocr' : 'packet', relics,
-    importedAt, characters: references('characters').map(({ id, name }) => ({ id, name })), lightCones: references('light_cones') };
+    importedAt, roster, characters, lightCones, lightConeSource };
 }
 export function referenceWarnings(inventory: Inventory): string[] {
   const known = new Set(inventory.characters.map(c => c.id));
@@ -111,8 +176,9 @@ export function referenceWarnings(inventory: Inventory): string[] {
   return [...missing].map(id => `Character ${id} is missing from this export. Owner ID retained; character stats are unavailable.`);
 }
 export function backupInventory(inventory: Inventory): string {
-  return JSON.stringify({ format: 'orbit-inventory', schemaVersion: 1, importedAt: inventory.importedAt, scanner: {
-    characters: inventory.characters, light_cones: inventory.lightCones.map(c => ({ id: c.id, name: c.name, _uid: c.uid, location: c.location })),
+  return JSON.stringify({ format: 'orbit-inventory', schemaVersion: 2, importedAt: inventory.importedAt, roster: inventory.roster, lightConeSource: inventory.lightConeSource, scanner: {
+    characters: inventory.characters.map(c => ({ id: c.id, name: c.name, ...c.progression })),
+    light_cones: inventory.lightCones.map(c => ({ id: c.id, name: c.name, _uid: c.uid, location: c.location, level: c.level, ascension: c.ascension, superimposition: c.superimposition })),
     source: inventory.source, version: inventory.version, relics: inventory.relics.map(r => ({
       _uid: r.id, set_id: r.setId, name: r.setName, slot: r.slot, rarity: r.rarity, level: r.level,
       mainstat: r.mainStat, substats: r.substats, preview_substats: r.preview, reroll_substats: r.reroll,

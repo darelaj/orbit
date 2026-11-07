@@ -1,0 +1,18 @@
+{
+  "source": "reliquary_archiver", "version": 4,
+  "metadata": { "uid": "drop-me" }, "gacha": { "secret": "drop-me" }, "materials": [],
+  "characters": [
+    {
+      "id": "1308", "name": "Synthetic Acheron", "path": "Nihility", "level": 80, "ascension": 6, "eidolon": 0, "ability_version": 1,
+      "skills": { "basic": 6, "skill": 10, "ult": 10, "talent": 10, "elation": 0, "secret": "drop-me" },
+      "traces": { "ability_1": true, "ability_2": true, "ability_3": true, "special": false, "stat_1": true, "stat_2": false, "stat_3": true, "stat_4": true, "stat_5": true, "stat_6": true, "stat_7": true, "stat_8": true, "stat_9": true, "stat_10": true, "secret": "drop-me" },
+      "memosprite": { "skill": 0, "talent": 0, "secret": "drop-me" }, "private": "drop-me"
+    },
+    { "id": "8007", "name": "Synthetic unresolved form", "path": "Remembrance", "level": 0, "ascension": 0, "eidolon": 0, "ability_version": 0 }
+  ],
+  "light_cones": [
+    { "id": "23024", "name": "Synthetic cone", "_uid": "cone-1", "location": "1308", "level": 80, "ascension": 6, "superimposition": 1, "private": "drop-me" },
+    { "id": "20001", "name": "Synthetic unequipped cone", "_uid": "cone-2", "location": "", "level": 1, "ascension": 0, "superimposition": 5 }
+  ],
+  "relics": [{ "_uid": "synthetic-relic", "set_id": "102", "name": "Musketeer", "slot": "Hands", "rarity": 5, "level": 15, "mainstat": "ATK", "substats": [{ "key": "SPD", "value": 2.59999 }], "preview_substats": [{ "key": "HP", "value": 38 }], "location": "1308", "lock": true, "discard": false }]
+}

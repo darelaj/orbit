@@ -38,8 +38,11 @@ export function projectExport(text) {
       ...pick(record, ['_uid', 'set_id', 'name', 'slot', 'rarity', 'level', 'mainstat', 'location', 'lock', 'discard']),
       ...Object.fromEntries(['substats', 'preview_substats', 'reroll_substats'].filter(key => record[key] != null).map(key => [key, list(record[key]).map(s => pick(s, ['key', 'value']))])),
     })),
-    characters: list(raw.characters ?? []).map(c => pick(c, ['id', 'name'])),
-    light_cones: list(raw.light_cones ?? []).map(c => pick(c, ['id', 'name', '_uid', 'location'])),
+    ...(raw.characters === undefined ? {} : { characters: list(raw.characters).map(c => ({
+      ...pick(c, ['id', 'name', 'path', 'level', 'ascension', 'eidolon', 'ability_version']),
+      ...Object.fromEntries(['skills', 'traces', 'memosprite'].filter(key => c[key] !== undefined).map(key => [key, pick(c[key], key === 'skills' ? ['basic', 'skill', 'ult', 'talent', 'elation'] : key === 'memosprite' ? ['skill', 'talent'] : ['ability_1', 'ability_2', 'ability_3', 'special', ...Array.from({ length: 10 }, (_, i) => `stat_${i + 1}`)])])),
+    })) }),
+    ...(raw.light_cones === undefined ? {} : { light_cones: list(raw.light_cones).map(c => pick(c, ['id', 'name', '_uid', 'location', 'level', 'ascension', 'superimposition'])) }),
   });
 }
 export function launchNative(root, directory) {

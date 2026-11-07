@@ -24,6 +24,7 @@ export async function loadInventory(): Promise<Inventory | null> {
 }
 export async function saveInventory(inventory: Inventory): Promise<void> {
   const text = backupInventory(inventory);
+  parseInventory(text);
   const db = await openWorkspace();
   try {
     await new Promise<void>((resolve, reject) => {

@@ -142,12 +142,29 @@ test('projection preserves fractional active/preview values and strips unrelated
   assert.deepEqual(Object.keys(result).sort(), ['characters', 'light_cones', 'relics', 'source', 'version']);
   assert.deepEqual(result.relics[0].substats, [{ key: 'SPD', value: 2.032 }]);
   assert.deepEqual(result.relics[0].preview_substats, [{ key: 'ATK', value: 16.9 }]);
-  assert.deepEqual(result.characters, [{ id: '1308', name: 'Acheron' }]);
+  assert.deepEqual(result.characters, [{ id: '1308', name: 'Acheron', skills: {} }]);
   assert.ok(!JSON.stringify(result).includes('private'));
   assert.throws(() => projectExport(JSON.stringify({ ...fixture, version: 5 })), /Unsupported/);
   assert.throws(() => projectExport('private_account_data'), error => /not valid JSON/.test(error.message) && !error.message.includes('private_account_data'));
   assert.throws(() => projectExport(JSON.stringify({ ...fixture, characters: [{ id: { private: 1 } }] })), /Invalid/);
   assert.throws(() => projectExport(JSON.stringify({ ...fixture, relics: Array(10001).fill(record) })), /limit/);
+});
+
+test('projection forwards only supported progression and preserves roster omission', async () => {
+  const raw = JSON.parse(await readFile(new URL('./fixtures/character-export.json', import.meta.url), 'utf8'));
+  const result = JSON.parse(projectExport(JSON.stringify(raw)));
+  assert.equal(result.characters.length, 2);
+  assert.equal(result.characters[0].level, 80);
+  assert.equal(result.characters[0].eidolon, 0);
+  assert.equal(result.characters[0].skills.basic, 6);
+  assert.equal(result.characters[0].traces.stat_2, false);
+  assert.equal(result.characters[1].level, 0);
+  assert.equal(result.light_cones[0].superimposition, 1);
+  assert.ok(!JSON.stringify(result).includes('drop-me'));
+  assert.ok(!Object.hasOwn(JSON.parse(projectExport(JSON.stringify({ source: 'reliquary_archiver', version: 4, relics: [] }))), 'characters'));
+  assert.ok(!Object.hasOwn(JSON.parse(projectExport(JSON.stringify({ source: 'reliquary_archiver', version: 4, relics: [] }))), 'light_cones'));
+  for (const field of ['skills', 'traces', 'memosprite']) assert.throws(() => projectExport(JSON.stringify({ ...raw, characters: [{ ...raw.characters[0], [field]: [] }] })), /Invalid/);
+  assert.throws(() => projectExport(JSON.stringify({ ...raw, characters: [{ ...raw.characters[0], skills: { basic: {} } }] })), /Invalid/);
 });
 test('successful one-shot result expires, uses job identity and removes all run files', async t => {
   let now = 1000;

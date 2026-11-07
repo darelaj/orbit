@@ -2,7 +2,15 @@
 
 This is a concise evidence index, not a fresh test run. Historical reports remain in Git. Add a scoped current result when behavior changes; do not append every old checkpoint or label historical results as current indefinitely. Test requirements live in [TECHNICAL](TECHNICAL.md#verification-policy).
 
-## Verified baseline
+## O-11b character data, 2026-11-08
+
+Implemented data retention only; automatic stat profiles and new character-first UI remain O-11c/f work. Local final-code verification: 55 Vitest tests in 17 files, 18 Node backend tests, strict typecheck and production build passed. Focused import/storage checks passed before the full suite. No dependency, asset, native pin/helper or UI changes; no browser walkthrough or real capture/UAC was run for this data-boundary change.
+
+Synthetic shared schema-derived fixture covers equipped and unequipped roster entries, unresolved form/level placeholders, skill/Trace/memosprite/ability-version retention, equipped/unequipped Light Cones, decimal relic SPD and privacy projection. Checks cover both supported sources/InitialScan, absent versus empty roster, incomplete/legacy status, schema-1 load and explicit schema-2 migration, backup round-trip, invalid nested types/ranges/duplicates/provenance, and aborted or invalid writes preserving old data. Node projection checks strip nested unrelated fields and preserve missing reference sections; browser validation remains authoritative for numeric ranges. Existing comparison/team and cross-workflow tests still pass.
+
+Raw progression presence is not verified mapping or account completeness. Actual roster completeness, stat matching and native capture cleanup remain owner-driven acceptance; no personal scan result was read. Exact-head CI remains an integration check when this branch is published, not a claimed local result.
+
+## Verified baseline (before O-11b)
 
 - O-04–O-08 used schema-derived synthetic fixtures for inventory, manual-profile math, bounded search, AV boundaries, independent backups and failed-write rollback. Production-browser walkthroughs exercised actual controls, Worker output, theme/layout and keyboard behavior. These are scoped observations, not real-account matching or full accessibility certification.
 - O-09 setup downloaded and verified the pinned reader; production startup reached idle ready. Browser scan/discard/review flows used the non-capture synthetic harness. Real personal inventory was not substituted for test fixtures.

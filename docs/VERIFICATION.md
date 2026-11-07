@@ -2,6 +2,16 @@
 
 This is a concise evidence index, not a fresh test run. Historical reports remain in Git. Add a scoped current result when behavior changes; do not append every old checkpoint or label historical results as current indefinitely. Test requirements live in [TECHNICAL](TECHNICAL.md#verification-policy).
 
+## O-11d target-stat engine, 2026-11-08
+
+Domain milestone `8cedf28` adds CV/CRIT objectives, simultaneous hard minimum/maximum stat bounds, target-mode validation, legal Cavern/Planar requirements and deterministic per-slot ID ties. Integration adds a test of the actual Worker handler and documents the contract. Current UI choices remain unchanged; new controls await O-11f. No dependency, native reader, storage or asset changes.
+
+Final code: 70 Vitest tests in 21 files and 18 Node backend tests passed; production build including strict TypeScript checking passed. Independent recursive brute force compares 192 combinations for CV, CRIT Rate, CRIT DMG, SPD and ATK under bounds/set constraints. Fixtures verify SPD 134 saturation, simultaneous infeasibility without relaxation, raw CV above 100% CRIT Rate, main-stat/static-set contributions, preview exclusion, invalid targets/set partitions, stable ties, invalid calculations and limited-search uncertainty. Existing runner cancellation/restart/revision/stale-result checks still pass.
+
+The actual Worker handler receives structured-cloned synthetic input, evaluates 4,096 combinations, emits four progress messages and returns ten ranked results with expected objective/bound diagnostics and run/revision identity. A second request verifies validation error identity. This is work-count evidence, not a benchmark or personal scan. Missed-bound counters cover only evaluated, set-compatible, calculable builds and can overlap.
+
+No UI/browser walkthrough, service, game capture or UAC was started for this domain-only task. Static-model exclusions remain; no DPS, percentile, universal optimum or owner UI acceptance is claimed. Ignored check logs: `.cache/o11d-tests.log` and `.cache/o11d-build.log`.
+
 ## Remote character artwork, 2026-11-08
 
 Local catalogue/renderer milestone `61de83a` adds 98 pinned remote portrait mappings, image error fallback and narrow runtime img-src permission; integration preserves explicit manual profile character IDs, switches demo/profile banners to ID-based art and resolves public Trailblazer/Path labels. No new binary images, dependency or asset licenses are added. All 98 URL HEAD checks returned successful image responses and wildcard anonymous CORS; requests did not download/store image bodies. Browser rendering still transfers the displayed images normally, with ordinary browser caching.

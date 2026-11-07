@@ -21,11 +21,11 @@ PRs #16–#18 were merged before this documentation work; main baseline is `96a7
 
 The application serves HSR PC relic inventory, comparison, stat search and fixed-speed tuning. Full inventory requires a scanner export, not UID showcase lookup. Keep local processing, no credentials, explicit replacement and separate backups. ZZZ/Endfield, gacha/check-in, cloud sync, social features, auto-salvage, game modification/memory access, whole-team relic allocation and combat/DPS rotations remain outside this implementation.
 
-Each coherent task gets a branch and focused milestone commits. Merge dependencies first; verify exact-head CI and commits in synchronized main before deleting that PR's source branch. No delegation has been requested. O-10 and O-11 below are both unstarted proposals, not one authorization to implement everything. Owner priority decision, 2026-11-07: finish O-11 and stabilize the agreed local feature set first. O-10 is the last priority, after the core features are reliable and the owner confirms they meet expectations. Milestone numbers are identifiers, not execution order. O-11a specification is complete; the next implementation entry point, when requested, is O-11b.
+Each coherent task gets a branch and focused milestone commits. Merge dependencies first; verify exact-head CI and commits in synchronized main before deleting that PR's source branch. No delegation has been requested. O-10 and O-11 below are both unstarted proposals, not one authorization to implement everything. Owner priority decision, 2026-11-07: finish O-11 and stabilize the agreed local feature set first. O-10 is the last priority, after the core features are reliable and the owner confirms they meet expectations. Milestone numbers are identifiers, not execution order. O-11a specification is complete; O-11b data retention is complete; the next implementation entry point, when requested, is O-11c.
 
 ## O-11 character build workflow
 
-Status: O-11a specification completed 2026-11-07 in [DESIGN](../DESIGN.md#o-11a-character-workflow-specification) and [TECHNICAL](TECHNICAL.md#o-11a-objectives-and-target-contract). O-11b–h remain unstarted; no O-11 application code has been implemented. This is O-11, independent of the unimplemented O-10 hosted Companion proposal.
+Status: O-11a specification completed 2026-11-07 in [DESIGN](../DESIGN.md#o-11a-character-workflow-specification) and [TECHNICAL](TECHNICAL.md#o-11a-objectives-and-target-contract). O-11b data retention/migration is implemented with synthetic validation; O-11c–h remain unstarted. This is O-11, independent of the unimplemented O-10 hosted Companion proposal.
 
 ### Outcome and confirmed decisions
 
@@ -88,7 +88,7 @@ Exact means exhaustive coverage of the eligible pool under modeled mechanics. Fi
 
 ### Character data and calculation dependency
 
-Current inventory normalization retains character and Light Cone identity references; calculations use a manual profile. Selecting a character alone cannot initialize accurate progression or passive stats.
+O-11b now retains available character/Light Cone identity and progression with validated schema-2 backups and schema-1 compatibility. Missing values remain absent; roster completeness remains unknown. Calculations still use a manual profile: selecting a character does not initialize numerical stats until O-11c.
 
 The owned-character workflow belongs to O-11b/O-11c, not the separate leaderboard project. Read the roster supplied by the scanner, including characters without equipped relics; do not infer ownership from relic locations alone. One supported scan/import should supply relics, characters and Light Cones together. Show roster completeness as unknown when the source omits or filters characters; never claim every owned character was captured from references alone.
 
@@ -123,7 +123,7 @@ Each row gets its own feature branch from its merged dependency, after an implem
 | Task / proposed branch | Depends on | Deliverable and acceptance |
 | --- | --- | --- |
 | O-11a `docs/build-workflow-spec` | This plan | Specification complete: DESIGN defines wireflows, basic/advanced controls, English labels and recovery; TECHNICAL defines CV/targets, legality and independent numerical acceptance cases. Document review only; runtime/owner UI acceptance remains pending O-11f–h. |
-| O-11b `feat/character-profile-data` | O-11a | Retain the supplied owned roster, including characters with no equipped relics, plus validated progression and Light Cone data. Extend server projection, import types and storage/backup migration. Test roster omission/filtering, placeholder/path resolution and legacy files; missing data stays explicit, invalid records never overwrite storage. |
+| O-11b `feat/character-profile-data` | O-11a | Implemented with synthetic tests: retain the supplied owned roster, including characters with no equipped relics, plus validated progression and Light Cone data. Extend server projection, import types and storage/backup migration. Test roster omission/filtering, placeholder/path resolution and legacy files; missing data stays explicit, invalid records never overwrite storage. |
 | O-11c `feat/character-stat-profiles` | O-11b | Add pinned stat resolver and verified fixtures; select an owned character to initialize shared stats using actual progression and its equipped Light Cone. Cover missing/unsupported forms, Trace mappings, explicit hypothetical/manual overrides, profile identity and calculation coverage; no leaderboard dependency. |
 | O-11d `feat/target-stat-optimizer` | O-11a | Add CV/stat objectives, minimums, target saturation and legal sets to domain/worker. Match independent brute force; cover thresholds, infeasibility, ties and coverage claims. Measure before pruning; manual/synthetic profiles work until O-11c. |
 | O-11e `feat/current-build-assessment` | O-11c, O-11d | Add equipment completeness, target gaps and same-profile candidate deltas. Distinguish exact optimum, best found and no search. Missing profile/equipment stays visible; no universal grade. |

@@ -1,5 +1,6 @@
 import { demoRelics, slots, slotNames, type DemoRelic, type Slot } from './demo';
 import { FigmaIcon, GameImage } from './Equipment';
+import { CharacterArtwork } from './CharacterArtwork';
 
 export type LockFilter = 'all' | 'locked' | 'unlocked';
 export type SortOrder = 'equipped' | 'slot' | 'slot-reverse';
@@ -7,7 +8,7 @@ export type SortOrder = 'equipped' | 'slot' | 'slot-reverse';
 export function CharacterEquipment({ selectedId, onSelect }: { selectedId: string; onSelect: (relic: DemoRelic) => void }) {
   return <section className="character-equipment" aria-labelledby="character-name">
     <div className="character-banner">
-      <div className="character-art"><GameImage file="1308.png" alt="Acheron artwork for the demo equipment" character /></div>
+      <div className="character-art"><CharacterArtwork id="1308" alt="Acheron artwork for the demo equipment" /></div>
       <div className="character-identity"><p className="eyebrow">Equipment context</p><h2 id="character-name">Acheron</h2><p>6 equipped relics <span>· Demo collection</span></p></div>
     </div>
     <div className="loadout-slots" role="group" aria-label="Acheron demo equipment">{slots.map(slot => {

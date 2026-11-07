@@ -201,7 +201,7 @@ orbit/
 
 The theme is stored under the versioned localStorage key orbit:theme:v1. If no saved choice exists, Orbit follows the browser's system preference. Changing hostname, port, or browser profile changes the storage origin; clearing browser data removes the saved preference.
 
-Artwork is bundled locally, with attribution and the upstream license recorded in [asset sources](docs/SOURCES.md#asset-and-font-sources). No external font or image CDN is required at runtime.
+Character portraits load directly from pinned GitHub CDN URLs for all 98 entries in the current artwork catalogue, including Trailblazer forms. No new image files are bundled; local metadata maps public character IDs to source paths. Demo and applied comparison/optimizer profiles use that identity, not an editable profile name. Unknown IDs, offline or blocked/failed images show Artwork unavailable without affecting calculations. Saved manual profiles retain their explicitly selected character ID; legacy snapshots without identity do not guess art from a name. Relic icons, Figma icons and fonts remain local. [Sources, notices and remote request scope](docs/SOURCES.md#remote-character-portraits) describe the provider, pin and coverage; artwork coverage does not expand automatic stat-profile support.
 
 ### Feature architecture
 

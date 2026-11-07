@@ -16,3 +16,11 @@ test('saved profile and relic snapshots survive inventory replacement independen
   await expect(saveComparisons([{...pair,profile:{...pair.profile,base:{...pair.profile.base,SPD:NaN}}}])).rejects.toThrow();
   expect(await loadComparisons()).toEqual([pair]);
 });
+
+test('explicit character IDs survive manual snapshots without guessing from names',()=>{
+  const pair:Comparison={name:'Art fixture',profile:{...emptyProfile,name:'Custom profile label',characterId:'1101',base:{HP:1000,ATK:500,DEF:400,SPD:99}},a:{},b:{},precision:'unknown'};
+  expect(decodeComparisons(encodeComparisons([pair]))[0].profile.characterId).toBe('1101');
+  const legacy={...pair,profile:{...pair.profile}};delete legacy.profile.characterId;
+  expect(decodeComparisons(encodeComparisons([legacy]))[0].profile.characterId).toBeUndefined();
+  expect(()=>decodeComparisons(encodeComparisons([{...pair,profile:{...pair.profile,characterId:''}}]))).toThrow('identity');
+});

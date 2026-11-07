@@ -5,7 +5,7 @@ import { inventorySlots, type InventoryRelic, type InventorySlot } from './inven
 export const statKeys = ['HP','ATK','DEF','SPD','HP_','ATK_','DEF_','SPD_','CRIT Rate_','CRIT DMG_','Effect Hit Rate_','Effect RES_','Break Effect_','Energy Regeneration Rate_','Outgoing Healing Boost_','Physical DMG Boost_','Fire DMG Boost_','Ice DMG Boost_','Lightning DMG Boost_','Wind DMG Boost_','Quantum DMG Boost_','Imaginary DMG Boost_','Elation DMG Boost_'] as const;
 export type StatKey = typeof statKeys[number];
 export type ProfileOrigin = { characterId: string; cataloguePin: string; key: string; mode: 'baseline' | 'edited'; notes: string[] };
-export type BuildProfile = { name: string; base: {HP:number; ATK:number; DEF:number; SPD:number}; cone: {HP:number; ATK:number; DEF:number}; corrections: Partial<Record<StatKey,number>>; origin?: ProfileOrigin };
+export type BuildProfile = { name: string; characterId?: string; base: {HP:number; ATK:number; DEF:number; SPD:number}; cone: {HP:number; ATK:number; DEF:number}; corrections: Partial<Record<StatKey,number>>; origin?: ProfileOrigin };
 export type Loadout = Partial<Record<InventorySlot, InventoryRelic>>;
 export type Comparison = { name: string; profile: BuildProfile; a: Loadout; b: Loadout; precision: 'packet' | 'ocr' | 'unknown' };
 export const emptyProfile: BuildProfile = { name:'', base:{HP:0,ATK:0,DEF:0,SPD:0}, cone:{HP:0,ATK:0,DEF:0}, corrections:{} };
@@ -17,6 +17,7 @@ export const propertyKeys: Record<string,StatKey> = {
   PhysicalAddedRatio:'Physical DMG Boost_', FireAddedRatio:'Fire DMG Boost_', IceAddedRatio:'Ice DMG Boost_', ThunderAddedRatio:'Lightning DMG Boost_', WindAddedRatio:'Wind DMG Boost_', QuantumAddedRatio:'Quantum DMG Boost_', ImaginaryAddedRatio:'Imaginary DMG Boost_', ElationDamageAddedRatioBase:'Elation DMG Boost_',
 };
 export function validateProfile(profile: BuildProfile) {
+  if (profile.characterId !== undefined && (typeof profile.characterId !== 'string' || !profile.characterId.trim() || profile.characterId.length > 500 || (profile.origin && profile.origin.characterId !== profile.characterId))) throw new Error('Invalid or conflicting profile character identity.');
   if (profile.origin) {
     const o = profile.origin;
     if (typeof o.characterId !== 'string' || !o.characterId || o.characterId.length > 500 || o.cataloguePin !== CATALOGUE_PIN || typeof o.key !== 'string' || !o.key || o.key.length > 10000 || !['baseline', 'edited'].includes(o.mode) || !Array.isArray(o.notes) || o.notes.length > 20 || o.notes.some(n => typeof n !== 'string' || n.length > 600)) throw new Error('Unsupported or invalid profile provenance.');

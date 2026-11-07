@@ -7,6 +7,7 @@ afterEach(cleanup);
 test('public portrait URLs use pinned IDs and never arbitrary names or URLs', () => {
   expect(characterArtwork('1308')?.name).toBe('Acheron');
   expect(characterArtwork('1101')?.name).toBe('Bronya');
+  expect(characterArtwork('8007')?.name).toBe('Trailblazer (Remembrance)');
   expect(characterArtwork('8007')?.url).toBe(`https://raw.githubusercontent.com/Mar-7th/StarRailRes/${CHARACTER_ART_PIN}/image/character_portrait/8007.png`);
   for (const id of ['unknown', '__proto__', 'constructor', '../1308', 'https://example.com/image.png']) expect(characterArtwork(id)).toBeNull();
 });

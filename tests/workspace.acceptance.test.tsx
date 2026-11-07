@@ -33,7 +33,7 @@ test('import → comparison → optimizer → B → team → reload preserves al
   await user.upload(picker,file(scanner));await user.click(await screen.findByRole('button',{name:'Replace inventory'}));
   expect((await loadInventory())?.relics).toHaveLength(6);
   await user.click(screen.getByRole('link',{name:'Comparison'}));
-  await user.selectOptions(screen.getByLabelText('Initialize from equipped character'),'1308');await user.click(screen.getByRole('button',{name:'Initialize A and B'}));
+  await user.selectOptions(screen.getByLabelText('Initialize from imported character'),'1308');await user.click(screen.getByRole('button',{name:'Initialize A and B'}));
   for(const [name,value] of [['Character base HP','1000'],['Character base ATK','500'],['Character base DEF','400'],['Character base SPD','100']]){await user.clear(screen.getByLabelText(name));await user.type(screen.getByLabelText(name),value);}
   await user.type(screen.getByLabelText('Snapshot name'),'Acceptance reference');await user.click(screen.getByRole('button',{name:'Save comparison'}));
   await user.click(screen.getByRole('link',{name:'Optimizer'}));await user.click(screen.getByRole('button',{name:'Run optimizer'}));

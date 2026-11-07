@@ -16,6 +16,11 @@ function profileFrom(value:unknown):BuildProfile {
     if (!statKeys.includes(key as typeof statKeys[number])) throw new Error('Unsupported manual stat.');
     manual.corrections[key as typeof statKeys[number]]=number(value);
   }
+  if (raw.origin !== undefined) {
+    const origin = object(raw.origin);
+    if (typeof origin.characterId !== 'string' || typeof origin.cataloguePin !== 'string' || typeof origin.key !== 'string' || (origin.mode !== 'baseline' && origin.mode !== 'edited') || !Array.isArray(origin.notes) || origin.notes.some(n => typeof n !== 'string')) throw new Error('Invalid profile provenance.');
+    manual.origin = { characterId: origin.characterId, cataloguePin: origin.cataloguePin, key: origin.key, mode: origin.mode, notes: origin.notes };
+  }
   validateProfile(manual); return manual;
 }
 function snapshot(loadout:Loadout,precision:Comparison['precision']):string {

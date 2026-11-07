@@ -59,6 +59,12 @@ All three families use SIL Open Font License 1.1. Copyright/license files are pr
 
 O-05 additionally bundles index_new/en/relic_sets.json at the same StarRailRes pin, using scripts/fetch-sets.mjs. Existing upstream license/attribution apply. Acheron's existing portrait is reused for an explicitly declared Acheron manual profile; no new artwork or runtime CDN was introduced.
 
+## Character profile catalogue
+
+O-11c adds `src/data/stat-profiles.json`, reproducibly projected by `node scripts/fetch-profiles.mjs` from `index_new/en/characters.json`, `character_promotions.json`, `character_skill_trees.json`, `light_cones.json` and `light_cone_promotions.json` at the same StarRailRes commit above. The existing AGPL notice/attribution applies; no new imagery, dependency or runtime download is introduced. Initial reviewed character IDs are 1001 (March 7th Preservation), 1101 (Bronya), 1308 (Acheron); the 170 pinned Light Cone entries supply base growth only, not passives.
+
+Scanner-to-catalogue Path names and Point06–18 → major/minor Trace fields were checked against pinned Reliquary v0.19.0 [utils](https://github.com/IceDynamix/reliquary-archiver/blob/v0.19.0/src/export/fribbels/utils.rs) and [converters](https://github.com/IceDynamix/reliquary-archiver/blob/v0.19.0/src/export/fribbels/converters.rs). Nodes map by explicit anchor, with source prerequisites/level/ascension retained, not list ordering. Character/Light Cone growth uses catalogue `base + (level - 1) * step`. Imported `ability_version` is retained but its equivalence to this baseline catalogue is unverified; using the baseline model requires an explicit UI choice. Unknown forms/paths, missing progression and unresolved/special kits remain manual. This is not a claim of full current-game coverage or owner stat matching.
+
 ## Project skills
 
 Skills live in `.agents/skills` so their source and changes can be reviewed with the project. The official Codex skill-installer installed upstream folders with pinned `--ref` commits and a repository-local `--dest`. Repository copies are discoverable on the next turn/session; the current session read their instructions directly.

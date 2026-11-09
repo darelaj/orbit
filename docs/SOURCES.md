@@ -82,6 +82,7 @@ Skills live in `.agents/skills` so their source and changes can be reviewed with
 | `antislop-copywriting` | same | same | Specific product text and natural prose |
 | `antislop-code` | same | same | Comment hygiene; changes comments only when invoked for comment cleanup |
 | `karpathy-guidelines` | [multica-ai/andrej-karpathy-skills](https://github.com/multica-ai/andrej-karpathy-skills) | `2c606141936f1eeef17fa3043a72095b4765b9c2` | Explicit assumptions, simple code, scoped changes, verifiable goals |
+| `ponytail` | [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail) | `96608e078b2d5ea607c5c3b8b5a54d1c1fba6846` | Smallest complete coding changes; repository skill only, default full level |
 | `react-best-practices` | [vercel-labs/agent-skills](https://github.com/vercel-labs/agent-skills) | `1a2c79d4e6c4a2283dc2c614b6538cbe1ed5ca62` | Relevant client-side React, rendering, data and bundle guidance |
 | `hsr-calculation-integrity` | Authored for Orbit | tracked in this repository | Inventory precision, stat math, search guarantees, AV boundaries |
 
@@ -98,6 +99,8 @@ Keep upstream files intact. Record local overrides in AGENTS.md and project docs
 ### Notices and validation
 
 Antislop is MIT-licensed; its root notice is preserved at `third_party/antislop-LICENSE.txt`, along with bundled notices inside the installed skill folders. Karpathy and React skills declare MIT in their original SKILL.md metadata; those files are preserved. No project-wide license has been selected on the owner's behalf.
+
+Ponytail was installed on 2026-11-09 with the official skill installer into `.agents/skills/ponytail` from the pinned commit above. Its upstream SKILL.md is unchanged; the MIT notice is preserved at `third_party/ponytail-LICENSE.txt`. No global plugin, hook, companion skill or application dependency was installed. It is discoverable on the next turn/session; current instructions were read directly. The Codex quick validator rejects upstream's optional `argument-hint` frontmatter key; this compatibility exception is retained rather than rewriting the vendor file. Separate checks verify YAML metadata, core fields and byte identity against the pinned checkout.
 
 All seven skills passed the Codex `skill-creator/scripts/quick_validate.py` helper on 2026-11-05. Re-run it when adding or changing a skill. The consolidation only updates the local HSR skill's contract path; upstream skill files and pins remain unchanged. Upstream React guidance includes trailing whitespace; preserve the upstream copy and exclude vendor files from project-owned whitespace checks. Do not silently rewrite upstream instructions to satisfy a superficial check.
 

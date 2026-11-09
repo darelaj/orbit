@@ -35,6 +35,7 @@ Section references above mean docs/TECHNICAL.md; do not read the whole file by d
 Load only applicable repository skills under .agents/skills, once while their unchanged content remains in context:
 
 - Implementation/review: karpathy-guidelines/SKILL.md. Community guidance inspired by Karpathy, not an official package by him.
+- Coding and dependency decisions: ponytail/SKILL.md, default full level. Prefer the smallest complete change; preserve validation, data protection, accessibility and required checks. This repository skill does not install global plugins or lifecycle hooks.
 - Inventory/math/search/timeline: hsr-calculation-integrity/SKILL.md.
 - UI planning/implementation/review: antislop/SKILL.md and antislop-ui/SKILL.md; React work also uses react-best-practices/SKILL.md and applicable rules, not its entire rule library.
 - Human-facing prose: antislop-copywriting/SKILL.md with its core; comments: antislop-code/SKILL.md. Comment-cleanup restrictions do not block separately requested executable changes.

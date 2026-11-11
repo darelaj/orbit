@@ -16,19 +16,25 @@ export function objectiveScore(totals:SearchResult['totals'],objective:Objective
   if(objective==='cv')return 2*totals['CRIT Rate_']+totals['CRIT DMG_'];
   return objective==='crit-index'?totals.ATK*(1+Math.min(100,Math.max(0,totals['CRIT Rate_']))/100*Math.max(0,totals['CRIT DMG_'])/100):totals[objective];
 }
-function validate(options:SearchOptions){
-  if(!['exact','limited'].includes(options.mode)||![...objectiveStats,'cv','crit-index'].includes(options.objective)|| (options.goal!==undefined&&!['maximize','targets'].includes(options.goal)))throw new Error('Unsupported search mode, goal or objective.');
-  if(!Number.isInteger(options.budget)||options.budget<1||options.budget>1000000)throw new Error('Evaluation budget must be 1–1,000,000.');
+export type TargetOptions=Pick<SearchOptions,'goal'|'minimums'|'maximums'|'minSPD'|'maxSPD'>;
+export function targetBounds(options:TargetOptions){
+  if(options.goal!==undefined&&!['maximize','targets'].includes(options.goal))throw new Error('Unsupported search goal.');
   for(const field of ['minimums','maximums'] as const){const values=options[field];if(values!==undefined&&(values===null||typeof values!=='object'||Array.isArray(values)||(Object.getPrototypeOf(values)!==Object.prototype&&Object.getPrototypeOf(values)!==null)))throw new Error(`${field}: expected stat bounds.`);for(const [key,value] of Object.entries(values??{})){if(!objectiveStats.includes(key as TargetStat)||(value!==undefined&&(typeof value!=='number'||!Number.isFinite(value)||value<0)))throw new Error(`${field}.${key}: expected a supported stat and finite nonnegative threshold.`);}}
   if(options.minSPD!==undefined&&options.minimums?.SPD!==undefined||options.maxSPD!==undefined&&options.maximums?.SPD!==undefined)throw new Error('Duplicate SPD bounds: use one input per minimum/maximum.');
   const bounds=objectiveStats.map(stat=>({stat,minimum:stat==='SPD'?options.minSPD??options.minimums?.SPD:options.minimums?.[stat],maximum:stat==='SPD'?options.maxSPD??options.maximums?.SPD:options.maximums?.[stat]}));
   for(const bound of bounds){for(const value of [bound.minimum,bound.maximum])if(value!==undefined&&(!Number.isFinite(value)||value<0))throw new Error(`${bound.stat} bounds must be finite nonnegative numbers.`);if(bound.minimum!==undefined&&bound.maximum!==undefined&&bound.minimum>bound.maximum)throw new Error(`Minimum ${bound.stat} exceeds maximum.`);}
   if(options.goal==='targets'&&!bounds.some(b=>b.minimum!==undefined))throw new Error('Add at least one minimum target before searching.');
+  return bounds.filter(b=>b.minimum!==undefined||b.maximum!==undefined);
+}
+function validate(options:SearchOptions){
+  if(!['exact','limited'].includes(options.mode)||![...objectiveStats,'cv','crit-index'].includes(options.objective))throw new Error('Unsupported search mode or objective.');
+  if(!Number.isInteger(options.budget)||options.budget<1||options.budget>1000000)throw new Error('Evaluation budget must be 1–1,000,000.');
+  const bounds=targetBounds(options);
   const seen=new Set<string>();
   let cavern=0,planar=0;
   for(const set of options.requiredSets){if(!set.id.trim()||seen.has(set.id)||![2,4].includes(set.pieces))throw new Error('Required sets need unique IDs and 2 or 4 pieces.');seen.add(set.id);const kind=setKind(set.id);if(!kind)throw new Error(`Unknown required set ${set.id}. Choose a catalogued set.`);if(kind==='planar'){if(set.pieces!==2)throw new Error('Planar sets require two pieces, never four.');planar+=set.pieces;}else cavern+=set.pieces;}
   if(cavern>4||planar>2)throw new Error('Required sets exceed four Cavern or two Planar slots.');
-  return bounds.filter(b=>b.minimum!==undefined||b.maximum!==undefined);
+  return bounds;
 }
 export function* optimize(input:SearchInput):Generator<Progress,SearchReport,void>{
   validateProfile(input.profile);const bounds=validate(input.options);

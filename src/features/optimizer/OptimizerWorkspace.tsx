@@ -4,7 +4,7 @@ import {validateProfile,type BuildProfile,type Loadout} from '../../domain/compa
 import {assessCurrentBuild,assessCandidate,classifySearch} from '../../domain/assessment';
 import {inventorySlots,type Inventory} from '../../domain/inventory';
 import {OptimizerRunner} from './runner';
-import {catalogueItem} from '../../domain/catalogue';
+import {catalogueItem,formatMainStat} from '../../domain/catalogue';
 import {GameImage} from '../../app/Equipment';
 import GoalControls,{statLabel,type BuildGoal} from './GoalControls';
 import './optimizer.css';
@@ -52,7 +52,7 @@ export default function OptimizerWorkspace({inventory,profile,current,goal,onGoa
           <p>SPD {result.totals.SPD.toFixed(3)} · CRIT Rate {result.totals['CRIT Rate_'].toFixed(3)}% · CRIT DMG {result.totals['CRIT DMG_'].toFixed(3)}%</p>
           <p>{assessCurrentBuild(profile,result.loadout,options).targets.status==='met'?'Targets met':goal.choice==='targets'?'Review target status':'No minimum targets selected'}</p>
           {delta&&<p>{delta.currentPartial?'Compared with partial current equipment':'Compared with the reference build'}: {delta.changedSlots.length} changed slots · {statLabel(options.objective)} change {delta.objectiveChange>=0?'+':''}{delta.objectiveChange.toFixed(3)} · SPD change {delta.stats.find(s=>s.key==='SPD')!.delta.toFixed(3)}</p>}{deltaError&&<p>{deltaError}</p>}
-          <div className="optimizer-result-slots">{inventorySlots.map(slot=>{const r=result.loadout[slot]!;const item=catalogueItem(r);return <span key={slot}>{item&&<GameImage file={`relic/${item.icon}`} alt=""/>}<strong>{slot}</strong><span>{item?.name??r.setName}</span><small>{r.location&&r.location!==owner?`Borrowed from ${r.location}`:r.location?'Currently equipped':'Unequipped'}</small></span>;})}</div>
+          <div className="optimizer-result-slots">{inventorySlots.map(slot=>{const r=result.loadout[slot]!;const item=catalogueItem(r);return <div key={slot}>{item&&<GameImage file={`relic/${item.icon}`} alt=""/>}<strong>{slot}</strong><span>{item?.name??r.setName}</span><small>{r.location&&r.location!==owner?`Borrowed from ${inventory?.characters.find(c=>c.id===r.location)?.name??r.location}`:r.location?'Currently equipped':'Unequipped'}</small><details><summary aria-label={`${slot} relic details`}>Relic details</summary><p>{r.mainStat} {formatMainStat(r)}</p><p>Active substats: {r.substats.map(s=>`${statLabel(s.key)} ${String(s.value)}`).join(', ')||'none'}.</p><small>ID {r.id}</small></details></div>;})}</div>
           {result.warnings.map(w=><p key={w}>{w}</p>)}<button className="primary" onClick={()=>onApply(structuredClone(result.loadout))}>Compare build</button>
         </>}
         <details><summary>Search coverage and constraints</summary><p>{report.evaluated} / {report.total} combinations · {report.feasible} matching · {report.rejected} rejected · {report.invalid} invalid. Up to ten results retained.</p><p>{inventorySlots.map((s,i)=>`${s}: ${report.counts[i]}`).join(' · ')}</p>{report.invalidReasons.map(reason=><p key={reason}>{reason}</p>)}{report.missedBounds.map(bound=><p key={bound.stat}>{statLabel(bound.stat)}: {bound.builds} evaluated, calculable builds missed this bound. Counts can overlap.</p>)}</details>

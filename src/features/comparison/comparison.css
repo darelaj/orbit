@@ -34,6 +34,7 @@
 .build-assessment { border-left: 3px solid var(--accent); padding: 8px 16px; margin: 20px 0; background: var(--surface); }
 .build-assessment h3 { margin-top: 0; }
 .comparison-workspace { min-width: 0; overflow-wrap: anywhere; }
+.build-controls { min-width: 0; margin: 0; padding: 0; border: 0; }
 .comparison-workspace .comparison-ledger table { min-width: 440px; }
 .comparison-workspace details > summary { font-weight: 600; }
 .comparison-workspace .comparison-profile { margin: 16px 0; }

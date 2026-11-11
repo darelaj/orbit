@@ -6,7 +6,7 @@
 .optimizer-results { padding: 0; list-style: none; display: grid; gap: 16px; }
 .optimizer-results > li { padding: 20px; border: 1px solid var(--line); border-radius: 6px; }
 .optimizer-result-slots { display: grid; grid-template-columns: repeat(6,minmax(0,1fr)); gap: 12px; margin: 16px 0; }
-.optimizer-result-slots > span { display: flex; flex-direction: column; gap: 6px; overflow-wrap: anywhere; }
+.optimizer-result-slots > div { display: flex; flex-direction: column; gap: 6px; min-width: 0; overflow-wrap: anywhere; }
 .optimizer-result-slots img { width: 56px; height: 56px; object-fit: contain; }
 @media(max-width:900px) { .optimizer-result-slots { grid-template-columns: repeat(3,minmax(0,1fr)); } }
 @media(max-width:650px) { .optimizer-fields, .optimizer-result-slots { grid-template-columns: repeat(2,minmax(0,1fr)); } .optimizer-results > li { padding: 12px; } }

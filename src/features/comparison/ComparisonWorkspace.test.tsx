@@ -1,5 +1,5 @@
 import {afterEach,expect,test,vi} from 'vitest';
-import {cleanup,render,screen,within} from '@testing-library/react';
+import {act,cleanup,render,screen,waitFor,within} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import ComparisonWorkspace from './ComparisonWorkspace';
 import {loadComparisons,saveComparisons} from '../../storage/comparison';
@@ -8,7 +8,7 @@ import characterFixture from '../../../tests/fixtures/character-export.json';
 vi.mock('../../storage/comparison',()=>({loadComparisons:vi.fn(),saveComparisons:vi.fn(),decodeComparisons:vi.fn(),encodeComparisons:vi.fn()}));
 afterEach(cleanup);
 function fixture(){const raw=structuredClone(characterFixture);for(const key of Object.keys(raw.characters[0].traces!))if(key!=='secret')Reflect.set(raw.characters[0].traces!,key,false);return parseInventory(JSON.stringify({...raw,characters:[raw.characters[0],{...raw.characters[0],id:'1001',name:'March 7th',path:'Preservation'},raw.characters[1]],relics:inventorySlots.map((slot,i)=>({_uid:`current_${i}`,set_id:i<4?'101':'301',name:'Synthetic',slot,rarity:5,level:0,mainstat:i===1?'ATK':'HP',substats:[],location:'1308',lock:false,discard:false}))}));}
-async function load(user:ReturnType<typeof userEvent.setup>,id='1308'){await user.selectOptions(screen.getByLabelText('Character'),id);await user.click(screen.getByLabelText('Use pinned baseline kit'));await user.selectOptions(screen.getByLabelText('Profile Light Cone'),'none');await user.click(screen.getByRole('button',{name:'Load character'}));}
+async function load(user:ReturnType<typeof userEvent.setup>,id='1308'){await waitFor(()=>expect(screen.getByRole('group',{name:'Build workspace controls'})).toHaveProperty('disabled',false));await user.selectOptions(screen.getByLabelText('Character'),id);await user.click(screen.getByLabelText('Use pinned baseline kit'));await user.selectOptions(screen.getByLabelText('Profile Light Cone'),'none');await user.click(screen.getByRole('button',{name:'Load character'}));}
 function setup(){vi.mocked(loadComparisons).mockResolvedValue([]);vi.mocked(saveComparisons).mockResolvedValue();return userEvent.setup();}
 
 test('character-first review shows actual equipment, collapsed corrections and per-character goals',async()=>{
@@ -87,4 +87,19 @@ test('candidate editing keeps current equipment stable, saved/reference origins 
   await user.click(screen.getByRole('button',{name:'Discard changes'}));
   expect(screen.getByRole('region',{name:'Saved build'})).toBeTruthy();
   expect(within(screen.getByRole('region',{name:'Candidate'})).getByText('HP 705.60')).toBeTruthy();
+});
+
+test('inventory replacement cancels a pending character switch while a draft save completes',async()=>{
+  const user=setup();const inventory=fixture();const view=render(<ComparisonWorkspace inventory={inventory}/>);await load(user);
+  await user.click(screen.getByText('Review profile'));
+  await user.clear(screen.getByLabelText('Character base SPD'));await user.type(screen.getByLabelText('Character base SPD'),'105');
+  await load(user,'1001');await user.type(screen.getByLabelText('Draft snapshot name'),'Pending draft');
+  let finish!:()=>void;
+  vi.mocked(saveComparisons).mockImplementationOnce(()=>new Promise<void>(resolve=>{finish=resolve;}));
+  await user.click(screen.getByRole('button',{name:'Save draft'}));
+  view.rerender(<ComparisonWorkspace inventory={{...inventory,importedAt:'replacement'}}/>);
+  await act(async()=>finish());
+  expect(screen.getByLabelText('Character/profile name')).toHaveProperty('value','Acheron');
+  expect(screen.getByLabelText('Character base SPD')).toHaveProperty('value','105');
+  expect(screen.queryByRole('region',{name:'Unsaved build changes'})).toBeNull();
 });

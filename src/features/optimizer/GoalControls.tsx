@@ -1,5 +1,6 @@
 import {defaultOptions,objectiveStats,type SearchOptions,type TargetStat} from '../../domain/optimizer';
 import {setKind} from '../../domain/catalogue';
+import setData from '../../data/relic-sets.json';
 import {inventorySlots,type Inventory} from '../../domain/inventory';
 
 export type BuildGoal={choice:''|'cv'|'stat'|'targets';options:SearchOptions;borrow:boolean};
@@ -11,7 +12,8 @@ export default function GoalControls({value,onChange,inventory}:{value:BuildGoal
   const update=(patch:Partial<SearchOptions>)=>onChange({...value,options:{...options,...patch}});
   const cavern=options.requiredSets.filter(s=>setKind(s.id)!=='planar');
   const planar=options.requiredSets.find(s=>setKind(s.id)==='planar');
-  const choices=[...new Map(inventory?.relics.map(r=>[r.setId,r.setName])).entries()];
+  const setNames:Record<string,{name:string}>=setData;
+  const choices=[...new Map(inventory?.relics.map(r=>[r.setId,Object.hasOwn(setNames,r.setId)?setNames[r.setId].name:r.setName] as const)).entries()];
   function chooseSet(kind:'cavern'|'planar',index:number,id:string){
     const group=kind==='cavern'?[...cavern]:planar?[planar]:[];
     if(id)group[index]={id,pieces:group[index]?.pieces??2};else group.splice(index,1);

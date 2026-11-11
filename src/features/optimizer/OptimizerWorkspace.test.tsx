@@ -37,6 +37,8 @@ test('explicit goals, hard SPD/CDM targets and borrowing use the actual worker r
   expect(screen.getByRole('heading',{name:'Build 1 · CRIT DMG % 210.000'})).toBeTruthy();
   await user.click(screen.getByRole('button',{name:'Compare build'}));
   expect(applied.mock.calls[0][0].Hands.id).toBe('hand_1');
+  await user.click(screen.getByLabelText('Hands relic details'));
+  expect(screen.getByText('Active substats: SPD 34, CRIT DMG % 160.')).toBeTruthy();
   await user.selectOptions(screen.getByLabelText('Add minimum'),'CRIT DMG_');
   await user.type(screen.getByLabelText('Minimum CRIT DMG %'),'220');
   await user.click(screen.getByRole('button',{name:'Find builds'}));

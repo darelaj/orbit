@@ -13,3 +13,18 @@
 
 .optimizer-workspace { overflow-wrap: anywhere; }
 .optimizer-checks label { min-height: 44px; }
+/* The goal column keeps setup separate from the wider equipment/results area. */
+.build-search-layout { display: grid; grid-template-columns: minmax(260px, 360px) minmax(0, 1fr); gap: 28px; align-items: start; }
+.build-search-layout > *, .build-search-results { min-width: 0; }
+.goal-controls { display: grid; gap: 16px; }
+.goal-controls fieldset { min-width: 0; margin: 0; padding: 12px; border: 1px solid var(--line); border-radius: 6px; }
+.goal-controls legend { font-weight: 600; padding: 0 6px; }
+.goal-controls .optimizer-fields { grid-template-columns: minmax(0,1fr); margin: 8px 0; }
+.goal-controls .goal-borrow { display: flex; align-items: center; gap: 10px; min-height: 44px; }
+.goal-borrow input { width: 20px; min-height: 20px; margin: 0; flex: none; }
+.build-result-list { display: flex; flex-wrap: wrap; gap: 8px; padding: 0; list-style: none; }
+.build-result-list button { text-align: left; }
+.build-result-list button[aria-pressed="true"] { background: var(--selected); border-color: var(--accent); }
+.build-search-results .optimizer-result-slots { grid-template-columns: repeat(3,minmax(0,1fr)); }
+@media(max-width:900px) { .build-search-layout { grid-template-columns: minmax(0,1fr); } .build-search-results { border-top: 1px solid var(--line); padding-top: 20px; } }
+@media(max-width:500px) { .build-search-results .optimizer-result-slots { grid-template-columns: repeat(2,minmax(0,1fr)); } }

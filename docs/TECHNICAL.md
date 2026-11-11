@@ -135,6 +135,16 @@ Search reports bind inventory revision, character/form/profile/catalogue version
 
 O-11d tests must independently verify the table, simultaneous bounds, CV units/overflow and profile contributions, legal Cavern/Planar partitions, tie ordering, invalid/missing targets, active-versus-preview values, exact-versus-reference brute force, limited no-result claims, caps/cancel/staleness. O-11e assessment and O-11f UI consume these same totals/constraints, not a separate quality formula. There is no community percentile, character recommendation preset or damage/rotation model in this contract.
 
+## Current-build assessment
+
+O-11e adds pure `domain/assessment.ts` helpers; O-11f will connect their UI. They reuse `calculateBuild`, `objectiveScore` and the optimizer's exported `targetBounds` validator. No second stat formula, grading scale or persistence layer exists.
+
+`assessCurrentBuild` returns slot presence/completeness, computed totals/active sets, warnings, target gaps and profile errors. Missing/invalid profiles yield no totals and `profile-incomplete`; invalid equipment still throws the calculator's error. Missing slots retain partial totals and explicit warnings, never invented equipment. Target statuses are `met`, `below`, `no-targets` and `profile-incomplete`; `below` denotes any violated bound, including exceeding a maximum. Gaps are actual minus the violated threshold (negative below minimum, positive above maximum, zero inside the inclusive range). Partial equipment remains separately flagged even if its computed totals meet targets. CRIT Rate above 100% is disclosed.
+
+`assessCandidate` recalculates both loadouts under the same profile, requires all six candidate slots, and returns signed stat/objective changes, changed slot IDs, current-partial status and calculation warnings for both sides. Callers must supply a candidate from the current eligible search pool; the delta helper does not recheck ownership, filters or goal feasibility. Assess targets separately under the same options. Relic IDs identify slots changed, not durable matching across OCR scans. Preview/reroll stats remain inactive; no inventory, profile or equipment is modified.
+
+`classifySearch` accepts only completed reports already checked by the runner for run/revision freshness. Null means `no-search`. Exhaustive coverage with no invalid calculations yields `exact-optimum` or `no-feasible`; the optimum is only within the selected pool and implemented static model, with result warnings/model exclusions still required. Limited results or reports excluding invalid calculations yield `best-found`; no result in those cases is `inconclusive`, including exhaustive reports containing invalid calculations. At most three example invalid reasons are forwarded. There is no whole-inventory, combat/DPS, community percentile or universal-quality claim.
+
 ## Speed
 
 `domain/speed.ts` uses exactly four named members with fixed speed/buffs and one initial action advance:

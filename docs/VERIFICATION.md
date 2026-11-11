@@ -2,6 +2,16 @@
 
 This is a concise evidence index, not a fresh test run. Historical reports remain in Git. Add a scoped current result when behavior changes; do not append every old checkpoint or label historical results as current indefinitely. Test requirements live in [TECHNICAL](TECHNICAL.md#verification-policy).
 
+## O-11e current-build assessment, 2026-11-11
+
+Domain milestone `79f8285` adds current-equipment completeness, target attainment/gaps, same-profile candidate deltas and qualified search status; optimizer and assessment share the target validator. These helpers have no UI callers yet (O-11f). No storage/dependency/scanner/asset or UI change.
+
+Twelve new assessment tests cover empty/partial/complete equipment, missing/invalid profiles, precise inclusive minimum/maximum gaps, simultaneous targets, validation parity, static set activations, excess CRIT warning, unknown-set disclosure, invalid/incomplete candidates, unchanged inputs and inactive preview/reroll values. Independent expectations include SPD 133.9 versus 134, candidate delta +0.1 SPD and +40 CV, and explicit partial-current warnings. A synthetic owned Acheron baseline flows through equipped-loadout review, target search and candidate assessment: five current slots at SPD 101, a complete candidate at SPD 135, and a +34 SPD delta without changing the baseline identity. The fixture's missing prerequisite Trace is enabled explicitly to form a valid baseline.
+
+Real search reports verify exact modeled-pool optimum, exhaustive infeasibility, limited best-found, limited no-result uncertainty, and invalid-calculation exclusions with/without a result. Existing runner cancellation/stale/revision and O-11d brute-force tests pass. Static-model/filter qualifications remain mandatory; no damage/rotation, percentile or universal-grade claims.
+
+Final full suite passed: 82 Vitest tests in 22 files and 18 Node backend tests. Production build/strict TypeScript passed on the final application code. An earlier RTK-wrapped full run failed in an unchanged comparison test; its filtered output omitted the full diagnostic. That file passed independently (four tests), and the subsequent full run with retained raw output passed; initial cause is unconfirmed, not labeled a fixed regression. Focused domain/runner checks also passed. Ignored logs: `.cache/o11e-tests-raw.log`, `o11e-comparison-check.log`, `o11e-build.log`. No browser, service, UAC or personal capture was started; no new UI acceptance is claimed.
+
 ## O-11d target-stat engine, 2026-11-08
 
 Domain milestone `8cedf28` adds CV/CRIT objectives, simultaneous hard minimum/maximum stat bounds, target-mode validation, legal Cavern/Planar requirements and deterministic per-slot ID ties. Integration adds a test of the actual Worker handler and documents the contract. Current UI choices remain unchanged; new controls await O-11f. No dependency, native reader, storage or asset changes.

@@ -48,6 +48,8 @@ Open **Optimizer**, then load a saved comparison profile or fill the shared manu
 
 O-11d adds engine/Worker support for Build CV (`2 × CRIT Rate + CRIT DMG`), CRIT objectives and simultaneous stat minimums/maximums. A target such as SPD ≥134 is mandatory before ranking by CRIT DMG; extra SPD earns no ranking bonus. These new controls are not yet exposed in the current UI; that integration is scheduled for O-11f.
 
+O-11e adds domain helpers for current equipment completeness, target gaps, same-profile candidate deltas and qualified search status. Their character-build assessment UI also awaits O-11f; they do not assign a universal grade or community percentile.
+
 **Exact** enumerates the entire filtered pool only when it fits the budget; otherwise it rejects the run with the required count. **Limited sampling** evaluates evenly spaced mixed-radix combinations in scanner order, up to the budget. It can miss feasible/better builds and makes no global optimality claim. Reports show candidate counts, exact total combinations, evaluated/feasible/invalid counts, coverage and the best ten computable results. Invalid calculations have visible example reasons. No-result sampling does not prove infeasibility.
 
 **Cancel search** terminates the Worker. Input changes, inventory replacement, leaving the optimizer or unmounting invalidate its run/results; old messages cannot overwrite a new run. **Compare result N in B** transfers a snapshot to Comparison and keeps A fixed. Save the comparison explicitly to persist a result. Search settings/results themselves are session-only. Retained filters that are unavailable after import are labeled explicitly. Conditional combat effects remain excluded, and OCR SPD uncertainty still applies near thresholds.

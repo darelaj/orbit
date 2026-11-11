@@ -68,10 +68,11 @@ test('unsupported forms recover through explicit manual profile without invented
 });
 
 test('candidate editing keeps current equipment stable, saved/reference origins stay honest',async()=>{
-  const user=setup();const inventory=fixture();inventory.relics.push({...inventory.relics.find(r=>r.slot==='Head')!,id:'upgrade',level:15,location:''});
+  const user=setup();const inventory=fixture();inventory.relics.push({...inventory.relics.find(r=>r.slot==='Head')!,id:'upgrade',level:15,location:'',substats:[{key:'CRIT Rate_',value:110}]});
   render(<ComparisonWorkspace inventory={inventory}/>);await load(user);
   await user.click(screen.getByRole('button',{name:'Choose Head'}));
   await user.click(screen.getByRole('button',{name:'Use Head relic upgrade in candidate'}));
+  expect(screen.getByText('CRIT Rate exceeds 100%; raw CV is not capped and may include wasted CRIT Rate.')).toBeTruthy();
   await user.click(screen.getByRole('button',{name:'All stats'}));
   expect(screen.getByText('+592.704')).toBeTruthy();
   await user.type(screen.getByLabelText('Snapshot name'),'Candidate snapshot');

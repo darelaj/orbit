@@ -2,6 +2,27 @@
 
 This is a concise evidence index, not a fresh test run. Historical reports remain in Git. Add a scoped current result when behavior changes; do not append every old checkpoint or label historical results as current indefinitely. Test requirements live in [TECHNICAL](TECHNICAL.md#verification-policy).
 
+## O-11f simplified build workflow, 2026-11-12
+
+Milestone `3b9ed88` connects owned-character review, explicit CV/stat/target goals, per-character session settings, legal set choices, opt-in borrowing and the O-11e assessment. Refinement `193a1cf` adds protected async saves/switch cancellation, candidate target/CV review, compact character setup, active relic disclosures and a 320px scrollbar-width fix. No dependency, artwork, storage schema or scanner change. Speed editor simplification remains O-11g.
+
+Full local suite passed with 86 Vitest tests in 22 files and 18 Node backend tests. After the final character-setup disclosure refinement, all 11 affected comparison/optimizer/cross-workflow tests passed again, followed by the production build/strict TypeScript check. A final candidate excess-CRIT disclosure check passed with all five comparison tests and the build again. New/updated checks cover explicit goals, simultaneous targets, borrowing scope, set legality, maxima, exact-budget preflight, explicit quick mode, cancel/stale/reimport handling, per-character settings, unavailable filters, source labels, snapshot writes/reload, failed-save protection and cancellation of a switch waiting on a save. The first full run exposed outdated acceptance labels and test interactions before storage readiness; those checks were updated to the new workflow and all passed. No numerical formula was replaced.
+
+Final build succeeds with Vite's >500 kB chunk advisory: main JS 511.57 kB minified / 121.53 kB gzip. This is bundle-size output, not a loading benchmark; no timing/savings claim or warning suppression. During live editing, the mixed component/helper exports in GoalControls caused Fast Refresh invalidation; synthetic state was reinitialized before final checks. Persistence across hot reload is not claimed.
+
+Browser fixture `tests/browser/build-workflow-preview.html` mounts the actual ComparisonWorkspace and module Worker with an in-memory IDBFactory and labeled synthetic inventory. No personal inventory/storage, scan/UAC or backend helper was used. Observed: load Acheron with explicit baseline/no-cone selection; current six-slot SPD 101; target SPD 134 then CRIT DMG; real Worker result SPD 134/CDM 210; compare +33 SPD/+160 CDM; candidate target attainment; CV 60 versus 220; save both loadouts in the fixture. Also exercised reference/reset/restore actions, slot selection, unsupported form/manual recovery, save/cancel/discard switch, CV borrowing, inspecting another result/active substats, set choices and an infeasible maximum. Real Worker cancellation is covered by runner/component tests rather than claimed from the tiny browser pool. Durable reload and independent store preservation are verified in the cross-workflow test, not by this memory-only page.
+
+Final visual matrix: Comparison with All stats and Optimizer with expanded Advanced/relic details, dark/light at 1440x1000, 390x844 and 320x844 (12 audits), no document overflow or effective active target below 44px. Scoped solid-background text checks reported no failures, minimum 9.12 dark / 5.36 light. Native keyboard Enter toggled All stats and exposed a 3px focus outline. Console-error query returned none. This excludes imagery compositing, assistive-technology certification, real-account matching and owner usability approval. Evidence remains ignored in `.cache/o11f-qa/`: `audits.json`, `optimizer-dark-desktop.png`, `optimizer-light-mobile.png`, `comparison-light-mobile.png`. Tab closed, viewport reset, owned Vite stopped. Check logs are `.cache/o11f-tests-final.log`, `o11f-controls.log`, `o11f-build-final.log`.
+
+Scoped design delivery gate:
+
+| Block | Result and evidence |
+| --- | --- |
+| Hard gate, R-02/03/17/18/23-28/32-40 | PASS: supplied artwork/assets only; labeled synthetic fixtures; native labeled controls and measured responsive/contrast/target checks above; real Worker, validation, save and recovery flows observed/tested; no new claims, decorative assets, dead destinations or motion. |
+| Purpose, R-01/04/06-10/12-14/19/22/31 | PASS: DESIGN records sourced HSR identity; artwork identifies the applied character, six cells explain equipment, goal/results columns separate setup from outcomes, disclosures contain secondary controls. No new decorative technique or asset. |
+| Liveliness, R-37 | PASS: accepted ENERGY 2 / RHYTHM 2 / MOTION 2, Rajdhani/Inter/Mono and muted-gold selection retained; current status and selected candidate provide focal points; existing equipment geometry supplies the motif, without added animation. |
+| Craft, C-1..5/R-05/11/15/16/20/21/29-31 | PASS within scope: action-specific labels, independently verified math/constraints, both themes and empty/error/recovery checks; no marketing claims, generic dashboard sections or invented grades. Wider acceptance stays pending. |
+
 ## O-11e current-build assessment, 2026-11-11
 
 Domain milestone `79f8285` adds current-equipment completeness, target attainment/gaps, same-profile candidate deltas and qualified search status; optimizer and assessment share the target validator. These helpers have no UI callers yet (O-11f). No storage/dependency/scanner/asset or UI change.

@@ -248,7 +248,7 @@ Read only the document and section needed for the task:
 | --- | --- |
 | [AGENTS.md](AGENTS.md) | AI workflow, relevant skills and verification rules |
 | [DESIGN.md](DESIGN.md) | HSR/Figma direction, both themes and source-frame decisions |
-| [docs/PLAN.md](docs/PLAN.md) | Implemented milestone summary and the unstarted O-10/O-11 roadmaps |
+| [docs/PLAN.md](docs/PLAN.md) | Implemented milestones, remaining acceptance and deferred O-10 roadmap |
 | [docs/TECHNICAL.md](docs/TECHNICAL.md) | Architecture, imports/storage, math/search, scanner and test contracts |
 | [docs/SOURCES.md](docs/SOURCES.md) | Asset/font/catalogue/scanner sources, skill pins and notices |
 | [docs/VERIFICATION.md](docs/VERIFICATION.md) | Evidence summary, pending acceptance and historical Git references |

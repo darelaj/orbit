@@ -2,6 +2,14 @@
 
 This is a concise evidence index, not a fresh test run. Historical reports remain in Git. Add a scoped current result when behavior changes; do not append every old checkpoint or label historical results as current indefinitely. Test requirements live in [TECHNICAL](TECHNICAL.md#verification-policy).
 
+## O-11h workflow acceptance, 2026-11-13
+
+Five real-App acceptance tests passed (two existing, three added), plus strict TypeScript. New synthetic cases cover owned-character baseline → minimum SPD 134 then maximize CDM → compare/save → confirmed speed snapshot → independent storage/reload; profile edits and reimport invalidate late Worker callbacks; legacy imports retain missing progression and invalid replacements preserve the prior inventory. Independent expectations reject SPD 133.9 despite higher CDM, exclude another character's equipped relic, ignore preview/reroll fields, and select SPD 134/CDM 210 from base SPD 101/CDM 50. Existing CV/transaction-abort tests remain in the focused file. Test synchronization now waits for enabled import controls; no application behavior changed.
+
+`scripts/build-workflow-preview.mjs` built the isolated browser fixture in production mode, including a separate 51.87 kB Worker. Browser smoke observed the real bundled search return SPD 134/CDM 210, comparison deltas +33/+160, snapshot save, blank initial team, explicit example, disabled confirmation until member selection, confirmed base 101/panel 134 transfer and team save. First two Acheron actions: 74.626866 and 149.253731 AV; C0 counts 2/1/1/1. No captured warning/error logs. Fixture storage is memory-only; durable reload is covered by App tests. Fixture JS has a >500 kB advisory (540.28 kB), including test storage code; this is not a production app size measurement.
+
+Only the affected acceptance file, typecheck and isolated production fixture build/smoke ran. Prior domain/runner/component, backup, theme/width and keyboard evidence is reused without claiming a rerun. No personal inventory, native reader or UAC was used; owned preview and temporary tab stopped. Ignored local evidence: `.cache/o11h-acceptance.log` (initial failure), `o11h-legacy.log`, `o11h-production-build.log`, `o11h-qa/production-speed.png`; final five-test pass is in the tool output. Real-account matching, native cleanup, broad accessibility and owner usability acceptance remain pending. O-10 stays deferred.
+
 ## O-11g simplified speed tuning, 2026-11-12
 
 Milestone `90eb506` replaces the dense four-editor view with opening actions, named cycle counts, four member selectors and one selected-member editor. Details retain modifiers, provenance, assumptions, the threshold helper, chart and ledger. UI drafts start empty; examples are explicit and labeled. Candidate transfer previews a cloned source, requires a member choice and confirmation, resets modifiers, and preserves source precision without live relinking. No domain formula, event cap, storage schema, dependency, asset or scanner changes.
@@ -112,7 +120,7 @@ Raw progression presence is not verified mapping or account completeness. Actual
 - Actual browser replacement of the owner's scan was not observed by the agent.
 - Real normal/timeout/cancel/shutdown Packet Monitor cleanup, native panic and broad game-version compatibility remain owner-driven checks. A result reaching the complete-output boundary does not establish them.
 - Prior solid-background contrast/target/overflow audits exclude image/pseudo-element compositing, disabled controls, every browser and assistive-technology certification. No broad accessibility claim follows.
-- The owner requested a simpler Comparison/Optimizer/Speed workflow; prior technical UI checks do not establish owner acceptance. O-11 is planning only. O-10 hosted Companion also remains unimplemented.
+- The owner requested a simpler Comparison/Optimizer/Speed workflow; prior technical UI checks do not establish owner acceptance. O-11 implementation has synthetic coverage; owner acceptance remains pending. O-10 hosted Companion also remains unimplemented.
 
 ## Historical reports
 

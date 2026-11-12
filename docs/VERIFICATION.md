@@ -2,6 +2,29 @@
 
 This is a concise evidence index, not a fresh test run. Historical reports remain in Git. Add a scoped current result when behavior changes; do not append every old checkpoint or label historical results as current indefinitely. Test requirements live in [TECHNICAL](TECHNICAL.md#verification-policy).
 
+## O-11g simplified speed tuning, 2026-11-12
+
+Milestone `90eb506` replaces the dense four-editor view with opening actions, named cycle counts, four member selectors and one selected-member editor. Details retain modifiers, provenance, assumptions, the threshold helper, chart and ledger. UI drafts start empty; examples are explicit and labeled. Candidate transfer previews a cloned source, requires a member choice and confirmation, resets modifiers, and preserves source precision without live relinking. No domain formula, event cap, storage schema, dependency, asset or scanner changes.
+
+Final full suite: 90 Vitest tests in 22 files and 18 Node backend tests passed; production build/strict TypeScript passed. Six speed component tests cover empty/example states, confirmation/cancel/Escape, full SPD precision and provenance, modifier reset, no live binding, failed saves, named order/counts, 20-cycle ledger pagination, invalid/extreme inputs, draft clearing, initial read failure and validated restore/write failure recovery. The real-App acceptance path now explicitly loads an example, chooses a transfer member and confirms before saving/reloading; independent inventory/comparison/team stores remain protected. Existing independent AV/boundary tests pass. A native-details assertion was corrected for jsdom's accessibility behavior; actual collapsed/expanded states were observed in the browser.
+
+Build retains the existing >500 kB advisory: main JS 515.04 kB minified / 122.41 kB gzip, not a loading benchmark. No warning suppression or claimed token/performance percentage.
+
+The memory-only build-workflow browser fixture now includes Speed tuning and actual Comparison/module-Worker transfer. Observed: empty names/base/panel inputs; explicit 100-SPD example; target search SPD 134/CDM 210; transfer preview disabled until a member is chosen; cancel without replacement; confirm to Acheron base 101/panel 134; first action 74.626866 AV, second 149.253731 AV, two actions in C0 and 13 team actions through 350 AV. Entering 10%/5 flat yielded effective SPD 149.1; confirming again reset all extra modifiers/advance to zero and retained packet provenance. Save, selected editing, long names, 20-cycle pagination, threshold/assumption disclosures, the 2,000-event refusal and disappearance of stale results were observed.
+
+Backup preview/restore used an independently generated, valid synthetic schema-1 file: member 1 panel SPD became 120 only after explicit replacement. Clearing returned it to an empty field without saving, then explicit example/candidate/save restored the final fixture. The first file-picker attempt used my incorrect textbox selector and stalled/reset the automation session; the corrected actual file-input selector succeeded. No app change was needed for that automation error. Download event/path handling was reached, but downloaded payload contents were not independently inspected. No browser download-to-upload round-trip is claimed; codec/storage and failure behavior are covered by tests.
+
+Six expanded-details/long-name audits, dark/light at 1440x1000, 390x844 and 320x844, found no document overflow, effective active targets below 44px or scoped text-contrast failures (minimum 8.82 dark / 5.03 light). Four collapsed-summary layout/target checks at 1440/320 in both themes also passed; a 320px long-name transfer preview passed the same scoped checks. Keyboard Enter toggled Speed details with a 3px focus outline; Escape cancelled transfer. Console-error query returned none. Imagery compositing, assistive-technology certification, real-account matching and owner usability approval remain outside this evidence. Ignored artifacts under `.cache/o11g-qa/`: desktop light/dark and mobile light PNGs, `summary-layout-audits.json` (four summary checks) and `team-backup.json`. The six earlier expanded audit objects remain in the tool trace; automation recovery cleared their in-memory copy. Logs: `.cache/o11g-tests.log`, `o11g-build.log`. Tab closed, viewport reset, owned Vite stopped. No personal storage/inventory, scan or UAC was used.
+
+Scoped delivery gate:
+
+| Block | Result and evidence |
+| --- | --- |
+| Hard gate | PASS: native labeled controls, explicit empty/loading/error/recovery states, tested transfer/save/restore behavior and measured layouts/targets/contrast. No new assets, decorative claims, destinations or motion; fixture values are labeled synthetic/examples. |
+| Purpose | PASS: DESIGN records the order/count focus, single editor and secondary disclosures; existing gold selection and named timeline lanes identify actual state. No decorative technique added. |
+| Liveliness | PASS: existing ENERGY 2 / RHYTHM 2 / MOTION 2, Figma palette/type, named lanes and selected-member accent retained. Results and editor supply separate focal points; no new animation. |
+| Craft | PASS within scope: independent numerical expectations, full regression suite, explicit confirmation and failure protection, observed responsive/keyboard states. No universal accuracy, accessibility or owner-acceptance claim. |
+
 ## O-11f simplified build workflow, 2026-11-12
 
 Milestone `3b9ed88` connects owned-character review, explicit CV/stat/target goals, per-character session settings, legal set choices, opt-in borrowing and the O-11e assessment. Refinement `193a1cf` adds protected async saves/switch cancellation, candidate target/CV review, compact character setup, active relic disclosures and a 320px scrollbar-width fix. No dependency, artwork, storage schema or scanner change. Speed editor simplification remains O-11g.

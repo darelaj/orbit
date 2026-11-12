@@ -1,23 +1,32 @@
-.speed-workspace { margin: 24px 0; overflow-wrap: anywhere; }
+.speed-workspace { margin: 24px 0; overflow-wrap: anywhere; min-width: 0; }
 .speed-workspace p { max-width: 100ch; line-height: 1.6; }
 .speed-workspace label { display: grid; gap: 8px; min-width: 0; }
 .speed-toolbar { display: flex; flex-wrap: wrap; gap: 12px; align-items: end; margin: 16px 0; }
-.speed-toolbar label { flex: 1 1 160px; }
-.speed-controls { border: 1px solid var(--line); padding: 16px; border-radius: 6px; min-width: 0; }
-.speed-members { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 16px; }
-.speed-members > section { padding: 16px; border: 1px solid var(--line); border-radius: 6px; }
-.speed-fields { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px; margin-top: 12px; }
-.speed-chart,.speed-table { max-width: 100%; overflow-x: auto; margin: 20px 0; }
+.speed-toolbar label { flex: 0 1 180px; }
+.speed-controls { border: 0; padding: 0; margin: 0; min-width: 0; }
+.speed-controls > legend { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+.speed-overview { display: grid; grid-template-columns: minmax(250px,1fr) minmax(0,1.4fr); gap: 28px; margin: 24px 0; }
+.speed-overview > * { min-width: 0; }
+.speed-opening { padding: 0; list-style-position: inside; }
+.speed-opening li { padding: 9px 0; border-bottom: 1px solid var(--line); }
+.speed-opening span,.speed-opening small { margin-left: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.speed-member-list { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 12px; margin: 16px 0; }
+.speed-member-list button { display: flex; flex-direction: column; gap: 8px; text-align: left; min-width: 0; overflow-wrap: anywhere; }
+.speed-member-list button[aria-pressed="true"] { background: var(--selected); border-color: var(--accent); }
+.speed-member-editor { background: var(--surface); border-left: 3px solid var(--accent); padding: 16px; margin-bottom: 16px; }
+.speed-fields { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 12px; margin-top: 12px; }
+.candidate-speed-transfer { padding: 16px; border: 1px solid var(--line); border-radius: 6px; margin: 20px 0; }
+.candidate-speed-transfer p { margin: 10px 0; }
+.speed-chart,.speed-table { max-width: 100%; min-width: 0; overflow-x: auto; margin: 20px 0; }
 .speed-chart svg { width: 100%; min-width: 1000px; display: block; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; }
 .speed-chart text { fill: var(--text); font-size: 13px; }
 .speed-table table { width: 100%; min-width: 480px; border-collapse: collapse; font-variant-numeric: tabular-nums; }
-.speed-table th,.speed-table td { padding: 8px; border-bottom: 1px solid var(--line); text-align: right; }
+.speed-table th,.speed-table td { padding: 10px; border-bottom: 1px solid var(--line); text-align: right; }
+.speed-table th { overflow-wrap: anywhere; }
 .speed-table th:first-child { text-align: left; }
-.speed-workspace button { min-height: 44px; }
-@media(max-width:650px) { .speed-members { grid-template-columns: 1fr; } .speed-controls { padding: 12px; } .speed-members > section { padding: 12px; } }
-
-.speed-input-panel > summary { min-height: 44px; padding: 12px 0; cursor: pointer; }
-
+.speed-table td { white-space: nowrap; }
+.speed-workspace button,.speed-workspace a { min-height: 44px; }
+.speed-workspace a { display: inline-flex; align-items: center; }
 .speed-threshold > label { max-width: 220px; }
-
-.speed-table thead th,.speed-table td { white-space: nowrap; }
+@media(max-width:900px) { .speed-overview { grid-template-columns: minmax(0,1fr); gap: 12px; } .speed-member-list { grid-template-columns: repeat(2,minmax(0,1fr)); } }
+@media(max-width:550px) { .speed-fields { grid-template-columns: minmax(0,1fr); } .speed-opening small { display: block; margin-left: 0; } .speed-member-editor,.candidate-speed-transfer { padding: 12px; } }

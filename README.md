@@ -4,7 +4,7 @@ A local Honkai: Star Rail relic workspace for PC players. Orbit is being built t
 
 ## Scope
 
-Orbit focuses on HSR relic inventory, same-profile comparison, panel-stat optimization and fixed-speed tuning on PC. Calculations and durable data stay in the browser; only an explicit local scan uses the bounded native reader. It has no account login, cloud sync, telemetry, gacha/check-in, auto-salvage, game memory access or game automation. Cross-game support, whole-team allocation and combat/DPS rotations are outside the current build. Character-first review and CV/stat target controls are implemented. Baseline catalogue profiles cover three reviewed characters; expanded coverage and simpler speed editing remain planned in O-11.
+Orbit focuses on HSR relic inventory, same-profile comparison, panel-stat optimization and fixed-speed tuning on PC. Calculations and durable data stay in the browser; only an explicit local scan uses the bounded native reader. It has no account login, cloud sync, telemetry, gacha/check-in, auto-salvage, game memory access or game automation. Cross-game support, whole-team allocation and combat/DPS rotations are outside the current build. Character-first review and CV/stat target controls are implemented. Baseline catalogue profiles cover three reviewed characters. The simplified speed editor is implemented; expanded character coverage and broader acceptance remain pending.
 
 ## Current status
 
@@ -56,15 +56,15 @@ Results show target attainment, objective/stat deltas and changed-slot counts us
 
 ## Tune team speed
 
-Open **Speed tuning** for a four-member fixed-speed AV model. The initial 100-SPD values are illustrative inputs. Enter each member's character base SPD, panel SPD, additional fixed percentage/flat SPD and initial action advance. Percentage buffs scale character base SPD; do not re-enter permanent bonuses already in panel SPD. Collapse **Edit team speeds and buffs** to prioritize the chart.
+Open **Speed tuning** to see opening actions and named per-cycle counts. New teams start empty; **Load example team** explicitly loads four illustrative 100-SPD members, not game data. Choose a member to edit its name, character base SPD and panel SPD. All four members need valid inputs before results or saving are available. **Speed details** contains additional percentage/flat SPD, initial advance, provenance, the threshold helper, chart and chronological ledger. Percentage buffs scale character base SPD; do not count bonuses already in panel SPD twice.
 
-Load a complete, valid B in Comparison, then use **Use comparison B SPD** to copy it into a selected member. This captures base/panel SPD and provenance, and resets additional buffs/advance to zero. Later B changes do not alter the team automatically. Editing copied base/panel SPD changes its source to manual. OCR/unknown/manual precision remains disclosed near threshold results.
+Load a complete, valid Candidate in Comparison. **Use candidate SPD** opens a snapshot preview; choose **Replace member**, then **Confirm replacement**, or cancel with the button/Escape. No target is preselected and nothing changes before confirmation. Replacement copies full-precision base/panel SPD and provenance, resets extra buffs/advance, and selects that member for editing. Later candidate/inventory changes do not update the team. Editing copied base/panel SPD marks its source as manual; editing extra buffs alone retains provenance. OCR/unknown/manual precision limits remain disclosed.
 
 Cycle 0 lasts 150 AV and later cycles last 100 AV. Advance affects the first action only; the later interval remains 10000 / effective SPD. Exact ties use member order. Cycle-end actions belong to the ending cycle with a 1e-9 AV numeric tolerance. The chart uses named/numbered lanes and action markers; per-cycle counts and a 50-row paginated chronological ledger provide numeric values. On narrow screens, the chart/tables scroll inside their own focusable regions (arrow keys supported).
 
 Limits are 1–20 cycles, four members, finite inputs within ±1,000,000, positive base/panel/effective SPD and 0–100% initial advance. More than 2,000 actions is rejected rather than truncated. The unbuffed target helper retains fractional thresholds (two actions in cycle 0 require about 133.333… SPD). Repeated/mid-turn advance, changing buffs, delay, summons, ultimates and SP economy are not modeled.
 
-**Save team** explicitly saves one configuration locally; it restores on reload. **Download team backup** exports the current valid inputs, including unsaved edits. Restore validates a schema-1 team file (maximum 16 KiB), previews replacement, then saves before changing current inputs. **Reset team inputs** affects the session, not the saved configuration. Inventory, comparison and team backups are separate files; back up each before clearing browser data.
+**Save team** explicitly saves one configuration locally; it restores on reload. **Team backups and reset** contains export, restore and **Clear team inputs**. Export includes current valid inputs, even unsaved edits. Restore validates a schema-1 file (maximum 16 KiB), previews replacement and writes before changing current inputs; failed writes retain the draft. Clear returns the session to empty inputs without changing the saved team. Controls are disabled during storage operations. Inventory, comparison and team backups remain separate files.
 
 ## Requirements
 

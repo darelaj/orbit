@@ -27,3 +27,15 @@
 .profile-provenance { overflow-wrap: anywhere; }
 .comparison-workspace .profile-kit-choice { display: flex; align-items: center; gap: 10px; min-height: 44px; width: fit-content; }
 .profile-kit-choice input { width: 20px; height: 20px; min-height: 20px; padding: 0; margin: 0; flex: none; }
+
+.character-context-controls, .profile-baseline-choice { display: flex; flex-wrap: wrap; gap: 12px; align-items: end; margin: 16px 0; }
+.character-context-controls > label { flex: 1 1 200px; }
+.profile-baseline-choice > label { flex: 1 1 220px; }
+.build-assessment { border-left: 3px solid var(--accent); padding: 8px 16px; margin: 20px 0; background: var(--surface); }
+.build-assessment h3 { margin-top: 0; }
+.comparison-workspace { min-width: 0; overflow-wrap: anywhere; }
+.build-controls { min-width: 0; margin: 0; padding: 0; border: 0; }
+.comparison-workspace .comparison-ledger table { min-width: 440px; }
+.comparison-workspace details > summary { font-weight: 600; }
+.comparison-workspace .comparison-profile { margin: 16px 0; }
+@media(max-width:500px) { .character-context-controls > *, .profile-baseline-choice > label { width: 100%; flex-basis: 100%; } .comparison-loadouts > section { padding: 12px; } }

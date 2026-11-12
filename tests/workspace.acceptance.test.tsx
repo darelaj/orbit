@@ -33,14 +33,18 @@ test('import → comparison → optimizer → B → team → reload preserves al
   await user.upload(picker,file(scanner));await user.click(await screen.findByRole('button',{name:'Replace inventory'}));
   expect((await loadInventory())?.relics).toHaveLength(6);
   await user.click(screen.getByRole('link',{name:'Comparison'}));
-  await user.selectOptions(screen.getByLabelText('Initialize from imported character'),'1308');await user.click(screen.getByRole('button',{name:'Initialize A and B'}));
+  await waitFor(()=>expect(screen.getByRole('group',{name:'Build workspace controls'})).toHaveProperty('disabled',false));
+  await user.selectOptions(screen.getByLabelText('Character'),'1308');await user.click(screen.getByRole('button',{name:'Load character'}));
+  await user.click(screen.getByText('Review profile',{exact:true}));
   for(const [name,value] of [['Character base HP','1000'],['Character base ATK','500'],['Character base DEF','400'],['Character base SPD','100']]){await user.clear(screen.getByLabelText(name));await user.type(screen.getByLabelText(name),value);}
-  await user.type(screen.getByLabelText('Snapshot name'),'Acceptance reference');await user.click(screen.getByRole('button',{name:'Save comparison'}));
-  await user.click(screen.getByRole('link',{name:'Optimizer'}));await user.click(screen.getByRole('button',{name:'Run optimizer'}));
+  await user.type(screen.getByLabelText('Snapshot name'),'Acceptance reference');await user.click(screen.getByRole('button',{name:'Save candidate'}));
+  await waitFor(()=>expect(screen.getByRole('group',{name:'Build workspace controls'})).toHaveProperty('disabled',false));
+  await user.click(screen.getByRole('link',{name:'Optimizer'}));await user.selectOptions(screen.getByLabelText('Goal'),'cv');await user.click(screen.getByRole('button',{name:'Find builds'}));
   await act(async()=>AcceptanceWorker.instances.at(-1)!.complete());
-  await user.click(screen.getByRole('button',{name:'Compare result 1 in B'}));
-  expect(within(screen.getByRole('region',{name:'Reference A'})).getByText(/ID accept_2/)).toBeTruthy();
-  expect(within(screen.getByRole('region',{name:'Candidate B'})).getByText(/ID accept_2/)).toBeTruthy();
+  await user.click(screen.getByRole('button',{name:'Compare build'}));
+  for(const slot of inventorySlots){expect(within(screen.getByRole('region',{name:'Current build'})).getByText(slot,{exact:true})).toBeTruthy();expect(within(screen.getByRole('region',{name:'Candidate'})).getByText(slot,{exact:true})).toBeTruthy();}
+  await user.click(screen.getByRole('button',{name:'Save candidate'}));
+  await waitFor(async()=>expect((await loadComparisons())[0].b.Body?.id).toBe('accept_2'));
   await user.click(screen.getByRole('link',{name:'Speed tuning'}));await user.click(screen.getByRole('button',{name:'Use comparison B SPD'}));await user.click(screen.getByRole('button',{name:'Save team'}));
   const saved=await loadTeam();expect(saved?.members[0].panelSPD).toBeCloseTo(131.032);expect(saved?.members[0].precision).toBe('ocr');
   await user.click(screen.getByRole('link',{name:'Inventory'}));await user.upload(picker,file({...scanner,version:99}));
@@ -50,8 +54,8 @@ test('import → comparison → optimizer → B → team → reload preserves al
   expect((await loadInventory())?.relics).toHaveLength(0);expect((await loadComparisons())[0].a.Head?.id).toBe('accept_0');expect(await loadTeam()).toEqual(saved);
   view.unmount();history.replaceState(null,'','/#speed');render(<App/>);
   await screen.findByText('Saved team restored from this browser.');expect(screen.getByLabelText('Member 1 panel SPD')).toHaveProperty('valueAsNumber',saved!.members[0].panelSPD);
-  await user.click(screen.getByRole('link',{name:'Comparison'}));await user.click(screen.getByRole('button',{name:'Load Acceptance reference'}));
-  expect(within(screen.getByRole('region',{name:'Reference A'})).getByText(/ID accept_0/)).toBeTruthy();
+  await user.click(screen.getByRole('link',{name:'Comparison'}));await user.click(screen.getByText('Saved builds and backups',{exact:true}));await user.click(screen.getByRole('button',{name:'Load Acceptance reference'}));
+  for(const slot of inventorySlots)expect(within(screen.getByRole('region',{name:'Saved build'})).getByText(slot,{exact:true})).toBeTruthy();
 },20000);
 
 test('aborted writes preserve inventory, comparison and team together',async()=>{

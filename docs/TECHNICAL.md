@@ -91,7 +91,7 @@ Artwork identity is separate from numerical model coverage. Optional `BuildProfi
 
 ## Search
 
-`domain/optimizer.ts` is a pure bounded generator. Engine objectives maximize HP, ATK, DEF, SPD, CRIT Rate, CRIT DMG, Break Effect, Build CV or the separately labeled index. Current UI controls still expose the legacy stat/index choices and SPD bounds; new objective/target controls are pending O-11f.
+`domain/optimizer.ts` is a pure bounded generator. Engine objectives maximize HP, ATK, DEF, SPD, CRIT Rate, CRIT DMG, Break Effect, Build CV or the separately labeled index. O-11f exposes these objectives through explicit goal selection, inclusive targets and optional Advanced maximum constraints.
 
 ```text
 ATK/CRIT index = ATK * (1 + clamp(CRIT Rate, 0, 100) / 100 * max(CRIT DMG, 0) / 100)
@@ -99,7 +99,7 @@ ATK/CRIT index = ATK * (1 + clamp(CRIT Rate, 0, 100) / 100 * max(CRIT DMG, 0) / 
 
 It is not DPS: it omits skill multipliers, damage bonuses/type, enemy defense/resistance, rotations and combat buffs; it is not universal for Break/DoT characters. O-11d implements the CV/stat/target engine contract below without adding UI controls.
 
-Filter candidates by eligibility, exclusions and slot main stats; every accepted build must use one relic per slot, unique IDs and the shared profile, then satisfy requested set counts and inclusive unrounded stat bounds. Validate legality separately from ranking. Required set IDs are unique and catalogued: Cavern requirements use 2 or 4 pieces totaling at most four; Planar requirements use two pieces totaling at most two. Current defaults include locked/equipped relics and exclude discarded ones; proposed O-11 scope defaults are not implemented yet.
+Filter candidates by eligibility, exclusions and slot main stats; every accepted build must use one relic per slot, unique IDs and the shared profile, then satisfy requested set counts and inclusive unrounded stat bounds. Validate legality separately from ranking. Required set IDs are unique and catalogued: Cavern requirements use 2 or 4 pieces totaling at most four; Planar requirements use two pieces totaling at most two. Engine defaults include locked/equipped relics and exclude discarded ones. O-11f additionally scopes the UI pool to unequipped plus the applied character; borrowing is opt-in.
 
 Exact mode enumerates the full filtered Cartesian pool only if it fits the budget; otherwise it rejects before evaluation. Limited mode samples index `floor(total × i / limit)` using BigInt mixed-radix decoding for `i` in `[0, limit)`. Scanner-order sampling has no quality/global-optimality guarantee. A fitting pool reports exhaustive even if limited was requested. Candidate-reduced exhaustiveness applies only to the disclosed pool. Never call truncated, beam or resource-capped search a global optimum; any pruning requires a justified guarantee or explicit heuristic disclosure.
 
@@ -111,7 +111,7 @@ Apply copies a result to comparison B and navigates there, keeping A stable; mix
 
 ## O-11a objectives and target contract
 
-Specified 2026-11-07; implemented in the domain and Worker contract by O-11d on 2026-11-08. UI integration remains O-11f, specified in [DESIGN](../DESIGN.md#o-11a-character-workflow-specification). O-11b data retention and the reviewed O-11c baseline subset remain available.
+Specified 2026-11-07; implemented in the domain and Worker contract by O-11d on 2026-11-08. O-11f UI integration was implemented 2026-11-12, specified in [DESIGN](../DESIGN.md#o-11a-character-workflow-specification). O-11b data retention and the reviewed O-11c baseline subset remain available.
 
 Supported engine objectives: HP, ATK, DEF, SPD, CRIT Rate, CRIT DMG, Break Effect, Build CV and the existing separately named ATK/CRIT index. Use final computed static totals under one selected character/profile version, with units inherited from Calculations. Do not score descriptions or pretend these are simulated damage. Build CV is `2 * CRIT Rate + CRIT DMG` in percentage points, including modeled baseline/profile, main stats, active substats and static set bonuses exactly once. It is not relic-substat-only CV. Preview/reroll values never contribute. Raw CV does not cap CRIT Rate; flag excess above 100% as potentially wasted, and do not confuse it with the clamped ATK/CRIT index.
 
@@ -129,7 +129,7 @@ Reference acceptance case, synthetic profile with minimum SPD 134 and objective 
 
 Adding minimum CRIT DMG 220% makes all three infeasible; never select A as a relaxed fallback. At equal objective values, sort by stable six-slot relic-ID tuple, not extra SPD. Compare unrounded values, without hidden target tolerance. Synthetic CV checks: CRIT Rate 70%, CRIT DMG 140% gives 280 CV; CRIT Rate 110%, CRIT DMG 140% gives raw 360 CV plus the excess-CRIT warning. These examples are test expectations, not character recommendations.
 
-Every candidate must have a valid complete static profile, one eligible unique relic per slot and satisfy all chosen set/main-stat/ownership/lock/discard/exclusion constraints. Cavern requirements occupy only its four slots: a four-piece set, one two-piece requirement or two different two-piece sets. Planar requirements occupy its two slots; at most one two-piece requirement. Reject contradictory/unknown requirements with actionable errors. No requirement is implied by Any sets. Borrowing is opt-in under future defaults. Missing current equipment can coexist with a valid six-slot candidate; a current-build quality delta must state that its reference is partial.
+Every candidate must have a valid complete static profile, one eligible unique relic per slot and satisfy all chosen set/main-stat/ownership/lock/discard/exclusion constraints. Cavern requirements occupy only its four slots: a four-piece set, one two-piece requirement or two different two-piece sets. Planar requirements occupy its two slots; at most one two-piece requirement. Reject contradictory/unknown requirements with actionable errors. No requirement is implied by Any sets. Borrowing is opt-in in the O-11f UI. Missing current equipment can coexist with a valid six-slot candidate; a current-build quality delta must state that its reference is partial.
 
 Search reports bind inventory revision, character/form/profile/catalogue version, goal and pool snapshot to the run. Keep numerical objective separate from feasibility. Exact search refuses excess work before enumeration; quick search keeps its limited-coverage label. Reuse bounded results, cancellation and stale protection; no silent transition from exact to quick. An exhaustive run with excluded unsupported calculations reports those exclusions and cannot claim a universal pool optimum. No-result limited search is inconclusive; no-result exhaustive search means no *computable* feasible build under disclosed assumptions. Neither status relaxes constraints or changes storage.
 
@@ -137,13 +137,23 @@ O-11d tests must independently verify the table, simultaneous bounds, CV units/o
 
 ## Current-build assessment
 
-O-11e adds pure `domain/assessment.ts` helpers; O-11f will connect their UI. They reuse `calculateBuild`, `objectiveScore` and the optimizer's exported `targetBounds` validator. No second stat formula, grading scale or persistence layer exists.
+O-11e adds pure `domain/assessment.ts` helpers, connected by O-11f to Comparison and Optimizer. They reuse `calculateBuild`, `objectiveScore` and the optimizer's exported `targetBounds` validator. No second stat formula, grading scale or persistence layer exists.
 
 `assessCurrentBuild` returns slot presence/completeness, computed totals/active sets, warnings, target gaps and profile errors. Missing/invalid profiles yield no totals and `profile-incomplete`; invalid equipment still throws the calculator's error. Missing slots retain partial totals and explicit warnings, never invented equipment. Target statuses are `met`, `below`, `no-targets` and `profile-incomplete`; `below` denotes any violated bound, including exceeding a maximum. Gaps are actual minus the violated threshold (negative below minimum, positive above maximum, zero inside the inclusive range). Partial equipment remains separately flagged even if its computed totals meet targets. CRIT Rate above 100% is disclosed.
 
 `assessCandidate` recalculates both loadouts under the same profile, requires all six candidate slots, and returns signed stat/objective changes, changed slot IDs, current-partial status and calculation warnings for both sides. Callers must supply a candidate from the current eligible search pool; the delta helper does not recheck ownership, filters or goal feasibility. Assess targets separately under the same options. Relic IDs identify slots changed, not durable matching across OCR scans. Preview/reroll stats remain inactive; no inventory, profile or equipment is modified.
 
 `classifySearch` accepts only completed reports already checked by the runner for run/revision freshness. Null means `no-search`. Exhaustive coverage with no invalid calculations yields `exact-optimum` or `no-feasible`; the optimum is only within the selected pool and implemented static model, with result warnings/model exclusions still required. Limited results or reports excluding invalid calculations yield `best-found`; no result in those cases is `inconclusive`, including exhaustive reports containing invalid calculations. At most three example invalid reasons are forwarded. There is no whole-inventory, combat/DPS, community percentile or universal-quality claim.
+
+## Character build workflow
+
+O-11f keeps shared profile/loadouts in ComparisonWorkspace. Applied character/form identity keys session-only goal/options/borrowing preferences; picker selection and profile labels do not rebind them. Character setup collapses after initialization and reopens on selection changes. Kit equivalence still needs explicit confirmation, and unsupported records require manual recovery. No target recommendations or inferred owned roster are introduced.
+
+Current/Reference/Saved build labels distinguish imported equipment from candidate-derived references, restored snapshots and data retained after inventory replacement. Candidate edits do not modify the reference. Key stats/selected targets lead; All stats adds full totals and Build CV. Target decisions use raw values, independent of display formatting. Native disclosures contain corrections, source/set exclusions, detailed relic stats, filters and backups. No assets, provider permissions, persistence schema or dependencies change.
+
+Optimizer scopes ownership before applying the shared `candidateGroups` eligibility helper. `validateSearchOptions` is also shared with preflight; six candidate counts and a BigInt product establish whether exact search fits without enumerating combinations. Invalid/no-goal/missing-slot inputs disable Find builds with a reason. Quick search is always explicit. Existing Worker run/revision/identity checks and termination remain; applied goals, profile, reference, inventory and view changes clear reports. Reports retain static-model/filter qualifications and invalid reasons. Borrowed pieces expose source ownership.
+
+Save candidate retains both loadouts/profile under the existing comparison contract. Switching edited drafts offers save/discard/cancel; durable save failure keeps the draft and blocks switching. Build controls are disabled while storage loads/writes. Inventory replacement cancels pending intent, including a switch waiting for an asynchronous save. Initial storage-read failure cannot overwrite saved data through ordinary saves; validated backup restore remains the recovery route. Nothing equips items in game.
 
 ## Speed
 

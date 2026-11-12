@@ -26,7 +26,7 @@ export function targetBounds(options:TargetOptions){
   if(options.goal==='targets'&&!bounds.some(b=>b.minimum!==undefined))throw new Error('Add at least one minimum target before searching.');
   return bounds.filter(b=>b.minimum!==undefined||b.maximum!==undefined);
 }
-function validate(options:SearchOptions){
+export function validateSearchOptions(options:SearchOptions){
   if(!['exact','limited'].includes(options.mode)||![...objectiveStats,'cv','crit-index'].includes(options.objective))throw new Error('Unsupported search mode or objective.');
   if(!Number.isInteger(options.budget)||options.budget<1||options.budget>1000000)throw new Error('Evaluation budget must be 1–1,000,000.');
   const bounds=targetBounds(options);
@@ -36,12 +36,15 @@ function validate(options:SearchOptions){
   if(cavern>4||planar>2)throw new Error('Required sets exceed four Cavern or two Planar slots.');
   return bounds;
 }
+export function candidateGroups(relics:InventoryRelic[],options:SearchOptions,excluded=new Set(options.excludeIds)){
+  return inventorySlots.map(slot=>relics.filter(r=>r.slot===slot&&(!options.mainStats[slot]||r.mainStat===options.mainStats[slot])&&(options.includeLocked||!r.locked)&&(options.includeDiscarded||!r.discarded)&&(options.includeEquipped||!r.location)&&!excluded.has(r.id)));
+}
 export function* optimize(input:SearchInput):Generator<Progress,SearchReport,void>{
-  validateProfile(input.profile);const bounds=validate(input.options);
+  validateProfile(input.profile);const bounds=validateSearchOptions(input.options);
   if(input.relics.length>10000)throw new Error('Maximum inventory size is 10,000 relics.');
   const {options}=input;const excluded=new Set(options.excludeIds);const ids=new Set<string>();
   for(const relic of input.relics){if(ids.has(relic.id))throw new Error(`Duplicate scanner ID ${relic.id}`);ids.add(relic.id);}
-  const groups=inventorySlots.map(slot=>input.relics.filter(r=>r.slot===slot&&(!options.mainStats[slot]||r.mainStat===options.mainStats[slot])&&(options.includeLocked||!r.locked)&&(options.includeDiscarded||!r.discarded)&&(options.includeEquipped||!r.location)&&!excluded.has(r.id)));
+  const groups=candidateGroups(input.relics,options,excluded);
   const missing=inventorySlots.filter((_,i)=>groups[i].length===0);if(missing.length)throw new Error(`No eligible relics for: ${missing.join(', ')}.`);
   const count=groups.reduce((total,g)=>total*BigInt(g.length),1n);const total=count.toString();
   if(options.mode==='exact'&&count>BigInt(options.budget))throw new Error(`Exact search needs ${total} evaluations. Increase filters/budget or choose limited sampling.`);

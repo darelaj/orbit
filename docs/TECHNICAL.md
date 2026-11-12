@@ -210,15 +210,23 @@ Raw export and temporary info-level stdout/stderr stay in a unique ignored run d
 
 ## Verification policy
 
-AGENTS owns change-specific verification. Documentation/URL-only changes need relevant links, scope and diff/whitespace checks; do not run app builds, tests or browser audits for prose alone. Application features need focused checks per change, required full-suite/build and exact-head Windows/Linux CI before integration. A passing build or checksum cannot establish real extraction, math correctness, accessibility or usability. Keep current evidence/limits in VERIFICATION, not another report per task.
+Canonical policy: choose checks for changed behavior and callers. The table is a menu, not an all-task checklist.
 
-| Area | Required meaningful checks |
+- Docs/formatting: diff, affected links/commands and whitespace; no tests/build/browser.
+- Code: affected tests; typecheck for type/import risk or build for bundling/runtime changes. Build includes typecheck.
+- UI: changed flows and relevant browser states. Repeat theme/width matrices only when appearance/layout is affected.
+- Broaden locally for cross-cutting changes, unexplained failures or CI coverage gaps. No automatic full local suite/build or duplicate CI coverage.
+- Required Windows/Linux PR CI checks the exact head. Push/merge alone needs result/ref verification, not local reruns.
+
+After fixes, rerun affected checks. Retain failure logs; summarize actual coverage/limits in VERIFICATION. Use synthetic data and preserve relevant security, rollback and numerical checks. Passing checks do not certify real scans, game accuracy, accessibility or owner acceptance.
+
+| Area changed | Relevant checks |
 | --- | --- |
-| Import/storage | Valid/invalid schema fixtures, limits, duplicate versus identical items, six slots, precision, active/preview/reroll separation, references, unknown data, backup round-trip, reimport/reload and failed-write rollback. |
-| Math/search | Independent expected totals, percent/flat order, static/conditional exclusions, manual/missing profiles, separate brute-force reference with constraints/ties, bounded work and exact/limited coverage. |
-| Worker/speed | Cancel/restart/revision/stale progress/results/errors and terminal release; AV thresholds, base-SPD buffs, advance, ties, boundaries, invalid/extreme input and event caps. |
-| Scanner | Pin/download mismatch, metadata redaction, missing/malformed/partial/oversized output, expiry/stale IDs, single-run/cancel/shutdown/cleanup, denial/missing engine and actual loopback origin/Host/token/body/path rejection. Windows helper parsing and harmless fixtures only; no real capture/UAC in CI. |
-| UI | Both themes, desktop/narrow, keyboard/focus/Escape, labels/44px targets, no page overflow/console errors, image failures, empty/loading/error/no-result states and actual changed controls. Record scoped antislop gate and limitations. |
+| Import/storage | Schema/identity/precision, active versus preview data, backup compatibility and failed-write rollback. |
+| Math/search | Independent numerical expectations, constraint legality, brute-force reference, bounds and exact/limited claims. |
+| Worker/speed | Cancellation/stale context, AV/buff/advance boundaries, ties and event caps. |
+| Scanner/security | Changed process/API boundaries: integrity, redaction, malformed output, lifecycle/cleanup and origin/Host/token/path protection. No real capture/UAC. |
+| UI | Changed states/controls, keyboard/focus, labels/targets, relevant theme/layout/contrast and scoped gate evidence. |
 
 `npm.cmd test` runs Vitest then Node scanner tests. Tests use synthetic exports/adapters and fake IndexedDB. `tests/workspace.acceptance.test.tsx` traverses real App/import/comparison/result transfer/team/save/reload/replacement with isolated storage and a controlled Worker using the real search engine; a separate fixture forces transaction aborts. Actual module-Worker behavior still needs a production-browser check. `src/features/optimizer/runner.test.ts` verifies lifecycle independent of UI.
 
@@ -226,4 +234,4 @@ Scanner component checks include lazy connect/reconnect, unknown responses, canc
 
 `tests/browser/audit-ui.js` is a read-only browser snippet, not CLI/Vitest. Use the approved browser runtime's DOM API. It measures overflow, active target sizes and computed solid-background text contrast; checkbox/radio labels count, disabled/hidden/closed content is exempt. It cannot certify image/pseudo-element compositing, every browser, assistive technology or full WCAG. Open relevant disclosures and inspect screenshots too; the audit does not read storage or mutate the page.
 
-Before destructive UI QA, export all three backup types and restore them afterward; compare canonicalized JSON, not visual similarity. Use only synthetic fixtures in Git. Real inventory count/stat matching, game compatibility, Windows UAC and normal/timeout/cancel/shutdown capture cleanup require owner-driven evidence. Never start personal capture or elevation as a development check.
+Use isolated synthetic storage for QA, never destructive tests on personal state. Real inventory/stat matching, game compatibility, UAC and native capture cleanup require owner-driven evidence.

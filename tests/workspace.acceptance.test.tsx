@@ -45,7 +45,7 @@ test('import → comparison → optimizer → B → team → reload preserves al
   for(const slot of inventorySlots){expect(within(screen.getByRole('region',{name:'Current build'})).getByText(slot,{exact:true})).toBeTruthy();expect(within(screen.getByRole('region',{name:'Candidate'})).getByText(slot,{exact:true})).toBeTruthy();}
   await user.click(screen.getByRole('button',{name:'Save candidate'}));
   await waitFor(async()=>expect((await loadComparisons())[0].b.Body?.id).toBe('accept_2'));
-  await user.click(screen.getByRole('link',{name:'Speed tuning'}));await user.click(screen.getByRole('button',{name:'Use comparison B SPD'}));await user.click(screen.getByRole('button',{name:'Save team'}));
+  await user.click(screen.getByRole('link',{name:'Speed tuning'}));await user.click(screen.getByRole('button',{name:'Load example team'}));await user.click(screen.getByRole('button',{name:'Use candidate SPD'}));await user.selectOptions(screen.getByLabelText('Replace member'),'0');await user.click(screen.getByRole('button',{name:'Confirm replacement'}));await user.click(screen.getByRole('button',{name:'Save team'}));
   const saved=await loadTeam();expect(saved?.members[0].panelSPD).toBeCloseTo(131.032);expect(saved?.members[0].precision).toBe('ocr');
   await user.click(screen.getByRole('link',{name:'Inventory'}));await user.upload(picker,file({...scanner,version:99}));
   expect(await screen.findByRole('alert')).toHaveProperty('textContent','version: only scanner schema 4 is supported');

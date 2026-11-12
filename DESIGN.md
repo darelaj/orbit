@@ -217,16 +217,9 @@ All fields have visible labels, controls at least 44px hit targets, logical keyb
 
 ## Implementation and review
 
-Keep visual changes separate from importer/math tasks and use the current task branch recorded in docs/SESSION_STATE.md. Source frames and deliberate Figma deviations belong in the Figma implementation reference below.
+Preserve the accepted identity and record deliberate Figma deviations below. The O-11 workflow specification supersedes earlier A/B and four-editor layouts.
 
-Before UI delivery, record a scoped antislop gate and control walkthrough linked from docs/VERIFICATION.md. Verify both themes, wide/narrow layouts, keyboard operation, image failure, and the implemented workflows. Import, comparison, cancellation, and timeline acceptance belong to their respective implementation tasks. Passing checks does not imply owner approval of the visual result.
-
-
-O-05 follows the shared equipment palette and six-slot layout with a collapsible manual profile, reference/candidate columns, bounded candidate pages and an aligned numeric ledger. Acheron artwork is reused only when the user explicitly declares that manual profile; no unbundled character art is substituted. Mobile stacks A and B, keeps both navigation destinations visible, and confines very wide numeric rows to a keyboard-focusable ledger scroll area.
-
-O-06 reuses the shared calculation-profile shell and declared-character artwork. A dedicated Optimizer navigation destination exposes search settings, explicit coverage/budget/provenance, bounded result lists with six visual slots, and transfer to B. Mobile navigation wraps rather than hiding destinations. Search errors, cancelled state, non-exhaustive no-result state and unavailable retained filters have distinct text. Results/settings are not silently saved.
-
-O-07 uses a collapsible four-member editor above a data-driven AV chart with numbered/named lanes, turn markers and meaningful cycle boundaries. Numeric cycle counts and a paginated event ledger accompany the visual. The chart retains readable text via a 1000px internal width; mobile scrolling is contained in focusable regions rather than overflowing the document. Threshold precision/assumptions are visible beside results. No invented portraits or external visualization dependency is introduced.
+Use [TECHNICAL's verification policy](docs/TECHNICAL.md#verification-policy) to scope changed UI checks and record applicable gate evidence in VERIFICATION. Reuse unaffected theme/layout evidence; reserve broader walkthroughs for acceptance milestones. Tests and screenshots do not imply owner approval.
 
 ## Figma implementation reference
 

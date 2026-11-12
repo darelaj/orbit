@@ -135,13 +135,9 @@ Likely affected locations: `src/domain/inventory.ts`, `server/scanner.mjs`, inve
 
 ### Verification and continuation
 
-Use independent expected totals, active/preview fixtures, profile variants, old/new backups, precision boundaries and reference brute force. Cover SPD saturation, simultaneous minimums, CRIT overflow, set legality, eligibility, deterministic ties, cancellation and stale results.
+Select tests using [TECHNICAL's verification policy](TECHNICAL.md#verification-policy). Acceptance criteria belong to each milestone; O-11h covers the broader character → target/search → compare/save → team flow and its failure states. Do not rerun the entire acceptance matrix for each small edit.
 
-UI acceptance must demonstrate choosing a character, understanding deficiencies, requesting “reach SPD, then maximize CRIT DMG”, comparing and checking team order without Advanced. Also verify incomplete/failed searches, borrowing and precision. Check both themes, focus/dialog behavior, reduced motion, stable readable numbers and overflow. Record observed outcomes; screenshots alone do not establish usability or accuracy.
-
-Run affected checks per milestone and required full suite/build on each final application feature head; inspect Windows/Linux PR CI. Documentation-only work needs links/diff/whitespace checks, not runtime tests. Real scans stay owner-initiated; develop with synthetic fixtures and exclude personal exports from commits.
-
-Keep this roadmap and a short SESSION_STATE handoff with task/branch, merged dependencies, commits/checks, limits and next action. Update domain docs when contracts change. Verify each PR's commits in synchronized main before deleting its source branch. Leave O-10 deployment and unrelated deferred work untouched.
+Keep the current branch/dependencies, actual checks and next action in SESSION_STATE. Preserve the Git/data boundaries in AGENTS; O-10 and unrelated deferred work stay untouched.
 
 ## Separate leaderboard project (deferred)
 
